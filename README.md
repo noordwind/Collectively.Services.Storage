@@ -1,0 +1,1 @@
+# Coolector.Services.Storage
