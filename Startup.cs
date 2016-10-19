@@ -10,13 +10,15 @@ namespace Coolector.Services.Storage
 {
     public class Startup
     {
+        public string EnvironmentName {get;set;}
         public IConfiguration Configuration { get; set; }
 
         public Startup(IHostingEnvironment env)
         {
+            EnvironmentName = env.EnvironmentName.ToLowerInvariant();
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile($"appsettings.{EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables()
                 .SetBasePath(env.ContentRootPath);
 
