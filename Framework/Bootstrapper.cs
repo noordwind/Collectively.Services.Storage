@@ -17,6 +17,7 @@ using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using NLog;
 using RawRabbit;
+using RawRabbit.Configuration;
 using RawRabbit.vNext;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
