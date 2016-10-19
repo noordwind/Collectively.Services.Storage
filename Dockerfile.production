@@ -7,6 +7,6 @@ RUN ["dotnet", "build"]
  
 EXPOSE 10000/tcp
 ENV ASPNETCORE_URLS http://*:10000
-ENV ASPNETCORE_ENVIRONMENT ""
+ENV ASPNETCORE_ENVIRONMENT production
  
 ENTRYPOINT ["dotnet", "run"]

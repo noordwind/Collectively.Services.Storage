@@ -63,7 +63,9 @@ namespace Coolector.Services.Storage.Framework
                     .As<IGridFSBucket>()
                     .SingleInstance();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
-                builder.RegisterInstance(BusClientFactory.CreateDefault()).As<IBusClient>();
+                var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
+                builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
+                builder.RegisterInstance(BusClientFactory.CreateDefault(rawRabbitConfiguration)).As<IBusClient>();
                 builder.RegisterType<FileHandler>().As<IFileHandler>();
                 builder.RegisterType<RemarkRepository>().As<IRemarkRepository>();
                 builder.RegisterType<RemarkCategoryRepository>().As<IRemarkCategoryRepository>();
