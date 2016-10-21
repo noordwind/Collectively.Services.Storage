@@ -24,13 +24,15 @@ namespace Coolector.Services.Storage.Repositories.Queries
             return await remarks.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public static async Task<string> GetPhotoIdAsync(this IMongoCollection<RemarkDto> remarks, Guid id)
+        public static async Task<string> GetPhotoIdAsync(this IMongoCollection<RemarkDto> remarks, Guid id, string size)
         {
             if (id == Guid.Empty)
                 return null;
 
             return await remarks.AsQueryable().Where(x => x.Id == id)
-                .Select(x => x.Photo.FileId)
+                .SelectMany(x => x.Photos)
+                .Where(x => x.Size == size)
+                .Select(x => x.Id)
                 .FirstOrDefaultAsync(_ => true);
         }
 

@@ -23,8 +23,9 @@ namespace Coolector.Services.Storage.Handlers
             if (remark.HasNoValue)
                 return;
 
-            await _fileHandler.DeleteAsync(remark.Value.Photo.FileId);
             await _repository.DeleteAsync(remark.Value);
+            //TODO check general settins and delete from storage
+            //await _fileHandler.DeleteAsync(remark.Value.Photo.FileId);
         }
     }
 }

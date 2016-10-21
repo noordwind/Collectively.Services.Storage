@@ -32,12 +32,12 @@ namespace Coolector.Services.Storage.Files
             onUploaded?.Invoke(fileInBucketId);
         }
 
-        public async Task<Maybe<FileStreamInfo>> GetFileStreamInfoAsync(Guid remarkId)
+        public async Task<Maybe<FileStreamInfo>> GetFileStreamInfoAsync(Guid remarkId, string size)
         {
             if (remarkId == Guid.Empty)
                 return new Maybe<FileStreamInfo>();
 
-            var photoId = await _remarkRepository.GetPhotoIdAsync(remarkId);
+            var photoId = await _remarkRepository.GetPhotoIdAsync(remarkId, size);
             if (photoId.HasNoValue)
                 return new Maybe<FileStreamInfo>();
 

@@ -20,12 +20,6 @@ namespace Coolector.Services.Storage.Mappers
                     Id = source.category.id,
                     Name = source.category.name
                 },
-                Photo = new FileDto
-                {
-                    FileId = source.photo.fileId,
-                    Name = source.photo.name,
-                    ContentType = source.photo.contentType
-                },
                 Location = new LocationDto
                 {
                     Address = source.location.address,

@@ -14,6 +14,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     {
         protected static UserNameChangedHandler Handler;
         protected static Mock<IUserRepository> UserRepositoryMock;
+        protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static UserNameChanged Event;
         protected static UserDto User;
         protected static Exception Exception;
@@ -21,7 +22,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static void Initialize(Action setup)
         {
             UserRepositoryMock = new Mock<IUserRepository>();
-            Handler = new UserNameChangedHandler(UserRepositoryMock.Object);
+            RemarkRepositoryMock = new Mock<IRemarkRepository>();
+            Handler = new UserNameChangedHandler(UserRepositoryMock.Object, RemarkRepositoryMock.Object);
             setup();
         }
 

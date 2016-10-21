@@ -76,11 +76,11 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
     {
         Establish context = () => Initialize();
 
-        Because of = () => RemarkProvider.GetPhotoAsync(Moq.It.IsAny<Guid>()).Await();
+        Because of = () => RemarkProvider.GetPhotoAsync(Moq.It.IsAny<Guid>(), Moq.It.IsAny<string>()).Await();
 
         It should_call_file_handler_get_file_stream_info = () =>
         {
-            FileHandlerMock.Verify(x => x.GetFileStreamInfoAsync(Moq.It.IsAny<Guid>()), Times.Once);
+            FileHandlerMock.Verify(x => x.GetFileStreamInfoAsync(Moq.It.IsAny<Guid>(), Moq.It.IsAny<string>()), Times.Once);
         };
     }
 }

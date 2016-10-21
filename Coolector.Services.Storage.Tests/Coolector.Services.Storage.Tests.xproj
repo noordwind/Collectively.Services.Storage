@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>239f7042-14a3-49ab-af02-f95c7e8813c6</ProjectGuid>
+    <ProjectGuid>2cb87b6e-d680-4716-ae16-44da590ef79f</ProjectGuid>
     <RootNamespace>Coolector.Services.Storage.Tests</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>

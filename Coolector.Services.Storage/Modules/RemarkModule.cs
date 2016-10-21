@@ -19,18 +19,19 @@ namespace Coolector.Services.Storage.Modules
             Get("{id}", async args => await Fetch<GetRemark, RemarkDto>
                 (async x => await remarkProvider.GetAsync(x.Id)).HandleAsync());
 
-            Get("{id}/photo", async args => await Fetch<GetRemarkPhoto, Response>
-            (async x =>
-            {
-                var stream = await remarkProvider.GetPhotoAsync(x.Id);
-                if (stream.HasNoValue)
-                    return new Maybe<Response>();
+            //TODO
+            //Get("{id}/photo", async args => await Fetch<GetRemarkPhoto, Response>
+            //(async x =>
+            //{
+            //    var stream = await remarkProvider.GetPhotoAsync(x.Id);
+            //    if (stream.HasNoValue)
+            //        return new Maybe<Response>();
 
-                var streamInfo = stream.Value;
+            //    var streamInfo = stream.Value;
 
-                return FromStream(streamInfo.Stream, streamInfo.Name, streamInfo.ContentType);
-            }
-            ).HandleAsync());
+            //    return FromStream(streamInfo.Stream, streamInfo.Name, streamInfo.ContentType);
+            //}
+            //).HandleAsync());
         }
     }
 }

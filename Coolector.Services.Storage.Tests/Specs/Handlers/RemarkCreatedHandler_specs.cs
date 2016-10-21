@@ -8,7 +8,9 @@ using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using Coolector.Services.Storage.Settings;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers
@@ -30,7 +32,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             UserRepositoryMock = new Mock<IUserRepository>();
             Handler = new RemarkCreatedHandler(FileHandlerMock.Object,
-                UserRepositoryMock.Object, RemarkRepositoryMock.Object);
+                UserRepositoryMock.Object, RemarkRepositoryMock.Object, new GeneralSettings());
             setup();
         }
 
@@ -48,13 +50,13 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializePhoto()
         {
-            Photo = new RemarkFile(Guid.NewGuid().ToString(), new byte[] { 0x0 }, "photo.png", "image/png");
+            Photo = new RemarkFile("size", "url", "metadata");
         }
 
         protected static void InitializeEvent()
         {
             Event = new RemarkCreated(Guid.NewGuid(), User?.UserId, new RemarkCreated.RemarkCategory(
-                Guid.NewGuid(), "litter"), new RemarkCreated.RemarkLocation(string.Empty, 1, 1), Photo, "test");
+                Guid.NewGuid(), "litter"), new RemarkCreated.RemarkLocation(string.Empty, 1, 1), new List<RemarkFile>(),  "test");
         }
     }
 
@@ -77,7 +79,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         It should_call_file_handler_upload_async = () =>
         {
-            FileHandlerMock.Verify(x => x.UploadAsync(Photo.Name, Photo.ContentType,
+            FileHandlerMock.Verify(x => x.UploadAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
                 Moq.It.IsAny<Stream>(), Moq.It.IsAny<Action<string>>()), Times.Once);
         };
 

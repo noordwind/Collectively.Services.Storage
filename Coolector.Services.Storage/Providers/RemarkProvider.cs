@@ -39,11 +39,12 @@ namespace Coolector.Services.Storage.Providers
                         .GetStreamAsync(_providerSettings.RemarksApiUrl, $"remarks/{id}/photo");
                     if (stream.HasValue)
                     {
-                        await _fileHandler.UploadAsync(remark.Photo.Name, remark.Photo.ContentType,
-                            stream.Value, fileId =>
-                            {
-                                remark.Photo.FileId = fileId;
-                            });
+                        //TODO check general settings and delete from storage
+                        //await _fileHandler.UploadAsync(remark.Photo.Name, remark.Photo.ContentType,
+                        //    stream.Value, fileId =>
+                        //    {
+                        //        remark.Photo.FileId = fileId;
+                        //    });
                     }
                     await _remarkRepository.AddAsync(remark);
                 });
@@ -59,7 +60,7 @@ namespace Coolector.Services.Storage.Providers
                 async () => await _remarkCategoryRepository.BrowseAsync(query),
                 async remarks => await _remarkCategoryRepository.AddManyAsync(remarks.Items));
 
-        public async Task<Maybe<FileStreamInfo>> GetPhotoAsync(Guid id)
-            => await _fileHandler.GetFileStreamInfoAsync(id);
+        public async Task<Maybe<FileStreamInfo>> GetPhotoAsync(Guid id, string size)
+            => await _fileHandler.GetFileStreamInfoAsync(id, size);
     }
 }

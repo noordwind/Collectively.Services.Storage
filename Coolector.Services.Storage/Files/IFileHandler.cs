@@ -8,7 +8,7 @@ namespace Coolector.Services.Storage.Files
     public interface IFileHandler
     {
         Task UploadAsync(string name, string contentType, Stream stream, Action<string> onUploaded = null);
-        Task<Maybe<FileStreamInfo>> GetFileStreamInfoAsync(Guid remarkId);
+        Task<Maybe<FileStreamInfo>> GetFileStreamInfoAsync(Guid remarkId, string size);
         Task<Maybe<FileStreamInfo>> GetFileStreamInfoAsync(string fileId);
         Task DeleteAsync(string fileId);
     }

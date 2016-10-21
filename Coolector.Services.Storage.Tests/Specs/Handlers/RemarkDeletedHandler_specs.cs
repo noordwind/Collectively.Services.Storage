@@ -7,6 +7,7 @@ using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
+using System.Collections.Generic;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers
@@ -29,10 +30,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             RemarkDto = new RemarkDto
             {
                 Id = guid,
-                Photo = new FileDto
-                {
-                    FileId = "fileid"
-                }
+                Photos = new List<FileDto>()
             };
             Event = new RemarkDeleted(guid);
 

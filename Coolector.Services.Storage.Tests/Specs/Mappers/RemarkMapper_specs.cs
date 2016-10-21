@@ -53,9 +53,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
             Result.Author.Name.ShouldBeEquivalentTo((string)Source.author.name);
             Result.Category.Id.ShouldBeEquivalentTo((Guid)Source.category.id);
             Result.Category.Name.ShouldBeEquivalentTo((string)Source.category.name);
-            Result.Photo.FileId.ShouldBeEquivalentTo((string)Source.photo.fileId);
-            Result.Photo.Name.ShouldBeEquivalentTo((string)Source.photo.name);
-            Result.Photo.ContentType.ShouldBeEquivalentTo((string)Source.photo.contentType);
             Result.Location.Address.ShouldBeEquivalentTo((string)Source.location.address);
             Result.Location.Coordinates[0].ShouldBeEquivalentTo((double)Source.location.coordinates[0]);
             Result.Location.Coordinates[1].ShouldBeEquivalentTo((double)Source.location.coordinates[1]);

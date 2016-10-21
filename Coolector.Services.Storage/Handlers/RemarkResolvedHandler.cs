@@ -6,6 +6,7 @@ using Coolector.Dto.Common;
 using Coolector.Dto.Remarks;
 using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Repositories;
+using System.Linq;
 
 namespace Coolector.Services.Storage.Handlers
 {
@@ -34,20 +35,22 @@ namespace Coolector.Services.Storage.Handlers
             if (user.HasNoValue)
                 return;
 
-            var photo = new FileDto
+            var photos = @event.Photos.Select(x => new FileDto
             {
-                Name = @event.Photo.Name,
-                ContentType = @event.Photo.ContentType,
-            };
+                Size = x.Size,
+                Url = x.Url,
+                Metadata = x.Metadata
+            });
 
-            using (var memoryStream = new MemoryStream(@event.Photo.Bytes))
-            {
-                await _fileHandler.UploadAsync(photo.Name, photo.ContentType,
-                    memoryStream, fileId =>
-                    {
-                        photo.FileId = fileId;
-                    });
-            }
+            //TODO
+            //using (var memoryStream = new MemoryStream(@event.Photo.Bytes))
+            //{
+            //    await _fileHandler.UploadAsync(photo.Name, photo.ContentType,
+            //        memoryStream, fileId =>
+            //        {
+            //            photo.FileId = fileId;
+            //        });
+            //}
 
             remark.Value.Resolved = true;
             remark.Value.ResolvedAt = @event.ResolvedAt;
@@ -56,7 +59,7 @@ namespace Coolector.Services.Storage.Handlers
                 UserId = user.Value.UserId,
                 Name = user.Value.Name
             };
-            remark.Value.ResolvedPhoto = photo;
+            remark.Value.Photos = photos.ToList();
             await _remarkRepository.UpdateAsync(remark.Value);
         }
     }

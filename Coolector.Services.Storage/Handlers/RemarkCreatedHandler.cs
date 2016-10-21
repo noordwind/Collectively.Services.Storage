@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Coolector.Common.Events;
 using Coolector.Common.Events.Remarks;
@@ -33,29 +35,34 @@ namespace Coolector.Services.Storage.Handlers
         public async Task HandleAsync(RemarkCreated @event)
         {
             var user = await _userRepository.GetByIdAsync(@event.UserId);
-            var photo = new FileDto
+            var photos = @event.Photos.Select(x => new FileDto
             {
-                Name = @event.Photo.Name,
-                ContentType = @event.Photo.ContentType,
-            };
+                Size = x.Size,
+                Url = x.Url,
+                Metadata = x.Metadata
+            });
 
             if (_generalSettings.FileStorageEnabled)
             {
-                using (var memoryStream = new MemoryStream(@event.Photo.Bytes))
-                {
-                    await _fileHandler.UploadAsync(photo.Name, photo.ContentType,
-                        memoryStream, fileId =>
-                        {
-                            photo.FileId = fileId;
-                        });
-                }
+                //TODO implement file storage
+                //foreach (var photo in photos)
+                //{
+                //    using (var memoryStream = new MemoryStream(@event.Photo.Bytes))
+                //    {
+                //        await _fileHandler.UploadAsync(photo.Name, photo.ContentType,
+                //            memoryStream, fileId =>
+                //            {
+                //                photo.FileId = fileId;
+                //            });
+                //    }
+                //}
             }
 
-            var remark = MapToDto(@event, photo, user.Value);
+            var remark = MapToDto(@event, photos, user.Value);
             await _remarkRepository.AddAsync(remark);
         }
 
-        private static RemarkDto MapToDto(RemarkCreated @event, FileDto photo,
+        private static RemarkDto MapToDto(RemarkCreated @event, IEnumerable<FileDto> photos,
                 UserDto user)
             => new RemarkDto
             {
@@ -78,7 +85,7 @@ namespace Coolector.Services.Storage.Handlers
                     UserId = @event.UserId,
                     Name = user.Name
                 },
-                Photo = photo
+                Photos = photos.ToList()
             };
     }
 }

@@ -9,6 +9,7 @@ using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using It = Machine.Specifications.It;
 
@@ -44,8 +45,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 RemarkRepositoryMock.Object,
                 UserRepositoryMock.Object);
 
-            Photo = new RemarkFile("internalId", new byte[] {1,2,3}, "image.png", "image/png" );
-            Event = new RemarkResolved(RemarkId, UserId, Photo, ResolvedAt);
+            Photo = new RemarkFile("small", "url", "metadata");
+            Event = new RemarkResolved(RemarkId, UserId, new List<RemarkFile>{Photo}, ResolvedAt);
             Author = new RemarkAuthorDto
             {
                 UserId = UserId,
@@ -62,12 +63,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 Coordinates = new[] {1.0, 1.0},
                 Type = "point"
             };
-            File = new FileDto
-            {
-                Name = "image.png",
-                ContentType = "image/png",
-                FileId = "fileId"
-            };
             Remark = new RemarkDto
             {
                 Id = RemarkId,
@@ -76,7 +71,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 CreatedAt = CreatedAt,
                 Description = "test",
                 Location = Location,
-                Photo = File
+                Photos = new List<FileDto>()
             };
             User = new UserDto
             {
@@ -111,8 +106,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         It should_upload_file = () =>
         {
             FileHandlerMock.Verify(x => x.UploadAsync(
-                Event.Photo.Name, 
-                Event.Photo.ContentType,
+                Moq.It.IsAny<string>(),
+                Moq.It.IsAny<string>(),
                 Moq.It.IsAny<MemoryStream>(), 
                 Moq.It.IsAny<Action<string>>()), Times.Once);
         };
@@ -121,8 +116,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
                 && r.ResolvedAt == Event.ResolvedAt
-                && r.Resolver.UserId == Event.UserId
-                && r.ResolvedPhoto.Name == Event.Photo.Name)));
+                && r.Resolver.UserId == Event.UserId)));
         };
     }
 
@@ -151,8 +145,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         It should_not_upload_file = () =>
         {
             FileHandlerMock.Verify(x => x.UploadAsync(
-                Event.Photo.Name, 
-                Event.Photo.ContentType,
+                Moq.It.IsAny<string>(),
+                Moq.It.IsAny<string>(),
                 Moq.It.IsAny<MemoryStream>(), 
                 Moq.It.IsAny<Action<string>>()), Times.Never);
         };
@@ -161,8 +155,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
                 && r.ResolvedAt == Event.ResolvedAt
-                && r.Resolver.UserId == Event.UserId
-                && r.ResolvedPhoto.Name == Event.Photo.Name)), Times.Never);
+                && r.Resolver.UserId == Event.UserId)), Times.Never);
         };
     }
 
@@ -191,8 +184,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         It should_not_upload_file = () =>
         {
             FileHandlerMock.Verify(x => x.UploadAsync(
-                Event.Photo.Name, 
-                Event.Photo.ContentType,
+                Moq.It.IsAny<string>(),
+                Moq.It.IsAny<string>(),
                 Moq.It.IsAny<MemoryStream>(), 
                 Moq.It.IsAny<Action<string>>()), Times.Never);
         };
@@ -201,8 +194,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
                 && r.ResolvedAt == Event.ResolvedAt
-                && r.Resolver.UserId == Event.UserId
-                && r.ResolvedPhoto.Name == Event.Photo.Name)), Times.Never);
+                && r.Resolver.UserId == Event.UserId)), Times.Never);
         };
     }
 }

@@ -64,7 +64,6 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
             Remark.CreatedAt.ShouldNotEqual(default(DateTime));
             Remark.Description.ShouldNotBeEmpty();
             Remark.Location.ShouldNotBeNull();
-            Remark.Photo.ShouldNotBeNull();
         };
     }
 
