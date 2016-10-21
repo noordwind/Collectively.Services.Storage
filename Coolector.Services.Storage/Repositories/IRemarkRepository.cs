@@ -14,6 +14,7 @@ namespace Coolector.Services.Storage.Repositories
         Task<Maybe<string>> GetPhotoIdAsync(Guid id);
         Task AddAsync(RemarkDto remark);
         Task UpdateAsync(RemarkDto remark);
+        Task UpdateUserNamesAsync(string userId, string name);
         Task AddManyAsync(IEnumerable<RemarkDto> remarks);
         Task DeleteAsync(RemarkDto remark);
     }
