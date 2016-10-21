@@ -50,8 +50,9 @@ namespace Coolector.Services.Storage.Framework
             base.ConfigureApplicationContainer(container);
             container.Update(builder =>
             {
-                builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>());
-                builder.RegisterInstance(_configuration.GetSettings<ProviderSettings>());
+                builder.RegisterInstance(_configuration.GetSettings<GeneralSettings>()).SingleInstance();
+                builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
+                builder.RegisterInstance(_configuration.GetSettings<ProviderSettings>()).SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
                 builder.Register(c =>
                     {

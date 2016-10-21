@@ -8,6 +8,7 @@ using Coolector.Dto.Remarks;
 using Coolector.Dto.Users;
 using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Repositories;
+using Coolector.Services.Storage.Settings;
 
 namespace Coolector.Services.Storage.Handlers
 {
@@ -16,14 +17,17 @@ namespace Coolector.Services.Storage.Handlers
         private readonly IFileHandler _fileHandler;
         private readonly IUserRepository _userRepository;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly GeneralSettings _generalSettings;
 
         public RemarkCreatedHandler(IFileHandler fileHandler, 
             IUserRepository userRepository, 
-            IRemarkRepository remarkRepository)
+            IRemarkRepository remarkRepository,
+            GeneralSettings generalSettings)
         {
             _fileHandler = fileHandler;
             _userRepository = userRepository;
             _remarkRepository = remarkRepository;
+            _generalSettings = generalSettings;
         }
 
         public async Task HandleAsync(RemarkCreated @event)
@@ -35,13 +39,16 @@ namespace Coolector.Services.Storage.Handlers
                 ContentType = @event.Photo.ContentType,
             };
 
-            using (var memoryStream = new MemoryStream(@event.Photo.Bytes))
+            if (_generalSettings.FileStorageEnabled)
             {
-                await _fileHandler.UploadAsync(photo.Name, photo.ContentType,
-                    memoryStream, fileId =>
-                    {
-                        photo.FileId = fileId;
-                    });
+                using (var memoryStream = new MemoryStream(@event.Photo.Bytes))
+                {
+                    await _fileHandler.UploadAsync(photo.Name, photo.ContentType,
+                        memoryStream, fileId =>
+                        {
+                            photo.FileId = fileId;
+                        });
+                }
             }
 
             var remark = MapToDto(@event, photo, user.Value);
