@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Dto.Remarks;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Queries;
 
 namespace Coolector.Services.Storage.Providers
@@ -12,6 +11,5 @@ namespace Coolector.Services.Storage.Providers
         Task<Maybe<RemarkDto>> GetAsync(Guid id);
         Task<Maybe<PagedResult<RemarkDto>>> BrowseAsync(BrowseRemarks query);
         Task<Maybe<PagedResult<RemarkCategoryDto>>> BrowseCategoriesAsync(BrowseRemarkCategories query);
-        Task<Maybe<FileStreamInfo>> GetPhotoAsync(Guid id, string size);
     }
 }

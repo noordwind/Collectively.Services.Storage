@@ -30,9 +30,6 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
 
         protected static RemarkDto FetchRemark(Guid id)
             => HttpClient.GetAsync<RemarkDto>($"remarks/{id}").WaitForResult();
-
-        protected static Stream FetchPhoto(Guid id)
-            => HttpClient.GetStreamAsync($"remarks/{id}/photo").WaitForResult();
     }
 
     [Subject("StorageService fetch remarks")]
@@ -75,21 +72,5 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
         It should_not_be_null = () => Categories.ShouldNotBeNull();
 
         It should_not_be_empty = () => Categories.ShouldNotBeEmpty();
-    }
-
-    [Subject("StorageService fetch photo")]
-    public class when_fetching_photo : RemarkModule_specs
-    {
-        protected static Stream Photo;
-
-        Establish context = () => InitializeAndFetch();
-
-        Because of = () => Photo = FetchPhoto(RemarkId);
-
-        It should_not_be_null = () =>
-        {
-            Photo.ShouldNotBeNull();
-            Photo.CanRead.ShouldBeTrue();
-        };
     }
 }

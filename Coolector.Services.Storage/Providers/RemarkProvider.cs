@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Dto.Remarks;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Repositories;
 using Coolector.Services.Storage.Settings;
@@ -13,19 +12,16 @@ namespace Coolector.Services.Storage.Providers
     {
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkCategoryRepository _remarkCategoryRepository;
-        private readonly IFileHandler _fileHandler;
         private readonly IProviderClient _providerClient;
         private readonly ProviderSettings _providerSettings;
 
         public RemarkProvider(IRemarkRepository remarkRepository,
             IRemarkCategoryRepository remarkCategoryRepository,
-            IFileHandler fileHandler,
             IProviderClient providerClient,
             ProviderSettings providerSettings)
         {
             _remarkRepository = remarkRepository;
             _remarkCategoryRepository = remarkCategoryRepository;
-            _fileHandler = fileHandler;
             _providerClient = providerClient;
             _providerSettings = providerSettings;
         }
@@ -59,8 +55,5 @@ namespace Coolector.Services.Storage.Providers
                 "remarks/categories",
                 async () => await _remarkCategoryRepository.BrowseAsync(query),
                 async remarks => await _remarkCategoryRepository.AddManyAsync(remarks.Items));
-
-        public async Task<Maybe<FileStreamInfo>> GetPhotoAsync(Guid id, string size)
-            => await _fileHandler.GetFileStreamInfoAsync(id, size);
     }
 }

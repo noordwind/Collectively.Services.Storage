@@ -3,7 +3,6 @@ using Coolector.Common.Events.Remarks.Models;
 using Coolector.Dto.Common;
 using Coolector.Dto.Remarks;
 using Coolector.Dto.Users;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
@@ -18,7 +17,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     public class RemarkResolvedHandler_specs
     {
         protected static RemarkResolvedHandler Handler;
-        protected static Mock<IFileHandler> FileHandlerMock;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IUserRepository> UserRepositoryMock;
 
@@ -37,12 +35,10 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize()
         {
-            FileHandlerMock = new Mock<IFileHandler>();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             UserRepositoryMock = new Mock<IUserRepository>();
 
-            Handler = new RemarkResolvedHandler(FileHandlerMock.Object,
-                RemarkRepositoryMock.Object,
+            Handler = new RemarkResolvedHandler(RemarkRepositoryMock.Object,
                 UserRepositoryMock.Object);
 
             Photo = new RemarkFile("small", "url", "metadata");
@@ -103,15 +99,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             UserRepositoryMock.Verify(x => x.GetByIdAsync(UserId), Times.Once);
         };
 
-        It should_upload_file = () =>
-        {
-            FileHandlerMock.Verify(x => x.UploadAsync(
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<MemoryStream>(), 
-                Moq.It.IsAny<Action<string>>()), Times.Once);
-        };
-
         It should_update_remark = () =>
         {
             RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
@@ -142,15 +129,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             UserRepositoryMock.Verify(x => x.GetByIdAsync(UserId), Times.Never);
         };
 
-        It should_not_upload_file = () =>
-        {
-            FileHandlerMock.Verify(x => x.UploadAsync(
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<MemoryStream>(), 
-                Moq.It.IsAny<Action<string>>()), Times.Never);
-        };
-
         It should_not_update_remark = () =>
         {
             RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
@@ -179,15 +157,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         It should_fetch_user = () =>
         {
             UserRepositoryMock.Verify(x => x.GetByIdAsync(UserId), Times.Once);
-        };
-
-        It should_not_upload_file = () =>
-        {
-            FileHandlerMock.Verify(x => x.UploadAsync(
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<MemoryStream>(), 
-                Moq.It.IsAny<Action<string>>()), Times.Never);
         };
 
         It should_not_update_remark = () =>

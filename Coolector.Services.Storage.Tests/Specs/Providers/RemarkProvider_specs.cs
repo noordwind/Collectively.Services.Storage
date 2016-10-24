@@ -1,6 +1,5 @@
 ﻿using Coolector.Common.Types;
 using Coolector.Dto.Remarks;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Repositories;
@@ -18,7 +17,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
         protected static IRemarkProvider RemarkProvider;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IRemarkCategoryRepository> RemarkCategoryRepositoryMock;
-        protected static Mock<IFileHandler> FileHandlerMock;
         protected static Mock<IProviderClient> ProviderClientMock;
         protected static ProviderSettings ProviderSettings;
 
@@ -26,14 +24,13 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
         {
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             RemarkCategoryRepositoryMock = new Mock<IRemarkCategoryRepository>();
-            FileHandlerMock = new Mock<IFileHandler>();
             ProviderClientMock = new Mock<IProviderClient>();
             ProviderSettings = new ProviderSettings
             {
                 UsersApiUrl = "apiUrl"
             };
             RemarkProvider = new RemarkProvider(RemarkRepositoryMock.Object, RemarkCategoryRepositoryMock.Object,
-                FileHandlerMock.Object, ProviderClientMock.Object, ProviderSettings);
+                ProviderClientMock.Object, ProviderSettings);
         }
     }
 
@@ -68,19 +65,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
                 Moq.It.IsAny<string>(),
                 Moq.It.IsAny<Func<Task<Maybe<RemarkDto>>>>(),
                 Moq.It.IsAny<Func<RemarkDto, Task>>()), Times.Once);
-        };
-    }
-
-    [Subject("RemarkProvider GetPhotoAsync")]
-    public class when_invoking_remark_provider_get_photo_async : RemarkProvider_specs
-    {
-        Establish context = () => Initialize();
-
-        Because of = () => RemarkProvider.GetPhotoAsync(Moq.It.IsAny<Guid>(), Moq.It.IsAny<string>()).Await();
-
-        It should_call_file_handler_get_file_stream_info = () =>
-        {
-            FileHandlerMock.Verify(x => x.GetFileStreamInfoAsync(Moq.It.IsAny<Guid>(), Moq.It.IsAny<string>()), Times.Once);
         };
     }
 }

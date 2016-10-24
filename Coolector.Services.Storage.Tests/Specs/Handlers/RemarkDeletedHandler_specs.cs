@@ -1,7 +1,6 @@
 ﻿using Coolector.Common.Events.Remarks;
 using Coolector.Dto.Common;
 using Coolector.Dto.Remarks;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
@@ -16,7 +15,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     {
         protected static RemarkDeletedHandler Handler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
-        protected static Mock<IFileHandler> FileHandlerMock;
 
         protected static RemarkDto RemarkDto;
         protected static RemarkDeleted Event;
@@ -24,7 +22,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static void Initialize()
         {
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
-            FileHandlerMock = new Mock<IFileHandler>();
 
             var guid = Guid.NewGuid();
             RemarkDto = new RemarkDto
@@ -34,7 +31,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             };
             Event = new RemarkDeleted(guid);
 
-            Handler = new RemarkDeletedHandler(RemarkRepositoryMock.Object, FileHandlerMock.Object);
+            Handler = new RemarkDeletedHandler(RemarkRepositoryMock.Object);
         }
     }
 
@@ -51,11 +48,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         Because of = () =>
         {
             Handler.HandleAsync(Event).Await();
-        };
-
-        It should_call_file_handler_delete_async = () =>
-        {
-            FileHandlerMock.Verify(x => x.DeleteAsync(Moq.It.IsAny<string>()), Times.Once);
         };
 
         It should_call_remark_repository_delete_async = () =>

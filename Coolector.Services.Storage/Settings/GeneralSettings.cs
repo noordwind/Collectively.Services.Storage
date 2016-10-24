@@ -2,6 +2,5 @@
 {
     public class GeneralSettings
     {
-        public bool FileStorageEnabled { get; set; }
     }
 }

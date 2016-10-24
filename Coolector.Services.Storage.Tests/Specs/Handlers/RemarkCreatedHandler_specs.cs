@@ -2,7 +2,6 @@
 using Coolector.Common.Events.Remarks.Models;
 using Coolector.Dto.Remarks;
 using Coolector.Dto.Users;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
@@ -18,21 +17,18 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     public abstract class RemarkCreatedHandler_specs
     {
         protected static RemarkCreatedHandler Handler;
-        protected static Mock<IFileHandler> FileHandlerMock;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static RemarkCreated Event;
         protected static UserDto User;
-        protected static RemarkFile Photo;
         protected static Exception Exception;
 
         protected static void Initialize(Action setup)
         {
-            FileHandlerMock = new Mock<IFileHandler>();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             UserRepositoryMock = new Mock<IUserRepository>();
-            Handler = new RemarkCreatedHandler(FileHandlerMock.Object,
-                UserRepositoryMock.Object, RemarkRepositoryMock.Object, new GeneralSettings());
+            Handler = new RemarkCreatedHandler(UserRepositoryMock.Object,
+                RemarkRepositoryMock.Object, new GeneralSettings());
             setup();
         }
 
@@ -48,11 +44,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 .ReturnsAsync(User);
         }
 
-        protected static void InitializePhoto()
-        {
-            Photo = new RemarkFile("size", "url", "metadata");
-        }
-
         protected static void InitializeEvent()
         {
             Event = new RemarkCreated(Guid.NewGuid(), User?.UserId, new RemarkCreated.RemarkCategory(
@@ -61,12 +52,11 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     }
 
     [Subject("RemarkCreatedHandler HandleAsync")]
-    public class when_invoking_remark_created_handle_async : RemarkCreatedHandler_specs
+    public class when_invoking_remark_created_handler_async : RemarkCreatedHandler_specs
     {
         Establish context = () => Initialize(() =>
         {
             InitializeUser();
-            InitializePhoto();
             InitializeEvent();
         });
 
@@ -75,12 +65,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         It should_call_user_repository_get_by_id_async = () =>
         {
             UserRepositoryMock.Verify(x => x.GetByIdAsync(User.UserId), Times.Once);
-        };
-
-        It should_call_file_handler_upload_async = () =>
-        {
-            FileHandlerMock.Verify(x => x.UploadAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
-                Moq.It.IsAny<Stream>(), Moq.It.IsAny<Action<string>>()), Times.Once);
         };
 
         It should_call_remark_repository_add_async = () =>
@@ -94,7 +78,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     {
         Establish context = () => Initialize(() =>
         {
-            InitializePhoto();
             InitializeEvent();
         });
 
@@ -103,22 +86,5 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         It should_fail = () => Exception.ShouldBeOfExactType<InvalidOperationException>();
 
         It should_have_a_specific_reason = () => Exception.Message.ShouldContain("Operation is not valid");
-    }
-
-    [Subject("RemarkCreatedHandler HandleAsync")]
-    public class when_invoking_remark_created_handle_async_without_photo : RemarkCreatedHandler_specs
-    {
-        Establish context = () => Initialize(() =>
-        {
-            Photo = null;
-            InitializeUser();
-            InitializeEvent();
-        });
-
-        Because of = () => Exception = Catch.Exception(() => Handler.HandleAsync(Event).Await());
-
-        It should_fail = () => Exception.ShouldBeOfExactType<NullReferenceException>();
-
-        It should_have_a_specific_reason = () => Exception.Message.ShouldContain("Object reference not set");
     }
 }

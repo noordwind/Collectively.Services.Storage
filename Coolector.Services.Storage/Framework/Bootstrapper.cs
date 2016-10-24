@@ -3,7 +3,6 @@ using System.Globalization;
 using Autofac;
 using Coolector.Common.Mongo;
 using Coolector.Common.Nancy;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Framework.IoC;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Repositories;
@@ -67,7 +66,6 @@ namespace Coolector.Services.Storage.Framework
                 var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
                 builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
                 builder.RegisterInstance(BusClientFactory.CreateDefault(rawRabbitConfiguration)).As<IBusClient>();
-                builder.RegisterType<FileHandler>().As<IFileHandler>();
                 builder.RegisterType<RemarkRepository>().As<IRemarkRepository>();
                 builder.RegisterType<RemarkCategoryRepository>().As<IRemarkCategoryRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();

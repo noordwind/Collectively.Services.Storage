@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Events;
 using Coolector.Common.Events.Remarks;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Repositories;
 
 namespace Coolector.Services.Storage.Handlers
@@ -9,12 +8,10 @@ namespace Coolector.Services.Storage.Handlers
     public class RemarkDeletedHandler : IEventHandler<RemarkDeleted>
     {
         private readonly IRemarkRepository _repository;
-        private readonly IFileHandler _fileHandler;
 
-        public RemarkDeletedHandler(IRemarkRepository repository, IFileHandler fileHandler)
+        public RemarkDeletedHandler(IRemarkRepository repository)
         {
             _repository = repository;
-            _fileHandler = fileHandler;
         }
 
         public async Task HandleAsync(RemarkDeleted @event)
@@ -24,8 +21,6 @@ namespace Coolector.Services.Storage.Handlers
                 return;
 
             await _repository.DeleteAsync(remark.Value);
-            //TODO check general settins and delete from storage
-            //await _fileHandler.DeleteAsync(remark.Value.Photo.FileId);
         }
     }
 }

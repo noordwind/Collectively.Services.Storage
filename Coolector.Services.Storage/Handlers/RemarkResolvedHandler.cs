@@ -4,7 +4,6 @@ using Coolector.Common.Events;
 using Coolector.Common.Events.Remarks;
 using Coolector.Dto.Common;
 using Coolector.Dto.Remarks;
-using Coolector.Services.Storage.Files;
 using Coolector.Services.Storage.Repositories;
 using System.Linq;
 
@@ -12,15 +11,12 @@ namespace Coolector.Services.Storage.Handlers
 {
     public class RemarkResolvedHandler : IEventHandler<RemarkResolved>
     {
-        private readonly IFileHandler _fileHandler;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IUserRepository _userRepository;
 
-        public RemarkResolvedHandler(IFileHandler fileHandler, 
-            IRemarkRepository remarkRepository,
+        public RemarkResolvedHandler(IRemarkRepository remarkRepository,
             IUserRepository userRepository)
         {
-            _fileHandler = fileHandler;
             _remarkRepository = remarkRepository;
             _userRepository = userRepository;
         }
@@ -41,16 +37,6 @@ namespace Coolector.Services.Storage.Handlers
                 Url = x.Url,
                 Metadata = x.Metadata
             });
-
-            //TODO
-            //using (var memoryStream = new MemoryStream(@event.Photo.Bytes))
-            //{
-            //    await _fileHandler.UploadAsync(photo.Name, photo.ContentType,
-            //        memoryStream, fileId =>
-            //        {
-            //            photo.FileId = fileId;
-            //        });
-            //}
 
             remark.Value.Resolved = true;
             remark.Value.ResolvedAt = @event.ResolvedAt;

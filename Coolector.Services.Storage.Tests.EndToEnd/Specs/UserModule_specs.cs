@@ -57,7 +57,7 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
     }
 
     [Subject("StorageService fetch single user")]
-    public class when_fetching_signle_user : UserModule_specs
+    public class when_fetching_single_user : UserModule_specs
     {
         Establish context = () => InitializeAndFetchUsers();
 
