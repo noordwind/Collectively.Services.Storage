@@ -4,6 +4,7 @@ using FluentAssertions;
 using Machine.Specifications;
 using System;
 using System.Dynamic;
+using System.Linq;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Mappers
@@ -21,10 +22,13 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
             category.id = Guid.NewGuid();
             category.name = "litter";
 
+
             dynamic photo = new ExpandoObject();
-            photo.fileId = Guid.NewGuid().ToString();
-            photo.name = "file.png";
-            photo.contentType = "image/png";
+            photo.id = Guid.NewGuid().ToString();
+            photo.size = "small";
+            photo.url = "http://my-photo-url.com";
+            photo.metadata = "test";
+            dynamic photos = new[] {photo};
 
             dynamic location = new ExpandoObject();
             location.address = "test";
@@ -35,7 +39,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
             Source.id = Guid.NewGuid();
             Source.author = author;
             Source.category = category;
-            Source.photo = photo;
+            Source.photos = photos;
             Source.location = location;
             Source.description = "test";
             Source.resolved = true;
@@ -61,6 +65,13 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
             Result.Resolved.ShouldBeEquivalentTo((bool)Source.resolved);
             Result.ResolvedAt.ShouldBeEquivalentTo((DateTime)Source.resolvedAt);
             Result.CreatedAt.ShouldBeEquivalentTo((DateTime)Source.createdAt);
+            Result.Photos.ShouldNotBeEmpty();
+            var sourcePhoto = Source.photos[0];
+            var resultPhoto = Result.Photos.First();
+            resultPhoto.Id.ShouldBeEquivalentTo((string)sourcePhoto.id);
+            resultPhoto.Size.ShouldBeEquivalentTo((string)sourcePhoto.size);
+            resultPhoto.Url.ShouldBeEquivalentTo((string)sourcePhoto.url);
+            resultPhoto.Metadata.ShouldBeEquivalentTo((string)sourcePhoto.metadata);
         };
     }
 }

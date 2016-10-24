@@ -1,4 +1,6 @@
-﻿using Coolector.Dto.Common;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Coolector.Dto.Common;
 using Coolector.Dto.Remarks;
 
 namespace Coolector.Services.Storage.Mappers
@@ -30,6 +32,13 @@ namespace Coolector.Services.Storage.Mappers
                     },
                     Type = source.location.type
                 },
+                Photos = ((IEnumerable<dynamic>)source.photos).Select(x => new FileDto
+                {
+                    Id = x.id,
+                    Metadata = x.metadata,
+                    Size = x.size,
+                    Url = x.url
+                }).ToList(),
                 Description = source.description,
                 Resolved = source.resolved,
                 ResolvedAt = source.resolvedAt,
