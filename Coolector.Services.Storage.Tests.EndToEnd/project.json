@@ -6,8 +6,8 @@
     "Machine.Specifications": "0.11.0",
     "Machine.Specifications.Should": "0.11.0",
     "Newtonsoft.Json": "9.0.1",
-    "Coolector.Common": "1.0.0-*",
-    "Coolector.Dto": "1.0.0-*",
+    "Coolector.Common": "1.0.*",
+    "Coolector.Dto": "1.0.*",
     "System.Drawing": "1.0.0-beta004",
     "Coolector.Services.Storage": "1.0.0-*"
   },
