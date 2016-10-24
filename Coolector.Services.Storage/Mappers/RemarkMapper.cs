@@ -34,6 +34,7 @@ namespace Coolector.Services.Storage.Mappers
                 },
                 Photos = ((IEnumerable<dynamic>)source.photos).Select(x => new FileDto
                 {
+                    Name = x.name,
                     Metadata = x.metadata,
                     Size = x.size,
                     Url = x.url

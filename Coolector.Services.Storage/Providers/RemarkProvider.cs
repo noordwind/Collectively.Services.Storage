@@ -29,21 +29,7 @@ namespace Coolector.Services.Storage.Providers
         public async Task<Maybe<RemarkDto>> GetAsync(Guid id)
             => await _providerClient.GetUsingStorageAsync(_providerSettings.RemarksApiUrl, $"remarks/{id}",
                 async () => await _remarkRepository.GetByIdAsync(id),
-                async remark =>
-                {
-                    var stream = await _providerClient
-                        .GetStreamAsync(_providerSettings.RemarksApiUrl, $"remarks/{id}/photo");
-                    if (stream.HasValue)
-                    {
-                        //TODO check general settings and delete from storage
-                        //await _fileHandler.UploadAsync(remark.Photo.Name, remark.Photo.ContentType,
-                        //    stream.Value, fileId =>
-                        //    {
-                        //        remark.Photo.FileId = fileId;
-                        //    });
-                    }
-                    await _remarkRepository.AddAsync(remark);
-                });
+                async remark => await _remarkRepository.AddAsync(remark));
 
         public async Task<Maybe<PagedResult<RemarkDto>>> BrowseAsync(BrowseRemarks query)
             => await _providerClient.GetCollectionUsingStorageAsync(_providerSettings.RemarksApiUrl, "remarks",

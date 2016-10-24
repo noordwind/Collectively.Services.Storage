@@ -33,6 +33,7 @@ namespace Coolector.Services.Storage.Handlers
             var user = await _userRepository.GetByIdAsync(@event.UserId);
             var photos = @event.Photos.Select(x => new FileDto
             {
+                Name = x.Name,
                 Size = x.Size,
                 Url = x.Url,
                 Metadata = x.Metadata

@@ -41,7 +41,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             Handler = new RemarkResolvedHandler(RemarkRepositoryMock.Object,
                 UserRepositoryMock.Object);
 
-            Photo = new RemarkFile("small", "url", "metadata");
+            Photo = new RemarkFile("test.jpg", "small", "http://my-test-photo.com", "metadata");
             Event = new RemarkResolved(RemarkId, UserId, new List<RemarkFile>{Photo}, ResolvedAt);
             Author = new RemarkAuthorDto
             {
