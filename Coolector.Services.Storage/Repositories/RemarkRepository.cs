@@ -30,9 +30,6 @@ namespace Coolector.Services.Storage.Repositories
             return results.Paginate(query);
         }
 
-        public async Task<Maybe<string>> GetPhotoIdAsync(Guid id, string size)
-            => await _database.Remarks().GetPhotoIdAsync(id, size);
-
         public async Task AddAsync(RemarkDto remark)
             => await _database.Remarks().InsertOneAsync(remark);
 

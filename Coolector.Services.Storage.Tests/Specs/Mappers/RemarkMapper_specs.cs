@@ -12,7 +12,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
     [Subject("RemarkMapper Map")]
     public class when_invoking_remark_mapper_map : Mapper_specs<RemarkDto>
     {
-        private Establish context = () =>
+        Establish context = () =>
         {
             dynamic author = new ExpandoObject();
             author.userId = Guid.NewGuid().ToString();
@@ -24,7 +24,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
 
 
             dynamic photo = new ExpandoObject();
-            photo.id = Guid.NewGuid().ToString();
+            photo.name = "test.jpg";
             photo.size = "small";
             photo.url = "http://my-photo-url.com";
             photo.metadata = "test";
@@ -68,7 +68,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
             Result.Photos.ShouldNotBeEmpty();
             var sourcePhoto = Source.photos[0];
             var resultPhoto = Result.Photos.First();
-            resultPhoto.Id.ShouldBeEquivalentTo((string)sourcePhoto.id);
+            resultPhoto.Name.ShouldBeEquivalentTo((string)sourcePhoto.name);
             resultPhoto.Size.ShouldBeEquivalentTo((string)sourcePhoto.size);
             resultPhoto.Url.ShouldBeEquivalentTo((string)sourcePhoto.url);
             resultPhoto.Metadata.ShouldBeEquivalentTo((string)sourcePhoto.metadata);
