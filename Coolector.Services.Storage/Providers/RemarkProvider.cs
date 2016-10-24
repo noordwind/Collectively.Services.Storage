@@ -32,7 +32,8 @@ namespace Coolector.Services.Storage.Providers
                 async remark => await _remarkRepository.AddAsync(remark));
 
         public async Task<Maybe<PagedResult<RemarkDto>>> BrowseAsync(BrowseRemarks query)
-            => await _providerClient.GetCollectionUsingStorageAsync(_providerSettings.RemarksApiUrl, "remarks",
+            => await _providerClient.GetFilteredCollectionUsingStorageAsync(query,
+                _providerSettings.RemarksApiUrl, "remarks",
                 async () => await _remarkRepository.BrowseAsync(query),
                 async remarks => await _remarkRepository.AddManyAsync(remarks.Items));
 

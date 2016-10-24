@@ -43,7 +43,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
 
         It should_call_get_collection_using_storage_async = () =>
         {
-            ProviderClientMock.Verify(x => x.GetCollectionUsingStorageAsync(
+            ProviderClientMock.Verify(x => x.GetFilteredCollectionUsingStorageAsync(
+                Moq.It.IsAny<BrowseRemarks>(),
                 Moq.It.IsAny<string>(),
                 Moq.It.IsAny<string>(),
                 Moq.It.IsAny<Func<Task<Maybe<PagedResult<RemarkDto>>>>>(),

@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Coolector.Common.Queries;
 using Coolector.Common.Types;
+using Coolector.Common.Extensions;
+using NLog;
+using System.Reflection;
 
 namespace Coolector.Services.Storage.Providers
 {
     public class ProviderClient : IProviderClient
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
 
         public ProviderClient(IServiceClient serviceClient)
@@ -61,6 +68,55 @@ namespace Coolector.Services.Storage.Providers
                 await storageSave(response.Value);
 
             return response;
+        }
+
+        public async Task<Maybe<PagedResult<TResult>>> GetFilteredCollectionAsync<TResult, TQuery>(TQuery query,
+            string url, string endpoint) where TResult : class where TQuery : class, IPagedQuery
+        {
+            Logger.Debug($"Get filtered data from service, endpoint: {endpoint}, queryType: {typeof(TQuery).Name}");
+            var results = await GetAsync<IEnumerable<TResult>>(url, GetEndpointWithQuery(endpoint, query));
+            if (results.HasNoValue || !results.Value.Any())
+                return PagedResult<TResult>.Empty;
+
+            return results.Value.Paginate(query);
+        }
+
+        public async Task<Maybe<PagedResult<TResult>>> GetFilteredCollectionUsingStorageAsync<TResult, TQuery>(TQuery query,
+            string url, string endpoint, Func<Task<Maybe<PagedResult<TResult>>>> storageFetch,
+            Func<PagedResult<TResult>, Task> storageSave) where TResult : class where TQuery : class, IPagedQuery
+        {
+            if (storageFetch != null)
+            {
+                var data = await storageFetch();
+                if (data.HasValue && data.Value.IsNotEmpty)
+                    return data;
+            }
+
+            var response = await GetFilteredCollectionAsync<TResult,TQuery>(query, url, endpoint);
+            if (response.HasNoValue)
+                return response;
+
+            if (storageSave != null && response.Value.IsNotEmpty)
+                await storageSave(response.Value);
+
+            return response;
+        }
+
+        private static string GetEndpointWithQuery<T>(string endpoint, T query) where T : class, IQuery
+        {
+            if (query == null)
+                return endpoint;
+
+            var values = new List<string>();
+            foreach (var property in query.GetType().GetProperties())
+            {
+                var value = property.GetValue(query, null);
+                values.Add($"{property.Name.ToLowerInvariant()}={value}");
+            }
+
+            var endpointQuery = string.Join("&", values);
+
+            return $"{endpoint}?{endpointQuery}";
         }
     }
 }
