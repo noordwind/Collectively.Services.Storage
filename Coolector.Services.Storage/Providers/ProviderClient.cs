@@ -74,11 +74,11 @@ namespace Coolector.Services.Storage.Providers
             string url, string endpoint) where TResult : class where TQuery : class, IPagedQuery
         {
             Logger.Debug($"Get filtered data from service, endpoint: {endpoint}, queryType: {typeof(TQuery).Name}");
-            var results = await GetAsync<IEnumerable<TResult>>(url, GetEndpointWithQuery(endpoint, query));
-            if (results.HasNoValue || !results.Value.Any())
+            var results = await GetCollectionAsync<TResult>(url, GetEndpointWithQuery(endpoint, query));
+            if (results.HasNoValue || results.Value.IsEmpty)
                 return PagedResult<TResult>.Empty;
 
-            return results.Value.Paginate(query);
+            return results;
         }
 
         public async Task<Maybe<PagedResult<TResult>>> GetFilteredCollectionUsingStorageAsync<TResult, TQuery>(TQuery query,
