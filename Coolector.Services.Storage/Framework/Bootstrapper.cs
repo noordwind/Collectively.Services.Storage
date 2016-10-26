@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Autofac;
 using Coolector.Common.Mongo;
@@ -18,6 +19,8 @@ using RawRabbit.Configuration;
 using RawRabbit.vNext;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Coolector.Common.Extensions;
+using Polly;
+using RabbitMQ.Client.Exceptions;
 
 namespace Coolector.Services.Storage.Framework
 {
@@ -47,6 +50,16 @@ namespace Coolector.Services.Storage.Framework
         {
             Logger.Info("Coolector.Services.Storage Configuring application container");
             base.ConfigureApplicationContainer(container);
+
+            var rmqRetryPolicy = Policy
+                .Handle<ConnectFailureException>()
+                .WaitAndRetry(5, retryAttempt =>
+                    TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (exception, timeSpan, retryCount, context) => {
+                        Logger.Error(exception, $"Cannot connect to RabbitMQ. retryCount:{retryCount}, duration:{timeSpan}");
+                    }
+                );
+
             container.Update(builder =>
             {
                 builder.RegisterInstance(_configuration.GetSettings<GeneralSettings>()).SingleInstance();
@@ -63,9 +76,6 @@ namespace Coolector.Services.Storage.Framework
                     .As<IGridFSBucket>()
                     .SingleInstance();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
-                var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
-                builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
-                builder.RegisterInstance(BusClientFactory.CreateDefault(rawRabbitConfiguration)).As<IBusClient>();
                 builder.RegisterType<RemarkRepository>().As<IRemarkRepository>();
                 builder.RegisterType<RemarkCategoryRepository>().As<IRemarkCategoryRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
@@ -74,6 +84,12 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
                 builder.RegisterType<RemarkProvider>().As<IRemarkProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
+                var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
+                builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
+                rmqRetryPolicy.Execute(() => builder
+                        .RegisterInstance(BusClientFactory.CreateDefault(rawRabbitConfiguration))
+                        .As<IBusClient>()
+                );
                 builder.RegisterModule<MapperModule>();
                 builder.RegisterModule<EventHandlersModule>();
             });
