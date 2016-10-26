@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using Autofac;
 using Coolector.Common.Mongo;
 using Coolector.Common.Nancy;
@@ -53,6 +54,8 @@ namespace Coolector.Services.Storage.Framework
 
             var rmqRetryPolicy = Policy
                 .Handle<ConnectFailureException>()
+                .Or<BrokerUnreachableException>()
+                .Or<IOException>()
                 .WaitAndRetry(5, retryAttempt =>
                     TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                     (exception, timeSpan, retryCount, context) => {
