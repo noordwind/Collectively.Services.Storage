@@ -10,5 +10,6 @@ namespace Coolector.Services.Storage.Queries
         public string Description { get; set; }
         public string AuthorId { get; set; }
         public bool Latest { get; set; }
+        public bool Nearest { get; set; }
     }
 }

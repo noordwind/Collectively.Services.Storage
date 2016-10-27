@@ -79,6 +79,7 @@ namespace Coolector.Services.Storage.Framework
                     .As<IGridFSBucket>()
                     .SingleInstance();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
+                builder.RegisterType<DatabaseSeeder>().As<IDatabaseSeeder>();
                 builder.RegisterType<RemarkRepository>().As<IRemarkRepository>();
                 builder.RegisterType<RemarkCategoryRepository>().As<IRemarkCategoryRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
@@ -104,6 +105,8 @@ namespace Coolector.Services.Storage.Framework
             var databaseSettings = container.Resolve<MongoDbSettings>();
             var databaseInitializer = container.Resolve<IDatabaseInitializer>();
             databaseInitializer.InitializeAsync();
+            var databaseSeeder = container.Resolve<IDatabaseSeeder>();
+            databaseSeeder.SeedAsync();
 
             pipelines.BeforeRequest += (ctx) =>
             {

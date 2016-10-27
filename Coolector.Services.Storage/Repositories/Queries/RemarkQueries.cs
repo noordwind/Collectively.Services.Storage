@@ -39,8 +39,16 @@ namespace Coolector.Services.Storage.Repositories.Queries
             var filter = FilterDefinition<RemarkDto>.Empty;
             if (IsLocationProvided(query))
             {
-                filter = filterBuilder.GeoWithinCenterSphere(x => x.Location,
-                    query.Longitude, query.Latitude, query.Radius / 1000 / 6378.1);
+                if (query.Nearest)
+                {
+                    filter = filterBuilder.NearSphere(x => x.Location,
+                                 query.Longitude, query.Latitude, maxDistance: query.Radius / 1000 / 6378.1);
+                }
+                else
+                {
+                    filter = filterBuilder.GeoWithinCenterSphere(x => x.Location,
+                        query.Longitude, query.Latitude, query.Radius/1000/6378.1);
+                }
             }
             if (query.Latest)
                 filter = filterBuilder.Where(x => x.Id != Guid.Empty);
@@ -49,9 +57,12 @@ namespace Coolector.Services.Storage.Repositories.Queries
             if (!query.Description.Empty())
                 filter = filter & filterBuilder.Where(x => x.Description.Contains(query.Description));
 
-            return await remarks.Find(filter)
-                .SortByDescending(x => x.CreatedAt)
-                .Skip(query.Results*(query.Page - 1))
+            var result = remarks.Find(filter);
+            if (query.Nearest == false)
+                result.SortByDescending(x => x.CreatedAt);
+
+            return await result
+                .Skip(query.Results * (query.Page - 1))
                 .Limit(query.Results)
                 .ToListAsync();
         }
