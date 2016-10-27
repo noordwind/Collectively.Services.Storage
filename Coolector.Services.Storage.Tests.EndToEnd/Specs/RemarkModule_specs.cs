@@ -25,6 +25,9 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
         protected static IEnumerable<RemarkDto> FetchRemarks()
             => HttpClient.GetAsync<IEnumerable<RemarkDto>>("remarks?latest=true").WaitForResult();
 
+        protected static IEnumerable<RemarkDto> FetchNearestRemarks()
+            => HttpClient.GetCollectionAsync<RemarkDto>("remarks?results=100&radius=10000&longitude=1.0&latitude=1.0&nearest=true").WaitForResult();
+
         protected static IEnumerable<RemarkCategoryDto> FetchCategories()
             => HttpClient.GetAsync<IEnumerable<RemarkCategoryDto>>("remarks/categories").WaitForResult();
 
@@ -40,6 +43,31 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
         It should_not_be_null = () => Remarks.ShouldNotBeNull();
 
         It should_not_be_empty = () => Remarks.ShouldNotBeEmpty();
+    }
+
+    [Subject("StorageService fetch nearest remarks")]
+    public class when_fetching_nearest_remarks : RemarkModule_specs
+    {
+        Because of = () => Remarks = FetchNearestRemarks();
+
+        It should_not_be_null = () => Remarks.ShouldNotBeNull();
+
+        It should_not_be_empty = () => Remarks.ShouldNotBeEmpty();
+
+        It should_return_remarks_in_correct_order = () =>
+        {
+            RemarkDto previousRemark = null;
+            int i = 0;
+            foreach (var remark in Remarks)
+            {
+                if (previousRemark != null)
+                {
+                    previousRemark.Location.Coordinates[0].ShouldBeLessThanOrEqualTo(remark.Location.Coordinates[0]);
+                    previousRemark.Location.Coordinates[1].ShouldBeLessThanOrEqualTo(remark.Location.Coordinates[1]);
+                }
+                previousRemark = remark;
+            }
+        };
     }
 
     [Subject("StorageService fetch single remark")]
