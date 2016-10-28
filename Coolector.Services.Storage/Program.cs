@@ -12,7 +12,7 @@ namespace Coolector.Services.Storage
             WebServiceHost
                 .Create<Startup>(port: 10000)
                 .UseAutofac(Bootstrapper.LifeTimeScope)
-                .UseRabbitMq()
+                .UseRabbitMq(queueName: typeof(Program).Namespace)
                 .SubscribeToEvent<NewUserSignedIn>()
                 .SubscribeToEvent<UserNameChanged>()
                 .SubscribeToEvent<AvatarChanged>()
