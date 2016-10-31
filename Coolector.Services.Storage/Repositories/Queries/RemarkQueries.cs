@@ -56,6 +56,8 @@ namespace Coolector.Services.Storage.Repositories.Queries
                 filter = filter & filterBuilder.Where(x => x.Author.UserId == query.AuthorId);
             if (!query.Description.Empty())
                 filter = filter & filterBuilder.Where(x => x.Description.Contains(query.Description));
+            if (query.Categories?.Any() == true)
+                filter = filter & filterBuilder.Where(x => query.Categories.Contains(x.Category.Name));
 
             var result = remarks.Find(filter);
             if (query.Nearest == false)

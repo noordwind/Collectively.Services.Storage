@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Coolector.Common.Queries;
 using Coolector.Common.Types;
 using Coolector.Common.Extensions;
 using NLog;
-using System.Reflection;
 
 namespace Coolector.Services.Storage.Providers
 {
@@ -74,7 +71,8 @@ namespace Coolector.Services.Storage.Providers
             string url, string endpoint) where TResult : class where TQuery : class, IPagedQuery
         {
             Logger.Debug($"Get filtered data from service, endpoint: {endpoint}, queryType: {typeof(TQuery).Name}");
-            var results = await GetCollectionAsync<TResult>(url, GetEndpointWithQuery(endpoint, query));
+            var queryString = endpoint.ToQueryString(query);
+            var results = await GetCollectionAsync<TResult>(url, queryString);
             if (results.HasNoValue || results.Value.IsEmpty)
                 return PagedResult<TResult>.Empty;
 
@@ -100,23 +98,6 @@ namespace Coolector.Services.Storage.Providers
                 await storageSave(response.Value);
 
             return response;
-        }
-
-        private static string GetEndpointWithQuery<T>(string endpoint, T query) where T : class, IQuery
-        {
-            if (query == null)
-                return endpoint;
-
-            var values = new List<string>();
-            foreach (var property in query.GetType().GetProperties())
-            {
-                var value = property.GetValue(query, null);
-                values.Add($"{property.Name.ToLowerInvariant()}={value}");
-            }
-
-            var endpointQuery = string.Join("&", values);
-
-            return $"{endpoint}?{endpointQuery}";
         }
     }
 }

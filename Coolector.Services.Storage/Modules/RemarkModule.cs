@@ -1,8 +1,6 @@
-﻿using Coolector.Common.Types;
-using Coolector.Dto.Remarks;
+﻿using Coolector.Dto.Remarks;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Queries;
-using Nancy;
 
 namespace Coolector.Services.Storage.Modules
 {
