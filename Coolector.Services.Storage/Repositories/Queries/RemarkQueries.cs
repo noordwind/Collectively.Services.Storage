@@ -58,6 +58,13 @@ namespace Coolector.Services.Storage.Repositories.Queries
                 filter = filter & filterBuilder.Where(x => x.Description.Contains(query.Description));
             if (query.Categories?.Any() == true)
                 filter = filter & filterBuilder.Where(x => query.Categories.Contains(x.Category.Name));
+            if (query.State.NotEmpty() && query.State != "all")
+            {
+                if (query.State == "resolved")
+                    filter = filter & filterBuilder.Where(x => x.Resolved);
+                else
+                    filter = filter & filterBuilder.Where(x => x.Resolved == false);
+            }
 
             var result = remarks.Find(filter);
             if (query.Nearest == false)
