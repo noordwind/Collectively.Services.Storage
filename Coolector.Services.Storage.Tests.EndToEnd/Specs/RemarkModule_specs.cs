@@ -26,7 +26,7 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
             => HttpClient.GetAsync<IEnumerable<RemarkDto>>("remarks?latest=true").WaitForResult();
 
         protected static IEnumerable<RemarkDto> FetchNearestRemarks()
-            => HttpClient.GetCollectionAsync<RemarkDto>("remarks?results=100&radius=10000&longitude=1.0&latitude=1.0&nearest=true").WaitForResult();
+            => HttpClient.GetCollectionAsync<RemarkDto>("remarks?results=100&radius=10000&longitude=1.0&latitude=1.0").WaitForResult();
 
         protected static IEnumerable<RemarkDto> GetRemarksWithCategory(string categoryName)
             => HttpClient.GetCollectionAsync<RemarkDto>($"remarks?radius=10000&longitude=1.0&latitude=1.0&categories={categoryName}").WaitForResult();
@@ -130,10 +130,10 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
             => Remarks.All(x => x.Resolved).ShouldBeTrue();
     }
 
-    [Subject("StorageService fetch remarks with all states")]
-    public class when_fetching_remarks_with_all_states : RemarkModule_specs
+    [Subject("StorageService fetch active remarks")]
+    public class when_fetching_active_remarks : RemarkModule_specs
     {
-        protected static string State = "all";
+        protected static string State = "active";
 
         Because of = () => Remarks = GetRemarksWithState(State);
 
@@ -153,8 +153,8 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
             }
         };
 
-        It should_return_resolved_and_active_remarks = () 
-            => Remarks.Select(x => x.Resolved).Distinct().Count().ShouldEqual(2);
+        It should_return_active_remarks = () 
+            => Remarks.All(x => x.Resolved == false).ShouldBeTrue();
     }
 
     [Subject("StorageService fetch single remark")]
