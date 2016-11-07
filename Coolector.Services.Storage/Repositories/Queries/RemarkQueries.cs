@@ -39,7 +39,7 @@ namespace Coolector.Services.Storage.Repositories.Queries
             var filter = FilterDefinition<RemarkDto>.Empty;
             if (IsLocationProvided(query))
             {
-                filter = filterBuilder.GeoWithinCenterSphere(x => x.Location,
+                filter = filterBuilder.NearSphere(x => x.Location,
                         query.Longitude, query.Latitude, query.Radius/1000/6378.1);
             }
             if (query.Latest)
