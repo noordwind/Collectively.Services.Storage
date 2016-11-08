@@ -20,6 +20,7 @@ using RawRabbit.Configuration;
 using RawRabbit.vNext;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Coolector.Common.Extensions;
+using Coolector.Services.Storage.Cache;
 using Polly;
 using RabbitMQ.Client.Exceptions;
 
@@ -96,6 +97,7 @@ namespace Coolector.Services.Storage.Framework
                 );
                 builder.RegisterModule<MapperModule>();
                 builder.RegisterModule<EventHandlersModule>();
+                builder.RegisterModule<RedisModule>();
             });
             LifeTimeScope = container;
         }
