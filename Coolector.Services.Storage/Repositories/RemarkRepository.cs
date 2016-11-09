@@ -27,7 +27,7 @@ namespace Coolector.Services.Storage.Repositories
             var results = await _database.Remarks()
                 .QueryAsync(query);
 
-            return results.Paginate(query);
+            return results;
         }
 
         public async Task AddAsync(RemarkDto remark)
