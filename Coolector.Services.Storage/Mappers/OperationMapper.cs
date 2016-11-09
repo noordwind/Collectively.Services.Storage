@@ -8,6 +8,7 @@ namespace Coolector.Services.Storage.Mappers
             => new OperationDto
             {
                 RequestId = source.requestId,
+                Name = source.name,
                 UserId = source.userId,
                 Origin = source.origin,
                 Resource = source.resource,

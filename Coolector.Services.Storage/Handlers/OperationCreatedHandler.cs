@@ -22,6 +22,7 @@ namespace Coolector.Services.Storage.Handlers
             {
                 Id = Guid.NewGuid(),
                 RequestId = @event.RequestId,
+                Name = @event.Name,
                 UserId = @event.UserId,
                 Origin = @event.Origin,
                 Resource = @event.Resource,
