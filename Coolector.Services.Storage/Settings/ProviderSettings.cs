@@ -4,5 +4,6 @@
     {
         public string UsersApiUrl { get; set; }
         public string RemarksApiUrl { get; set; }
+        public string OperationsApiUrl { get; set; }
     }
 }

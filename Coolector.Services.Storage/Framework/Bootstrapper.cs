@@ -81,6 +81,7 @@ namespace Coolector.Services.Storage.Framework
                     .SingleInstance();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<DatabaseSeeder>().As<IDatabaseSeeder>();
+                builder.RegisterType<OperationRepository>().As<IOperationRepository>();
                 builder.RegisterType<RemarkRepository>().As<IRemarkRepository>();
                 builder.RegisterType<RemarkCategoryRepository>().As<IRemarkCategoryRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
@@ -89,6 +90,7 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
                 builder.RegisterType<RemarkProvider>().As<IRemarkProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
+                builder.RegisterType<OperationProvider>().As<IOperationProvider>();
                 var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
                 builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
                 rmqRetryPolicy.Execute(() => builder
