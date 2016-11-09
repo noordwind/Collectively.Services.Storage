@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Coolector.Common.Extensions;
 using Coolector.Dto.Remarks;
 using Coolector.Common.Mongo;
+using Coolector.Common.Types;
 using Coolector.Services.Storage.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -24,11 +25,11 @@ namespace Coolector.Services.Storage.Repositories.Queries
             return await remarks.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public static async Task<IEnumerable<RemarkDto>> QueryAsync(this IMongoCollection<RemarkDto> remarks,
+        public static async Task<PagedResult<RemarkDto>> QueryAsync(this IMongoCollection<RemarkDto> remarks,
             BrowseRemarks query)
         {
             if (!IsLocationProvided(query) && query.AuthorId.Empty() && !query.Latest)
-                return Enumerable.Empty<RemarkDto>();
+                return PagedResult<RemarkDto>.Empty;
 
             if (query.Page <= 0)
                 query.Page = 1;
@@ -58,10 +59,15 @@ namespace Coolector.Services.Storage.Repositories.Queries
                     filter = filter & filterBuilder.Where(x => x.Resolved == false);
             }
 
-            return await remarks.Find(filter)
+            var filteredRemarks = remarks.Find(filter);
+            var totalCount = await filteredRemarks.CountAsync();
+            var totalPages = (int) totalCount / query.Results + 1;
+            var result = await filteredRemarks
                 .Skip(query.Results * (query.Page - 1))
                 .Limit(query.Results)
                 .ToListAsync();
+
+            return PagedResult<RemarkDto>.Create(result, query.Page, query.Results, totalPages, totalCount);
         }
 
         private static bool IsLocationProvided(BrowseRemarks query)
