@@ -1,4 +1,5 @@
-﻿using Coolector.Common.Events.Remarks;
+﻿using Coolector.Common.Events.Operations;
+using Coolector.Common.Events.Remarks;
 using Coolector.Common.Events.Users;
 using Coolector.Common.Host;
 using Coolector.Services.Storage.Framework;
@@ -19,6 +20,8 @@ namespace Coolector.Services.Storage
                 .SubscribeToEvent<RemarkCreated>()
                 .SubscribeToEvent<RemarkDeleted>()
                 .SubscribeToEvent<RemarkResolved>()
+                .SubscribeToEvent<OperationCreated>()
+                .SubscribeToEvent<OperationUpdated>()
                 .Build()
                 .Run();
         }
