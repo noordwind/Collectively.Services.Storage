@@ -39,7 +39,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new AvatarChanged(User?.UserId, User?.PictureUrl);
+            Event = new AvatarChanged(Guid.NewGuid(), User?.UserId, User?.PictureUrl);
         }
     }
 

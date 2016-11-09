@@ -41,7 +41,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new UserNameChanged(User?.UserId, User?.Name);
+            Event = new UserNameChanged(Guid.NewGuid(), User?.UserId, User?.Name);
         }
     }
 

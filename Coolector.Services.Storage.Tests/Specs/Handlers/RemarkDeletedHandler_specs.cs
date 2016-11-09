@@ -29,7 +29,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 Id = guid,
                 Photos = new List<FileDto>()
             };
-            Event = new RemarkDeleted(guid);
+            Event = new RemarkDeleted(Guid.NewGuid(), guid, Moq.It.IsAny<string>());
 
             Handler = new RemarkDeletedHandler(RemarkRepositoryMock.Object);
         }

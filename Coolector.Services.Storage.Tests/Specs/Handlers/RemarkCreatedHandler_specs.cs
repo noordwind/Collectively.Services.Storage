@@ -46,7 +46,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new RemarkCreated(Guid.NewGuid(), User?.UserId, new RemarkCreated.RemarkCategory(
+            Event = new RemarkCreated(Guid.NewGuid(), Guid.NewGuid(), User?.UserId, new RemarkCreated.RemarkCategory(
                 Guid.NewGuid(), "litter"), new RemarkCreated.RemarkLocation(string.Empty, 1, 1), new List<RemarkFile>(),  "test");
         }
     }

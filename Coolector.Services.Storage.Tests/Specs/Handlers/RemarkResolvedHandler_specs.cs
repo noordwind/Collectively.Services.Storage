@@ -42,7 +42,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 UserRepositoryMock.Object);
 
             Photo = new RemarkFile("test.jpg", "small", "http://my-test-photo.com", "metadata");
-            Event = new RemarkResolved(RemarkId, UserId, new List<RemarkFile>{Photo}, ResolvedAt);
+            Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, new List<RemarkFile>{Photo}, ResolvedAt);
             Author = new RemarkAuthorDto
             {
                 UserId = UserId,
