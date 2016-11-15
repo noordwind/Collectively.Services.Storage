@@ -1,4 +1,5 @@
-﻿using Coolector.Dto.Users;
+﻿using Coolector.Dto.Common;
+using Coolector.Dto.Users;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Queries;
 
@@ -16,6 +17,9 @@ namespace Coolector.Services.Storage.Modules
 
             Get("{name}/account", async args => await Fetch<GetUserByName, UserDto>
                 (async x => await userProvider.GetByNameAsync(x.Name)).HandleAsync());
+
+            Get("{name}/available", async args => await Fetch<GetNameAvailability, AvailableResourceDto>
+                (async x => await userProvider.IsAvailableAsync(x.Name)).HandleAsync());
         }
     }
 }

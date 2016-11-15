@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Types;
+using Coolector.Dto.Common;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Repositories;
 using Coolector.Services.Storage.Settings;
@@ -21,6 +22,11 @@ namespace Coolector.Services.Storage.Providers
             _providerClient = providerClient;
             _providerSettings = providerSettings;
         }
+
+        public async Task<Maybe<AvailableResourceDto>> IsAvailableAsync(string name)
+            => await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl, $"users/{name}/available",
+                async () => await _userRepository.IsNameAvailableAsync(name), 
+                null);
 
         public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query)
             => await _providerClient.GetCollectionUsingStorageAsync(_providerSettings.UsersApiUrl, "users",
