@@ -11,6 +11,7 @@ namespace Coolector.Services.Storage.Mappers
                 Id = source.id,
                 UserId = source.userId,
                 Email = source.email,
+                Provider = source.provider,
                 Name = source.name,
                 Role = source.role,
                 State = source.state,

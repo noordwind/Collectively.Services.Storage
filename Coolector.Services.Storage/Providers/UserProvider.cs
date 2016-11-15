@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Repositories;
@@ -10,14 +11,17 @@ namespace Coolector.Services.Storage.Providers
     public class UserProvider : IUserProvider
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserSessionRepository _userSessionRepository;
         private readonly IProviderClient _providerClient;
         private readonly ProviderSettings _providerSettings;
 
         public UserProvider(IUserRepository userRepository,
+            IUserSessionRepository userSessionRepository,
             IProviderClient providerClient,
             ProviderSettings providerSettings)
         {
             _userRepository = userRepository;
+            _userSessionRepository = userSessionRepository;
             _providerClient = providerClient;
             _providerSettings = providerSettings;
         }
@@ -36,5 +40,10 @@ namespace Coolector.Services.Storage.Providers
             => await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl, $"users/{name}/account",
                 async () => await _userRepository.GetByNameAsync(name),
                 async user => await _userRepository.AddAsync(user));
+
+        public async Task<Maybe<UserSessionDto>> GetSessionAsync(Guid id)
+            => await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl, $"user-sessions/{id}",
+                async () => await _userSessionRepository.GetByIdAsync(id),
+                async session => await _userSessionRepository.AddAsync(session));
     }
 }

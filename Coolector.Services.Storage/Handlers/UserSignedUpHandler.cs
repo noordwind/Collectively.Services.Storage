@@ -6,16 +6,16 @@ using Coolector.Dto.Users;
 
 namespace Coolector.Services.Storage.Handlers
 {
-    public class NewUserSignedInHandler : IEventHandler<NewUserSignedIn>
+    public class UserSignedUpHandler : IEventHandler<UserSignedUp>
     {
         private readonly IUserRepository _repository;
 
-        public NewUserSignedInHandler(IUserRepository repository)
+        public UserSignedUpHandler(IUserRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task HandleAsync(NewUserSignedIn @event)
+        public async Task HandleAsync(UserSignedUp @event)
         {
             if (await _repository.ExisitsAsync(@event.UserId))
                 return;
@@ -28,7 +28,8 @@ namespace Coolector.Services.Storage.Handlers
                 State = @event.State,
                 CreatedAt = @event.CreatedAt,
                 PictureUrl = @event.PictureUrl,
-                Role = @event.Role
+                Role = @event.Role,
+                Provider = @event.Provider
             };
             await _repository.AddAsync(user);
         }

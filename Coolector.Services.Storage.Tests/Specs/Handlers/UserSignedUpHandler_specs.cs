@@ -9,18 +9,18 @@ using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
-    public abstract class NewUserSignedInHandler_specs
+    public abstract class UserSignedUpHandler_specs
     {
-        protected static NewUserSignedInHandler Handler;
+        protected static UserSignedUpHandler Handler;
         protected static Mock<IUserRepository> UserRepositoryMock;
-        protected static NewUserSignedIn Event;
+        protected static UserSignedUp Event;
         protected static UserDto User;
         protected static Exception Exception;
 
         protected static void Initialize(Action setup)
         {
             UserRepositoryMock = new Mock<IUserRepository>();
-            Handler = new NewUserSignedInHandler(UserRepositoryMock.Object);
+            Handler = new UserSignedUpHandler(UserRepositoryMock.Object);
             setup();
         }
 
@@ -38,13 +38,13 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new NewUserSignedIn(Guid.NewGuid(), User?.UserId, User?.Email, User?.Name,
-                User?.PictureUrl, User?.Role, User?.State, User?.CreatedAt ?? DateTime.UtcNow);
+            Event = new UserSignedUp(Guid.NewGuid(), User?.UserId, User?.Email, User?.Name,
+                User?.PictureUrl, User?.Role, User?.State, "coolector", User?.CreatedAt ?? DateTime.UtcNow);
         }
     }
 
     [Subject("UserNameChangedHandler HandleAsync")]
-    public class when_invoking_new_user_signed_in_handle_async : NewUserSignedInHandler_specs
+    public class when_invoking_user_signed_up_handle_async : UserSignedUpHandler_specs
     {
         Establish context = () => Initialize(() =>
         {
@@ -66,7 +66,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     }
 
     [Subject("UserNameChangedHandler HandleAsync")]
-    public class when_invoking_new_user_signed_in_for_existing_user : NewUserSignedInHandler_specs
+    public class when_invoking_user_signed_up_for_existing_user : UserSignedUpHandler_specs
     {
         private Establish context = () => Initialize(() =>
         {

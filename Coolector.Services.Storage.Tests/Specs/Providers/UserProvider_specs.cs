@@ -16,12 +16,14 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
     {
         protected static IUserProvider UserProvider;
         protected static Mock<IUserRepository> UserRepositoryMock;
+        protected static Mock<IUserSessionRepository> UserSessionRepositoryMock;
         protected static Mock<IProviderClient> ProviderClientMock;
         protected static ProviderSettings ProviderSettings;
 
         protected static void Initialize()
         {
             UserRepositoryMock = new Mock<IUserRepository>();
+            UserSessionRepositoryMock = new Mock<IUserSessionRepository>();
             ProviderClientMock = new Mock<IProviderClient>();
             ProviderSettings = new ProviderSettings
             {
@@ -29,6 +31,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
             };
 
             UserProvider = new UserProvider(UserRepositoryMock.Object,
+                UserSessionRepositoryMock.Object,
                 ProviderClientMock.Object, ProviderSettings);
         }
     }
@@ -43,8 +46,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
         It should_call_get_collection_using_storage = () =>
         {
             ProviderClientMock.Verify(x => x.GetCollectionUsingStorageAsync(
-                Moq.It.IsAny<string>(), 
-                Moq.It.IsAny<string>(), 
+                Moq.It.IsAny<string>(),
+                Moq.It.IsAny<string>(),
                 Moq.It.IsAny<Func<Task<Maybe<PagedResult<UserDto>>>>>(),
                 Moq.It.IsAny<Func<PagedResult<UserDto>, Task>>()), Times.Once);
         };
