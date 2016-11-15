@@ -56,7 +56,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         It should_call_user_repository_exists_async = () =>
         {
-            UserRepositoryMock.Verify(x => x.ExisitsAsync(User.UserId), Times.Once);
+            UserRepositoryMock.Verify(x => x.ExistsAsync(User.UserId), Times.Once);
         };
 
         It should_call_user_repository_add_async = () =>
@@ -72,14 +72,14 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             InitializeUser();
             InitializeEvent();
-            UserRepositoryMock.Setup(x => x.ExisitsAsync(User.UserId)).ReturnsAsync(true);
+            UserRepositoryMock.Setup(x => x.ExistsAsync(User.UserId)).ReturnsAsync(true);
         });
 
         Because of = () => Handler.HandleAsync(Event).Await();
 
         It should_call_user_repository_exists_async = () =>
         {
-            UserRepositoryMock.Verify(x => x.ExisitsAsync(User.UserId), Times.Once);
+            UserRepositoryMock.Verify(x => x.ExistsAsync(User.UserId), Times.Once);
         };
 
         It should_not_call_user_repository_add_async = () =>

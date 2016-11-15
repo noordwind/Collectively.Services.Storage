@@ -19,10 +19,10 @@ namespace Coolector.Services.Storage.Providers
         }
 
         public async Task<Maybe<T>> GetAsync<T>(string url, string endpoint) where T : class
-        => await _serviceClient.GetAsync<T>(url, endpoint);
+            => await _serviceClient.GetAsync<T>(url, endpoint);
 
         public async Task<Maybe<Stream>> GetStreamAsync(string url, string endpoint)
-        => await _serviceClient.GetStreamAsync(url, endpoint);
+            => await _serviceClient.GetStreamAsync(url, endpoint);
 
         public async Task<Maybe<T>> GetUsingStorageAsync<T>(string url, string endpoint,
             Func<Task<Maybe<T>>> storageFetch, Func<T, Task> storageSave) where T : class

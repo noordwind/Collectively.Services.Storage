@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Common.Mongo;
+using Coolector.Dto.Common;
 using Coolector.Services.Storage.Queries;
 using Coolector.Dto.Users;
 using Coolector.Services.Storage.Repositories.Queries;
@@ -18,8 +19,15 @@ namespace Coolector.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<bool> ExisitsAsync(string id)
+        public async Task<bool> ExistsAsync(string id)
             => await _database.Users().ExistsAsync(id);
+
+        public async Task<Maybe<AvailableResourceDto>> IsNameAvailableAsync(string name)
+        {
+            var exists = await _database.Users().NameExistsAsync(name);
+
+            return new AvailableResourceDto {IsAvailable = exists == false};
+        }
 
         public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query)
             => await _database.Users()

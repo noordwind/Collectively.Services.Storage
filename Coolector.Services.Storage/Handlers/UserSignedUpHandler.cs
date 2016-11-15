@@ -17,7 +17,7 @@ namespace Coolector.Services.Storage.Handlers
 
         public async Task HandleAsync(UserSignedUp @event)
         {
-            if (await _repository.ExisitsAsync(@event.UserId))
+            if (await _repository.ExistsAsync(@event.UserId))
                 return;
 
             var user = new UserDto
