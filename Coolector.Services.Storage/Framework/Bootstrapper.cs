@@ -9,8 +9,6 @@ using Coolector.Services.Storage.Framework.IoC;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Repositories;
 using Coolector.Services.Storage.Settings;
-using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
@@ -70,15 +68,6 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<ProviderSettings>()).SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
-                builder.Register(c =>
-                    {
-                        var database = c.Resolve<IMongoDatabase>();
-                        var bucket = new GridFSBucket(database);
-
-                        return bucket;
-                    })
-                    .As<IGridFSBucket>()
-                    .SingleInstance();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<DatabaseSeeder>().As<IDatabaseSeeder>();
                 builder.RegisterType<OperationRepository>().As<IOperationRepository>();
