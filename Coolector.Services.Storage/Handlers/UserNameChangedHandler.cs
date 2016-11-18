@@ -29,6 +29,7 @@ namespace Coolector.Services.Storage.Handlers
 
             Logger.Debug($"Update userName, userId:{@event.UserId}, newName:{@event.NewName}");
             user.Value.Name = @event.NewName;
+            user.Value.State = @event.State;
             await _userRepository.EditAsync(user.Value);
 
             Logger.Debug($"Update user's remarks with new userName, userId:{@event.UserId}, newName:{@event.NewName}");
