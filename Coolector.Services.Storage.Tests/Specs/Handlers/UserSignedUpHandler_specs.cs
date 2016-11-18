@@ -39,7 +39,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static void InitializeEvent()
         {
             Event = new UserSignedUp(Guid.NewGuid(), User?.UserId, User?.Email, User?.Name,
-                User?.PictureUrl, User?.Role, User?.State, "coolector", User?.CreatedAt ?? DateTime.UtcNow);
+                User?.PictureUrl, User?.Role, User?.State, "coolector",
+                string.Empty, User?.CreatedAt ?? DateTime.UtcNow);
         }
     }
 

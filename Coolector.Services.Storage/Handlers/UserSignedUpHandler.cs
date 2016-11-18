@@ -29,7 +29,8 @@ namespace Coolector.Services.Storage.Handlers
                 CreatedAt = @event.CreatedAt,
                 PictureUrl = @event.PictureUrl,
                 Role = @event.Role,
-                Provider = @event.Provider
+                Provider = @event.Provider,
+                ExternalUserId = @event.ExternalUserId
             };
             await _repository.AddAsync(user);
         }
