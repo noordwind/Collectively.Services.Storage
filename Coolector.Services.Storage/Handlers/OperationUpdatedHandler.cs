@@ -20,8 +20,9 @@ namespace Coolector.Services.Storage.Handlers
             if (operation.HasNoValue)
                 return;
 
-            operation.Value.Message = @event.Message;
             operation.Value.State = @event.State;
+            operation.Value.Code = @event.Code;
+            operation.Value.Message = @event.Message;
             operation.Value.UpdatedAt = @event.UpdatedAt;
             await _operationRepository.UpdateAsync(operation.Value);
         }

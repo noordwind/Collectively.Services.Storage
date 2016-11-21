@@ -13,6 +13,7 @@ namespace Coolector.Services.Storage.Mappers
                 Origin = source.origin,
                 Resource = source.resource,
                 State = source.state,
+                Code = source.code,
                 Message = source.message,
                 CreatedAt = source.createdAt,
                 UpdatedAt = source.updatedAt
