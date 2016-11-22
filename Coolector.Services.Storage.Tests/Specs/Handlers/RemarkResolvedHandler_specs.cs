@@ -41,8 +41,13 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             Handler = new RemarkResolvedHandler(RemarkRepositoryMock.Object,
                 UserRepositoryMock.Object);
 
+            User = new UserDto
+            {
+                UserId = UserId,
+                Name = "TestUser"
+            };
             Photo = new RemarkFile("test.jpg", "small", "http://my-test-photo.com", "metadata");
-            Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, new List<RemarkFile>{Photo}, ResolvedAt);
+            Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, User.Name, new List<RemarkFile>{Photo}, ResolvedAt);
             Author = new RemarkAuthorDto
             {
                 UserId = UserId,
@@ -68,11 +73,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 Description = "test",
                 Location = Location,
                 Photos = new List<FileDto>()
-            };
-            User = new UserDto
-            {
-                UserId = UserId,
-                Name = "TestUser"
             };
 
             RemarkRepositoryMock.Setup(x => x.GetByIdAsync(Moq.It.IsAny<Guid>()))
