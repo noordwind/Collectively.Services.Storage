@@ -21,7 +21,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
         {
             HttpClientMock = new Mock<IHttpClient>();
             MapperResolverMock = new Mock<IMapperResolver>();
-            ServiceClient = new ServiceClient(HttpClientMock.Object, MapperResolverMock.Object);
+            ServiceClient = new ServiceClient(HttpClientMock.Object);
         }
     }
 
