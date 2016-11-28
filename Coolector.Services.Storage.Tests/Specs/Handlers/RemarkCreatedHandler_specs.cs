@@ -1,7 +1,5 @@
 ﻿using Coolector.Common.Events.Remarks;
 using Coolector.Common.Events.Remarks.Models;
-using Coolector.Dto.Remarks;
-using Coolector.Dto.Users;
 using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
@@ -9,6 +7,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Coolector.Common.Dto.Remarks;
+using Coolector.Common.Dto.Users;
 using Coolector.Services.Storage.Settings;
 using It = Machine.Specifications.It;
 

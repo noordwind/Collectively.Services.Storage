@@ -1,8 +1,5 @@
 ﻿using Coolector.Common.Events.Remarks;
 using Coolector.Common.Events.Remarks.Models;
-using Coolector.Dto.Common;
-using Coolector.Dto.Remarks;
-using Coolector.Dto.Users;
 using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
@@ -10,6 +7,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Coolector.Common.Dto.General;
+using Coolector.Common.Dto.Remarks;
+using Coolector.Common.Dto.Users;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers

@@ -1,10 +1,10 @@
-﻿using Coolector.Dto.Remarks;
-using Coolector.Services.Storage.Mappers;
+﻿using Coolector.Services.Storage.Mappers;
 using FluentAssertions;
 using Machine.Specifications;
 using System;
 using System.Dynamic;
 using System.Linq;
+using Coolector.Common.Dto.Remarks;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Mappers

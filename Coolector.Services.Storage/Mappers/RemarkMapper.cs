@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Coolector.Dto.Common;
-using Coolector.Dto.Remarks;
+using Coolector.Common.Dto.General;
+using Coolector.Common.Dto.Remarks;
 
 namespace Coolector.Services.Storage.Mappers
 {

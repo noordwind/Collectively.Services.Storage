@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Coolector.Common.Dto.General;
+using Coolector.Common.Dto.Remarks;
+using Coolector.Common.Dto.Users;
 using Coolector.Common.Events;
 using Coolector.Common.Events.Remarks;
-using Coolector.Dto.Common;
-using Coolector.Dto.Remarks;
-using Coolector.Dto.Users;
 using Coolector.Services.Storage.Repositories;
 using Coolector.Services.Storage.Settings;
 

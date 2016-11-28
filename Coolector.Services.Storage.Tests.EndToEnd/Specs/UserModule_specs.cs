@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Coolector.Dto.Users;
 using Coolector.Services.Storage.Tests.EndToEnd.Framework;
 using Machine.Specifications;
 using System.Linq;
+using Coolector.Common.Dto.Users;
 
 namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
 {

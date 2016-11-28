@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Coolector.Common.Dto.Remarks;
 using Coolector.Common.Mongo;
-using Coolector.Dto.Remarks;
 using Coolector.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 

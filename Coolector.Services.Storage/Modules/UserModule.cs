@@ -1,5 +1,5 @@
-﻿using Coolector.Dto.Common;
-using Coolector.Dto.Users;
+﻿using Coolector.Common.Dto.General;
+using Coolector.Common.Dto.Users;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Queries;
 

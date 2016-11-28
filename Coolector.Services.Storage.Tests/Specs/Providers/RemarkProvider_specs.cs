@@ -1,5 +1,4 @@
 ﻿using Coolector.Common.Types;
-using Coolector.Dto.Remarks;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Repositories;
@@ -8,6 +7,7 @@ using Machine.Specifications;
 using Moq;
 using System;
 using System.Threading.Tasks;
+using Coolector.Common.Dto.Remarks;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Providers

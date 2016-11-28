@@ -1,12 +1,12 @@
 ﻿using Coolector.Common.Events.Remarks;
-using Coolector.Dto.Common;
-using Coolector.Dto.Remarks;
 using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Coolector.Common.Dto.General;
+using Coolector.Common.Dto.Remarks;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers

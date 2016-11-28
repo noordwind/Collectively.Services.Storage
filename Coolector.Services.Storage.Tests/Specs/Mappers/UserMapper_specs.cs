@@ -1,7 +1,7 @@
-﻿using Coolector.Dto.Users;
-using Coolector.Services.Storage.Mappers;
+﻿using Coolector.Services.Storage.Mappers;
 using Machine.Specifications;
 using System;
+using Coolector.Common.Dto.Users;
 using It = Machine.Specifications.It;
 using FluentAssertions;
 
@@ -21,6 +21,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
             Source.role = "user";
             Source.state = "active";
             Source.createdAt = DateTime.UtcNow;
+            Source.provider = "coolector";
+            Source.externalUserId = "extId";
         };
 
         Because of = () => Map();
@@ -36,6 +38,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Mappers
             Result.Role.ShouldBeEquivalentTo((string)Source.role);
             Result.State.ShouldBeEquivalentTo((string)Source.state);
             Result.CreatedAt.ShouldBeEquivalentTo((DateTime)Source.createdAt);
+            Result.Provider.ShouldBeEquivalentTo((string)Source.provider);
+            Result.ExternalUserId.ShouldBeEquivalentTo((string)Source.externalUserId);
         };
     }
 }

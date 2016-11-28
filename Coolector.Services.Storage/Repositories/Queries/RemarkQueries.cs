@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Coolector.Common.Dto.Remarks;
 using Coolector.Common.Extensions;
-using Coolector.Dto.Remarks;
 using Coolector.Common.Mongo;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Queries;

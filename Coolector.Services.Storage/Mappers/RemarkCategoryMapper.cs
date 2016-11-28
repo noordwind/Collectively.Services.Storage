@@ -1,4 +1,4 @@
-﻿using Coolector.Dto.Remarks;
+﻿using Coolector.Common.Dto.Remarks;
 
 namespace Coolector.Services.Storage.Mappers
 {

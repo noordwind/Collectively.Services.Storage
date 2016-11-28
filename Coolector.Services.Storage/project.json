@@ -20,8 +20,7 @@
     "Polly": "5.0.1-v5-0-alpha0001",
     "RawRabbit": "1.10.0",
     "RawRabbit.vNext": "1.10.0",
-    "Coolector.Common": "1.0.*",
-    "Coolector.Dto": "1.0.*"
+    "Coolector.Common": "1.0.*"
   },
   "frameworks": {
 	  "netcoreapp1.1": {

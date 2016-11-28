@@ -1,4 +1,5 @@
-﻿using Coolector.Dto.Users;
+﻿
+using Coolector.Common.Dto.Users;
 
 namespace Coolector.Services.Storage.Mappers
 {

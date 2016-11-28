@@ -1,4 +1,4 @@
-﻿using Coolector.Dto.Operations;
+﻿using Coolector.Common.Dto.Operations;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Queries;
 

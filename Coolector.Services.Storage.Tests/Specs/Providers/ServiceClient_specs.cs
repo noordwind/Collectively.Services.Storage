@@ -1,11 +1,11 @@
-﻿using Coolector.Dto.Users;
-using Coolector.Services.Storage.Providers;
+﻿using Coolector.Services.Storage.Providers;
 using Machine.Specifications;
 using Moq;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Mappers;
 using It = Machine.Specifications.It;
 using System.IO;
+using Coolector.Common.Dto.Users;
 
 namespace Coolector.Services.Storage.Tests.Specs.Providers
 {

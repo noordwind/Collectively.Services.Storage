@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Coolector.Common.Dto.General;
+using Coolector.Common.Dto.Users;
 using Coolector.Common.Types;
 using Coolector.Common.Mongo;
-using Coolector.Dto.Common;
 using Coolector.Services.Storage.Queries;
-using Coolector.Dto.Users;
 using Coolector.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Coolector.Services.Storage.Tests.EndToEnd.Framework;
 using System.Linq;
-using Coolector.Dto.Remarks;
+using Coolector.Common.Dto.Remarks;
 using Machine.Specifications;
 
 namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
@@ -174,7 +174,6 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
             Remark.Author.ShouldNotBeNull();
             Remark.Category.ShouldNotBeNull();
             Remark.CreatedAt.ShouldNotEqual(default(DateTime));
-            Remark.Description.ShouldNotBeEmpty();
             Remark.Location.ShouldNotBeNull();
         };
     }

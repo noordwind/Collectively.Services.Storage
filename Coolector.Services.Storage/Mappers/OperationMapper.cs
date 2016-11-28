@@ -1,4 +1,4 @@
-﻿using Coolector.Dto.Operations;
+﻿using Coolector.Common.Dto.Operations;
 
 namespace Coolector.Services.Storage.Mappers
 {
