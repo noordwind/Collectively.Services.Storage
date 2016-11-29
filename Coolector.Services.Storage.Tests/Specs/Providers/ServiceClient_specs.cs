@@ -2,7 +2,6 @@
 using Machine.Specifications;
 using Moq;
 using Coolector.Common.Types;
-using Coolector.Services.Storage.Mappers;
 using It = Machine.Specifications.It;
 using System.IO;
 using Coolector.Common.Dto.Users;
@@ -13,14 +12,12 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
     {
         protected static IServiceClient ServiceClient;
         protected static Mock<IHttpClient> HttpClientMock;
-        protected static Mock<IMapperResolver> MapperResolverMock;
         protected static string Url = "http://test";
         protected static string Endpoint = "users";
 
         protected static void Initialize()
         {
             HttpClientMock = new Mock<IHttpClient>();
-            MapperResolverMock = new Mock<IMapperResolver>();
             ServiceClient = new ServiceClient(HttpClientMock.Object);
         }
     }

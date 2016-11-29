@@ -87,7 +87,6 @@ namespace Coolector.Services.Storage.Framework
                         .RegisterInstance(BusClientFactory.CreateDefault(rawRabbitConfiguration))
                         .As<IBusClient>()
                 );
-                builder.RegisterModule<MapperModule>();
                 builder.RegisterModule<EventHandlersModule>();
                 builder.RegisterModule<RedisModule>();
             });
