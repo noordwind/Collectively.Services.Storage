@@ -24,7 +24,6 @@ namespace Coolector.Services.Storage.Providers
 
         public async Task<Maybe<OperationDto>> GetAsync(Guid requestId) =>
             await _providerClient.GetUsingStorageAsync(_providerSettings.OperationsApiUrl,
-                $"/operations/{requestId}", async () => await _operationRepository.GetAsync(requestId),
-                async operation => await _operationRepository.AddAsync(operation));
+                $"/operations/{requestId}", async () => await _operationRepository.GetAsync(requestId));
     }
 }

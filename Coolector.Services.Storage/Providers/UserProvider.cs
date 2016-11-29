@@ -29,27 +29,22 @@ namespace Coolector.Services.Storage.Providers
 
         public async Task<Maybe<AvailableResourceDto>> IsAvailableAsync(string name)
             => await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl, $"users/{name}/available",
-                async () => await _userRepository.IsNameAvailableAsync(name), 
-                null);
+                async () => await _userRepository.IsNameAvailableAsync(name), null);
 
         public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query)
             => await _providerClient.GetCollectionUsingStorageAsync(_providerSettings.UsersApiUrl, "users",
-                async () => await _userRepository.BrowseAsync(query),
-                async users => await _userRepository.AddManyAsync(users.Items));
+                async () => await _userRepository.BrowseAsync(query));
 
         public async Task<Maybe<UserDto>> GetAsync(string userId)
             => await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl, $"users/{userId}",
-                async () =>  await _userRepository.GetByIdAsync(userId),
-                async user => await _userRepository.AddAsync(user));
+                async () =>  await _userRepository.GetByIdAsync(userId));
 
         public async Task<Maybe<UserDto>> GetByNameAsync(string name)
             => await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl, $"users/{name}/account",
-                async () => await _userRepository.GetByNameAsync(name),
-                async user => await _userRepository.AddAsync(user));
+                async () => await _userRepository.GetByNameAsync(name));
 
         public async Task<Maybe<UserSessionDto>> GetSessionAsync(Guid id)
             => await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl, $"user-sessions/{id}",
-                async () => await _userSessionRepository.GetByIdAsync(id),
-                async session => await _userSessionRepository.AddAsync(session));
+                async () => await _userSessionRepository.GetByIdAsync(id));
     }
 }

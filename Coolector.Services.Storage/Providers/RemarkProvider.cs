@@ -28,14 +28,12 @@ namespace Coolector.Services.Storage.Providers
 
         public async Task<Maybe<RemarkDto>> GetAsync(Guid id)
             => await _providerClient.GetUsingStorageAsync(_providerSettings.RemarksApiUrl, $"remarks/{id}",
-                async () => await _remarkRepository.GetByIdAsync(id),
-                async remark => await _remarkRepository.AddAsync(remark));
+                async () => await _remarkRepository.GetByIdAsync(id));
 
         public async Task<Maybe<PagedResult<RemarkDto>>> BrowseAsync(BrowseRemarks query)
             => await _providerClient.GetFilteredCollectionUsingStorageAsync(query,
                 _providerSettings.RemarksApiUrl, "remarks",
-                async () => await _remarkRepository.BrowseAsync(query),
-                async remarks => await _remarkRepository.AddManyAsync(remarks.Items));
+                async () => await _remarkRepository.BrowseAsync(query));
 
         public async Task<Maybe<PagedResult<RemarkCategoryDto>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
             => await _providerClient.GetCollectionUsingStorageAsync(_providerSettings.RemarksApiUrl,
