@@ -5,6 +5,9 @@ using Coolector.Common.Types;
 using It = Machine.Specifications.It;
 using System.IO;
 using Coolector.Common.Dto.Users;
+using Coolector.Common.Extensions;
+using Coolector.Services.Storage.Queries;
+using Coolector.Services.Storage.Services;
 
 namespace Coolector.Services.Storage.Tests.Specs.Providers
 {
@@ -50,7 +53,29 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
         It should_return_empty_result = () => Result.AsTask.Result.HasNoValue.ShouldBeTrue();
     }
 
-    [Subject("ServiceClient GetCollectionAsync")]
+    [Subject("ServiceClient GetFilteredCollectionAsync")]
+    public class when_invoking_service_client_get_filtered_collection_async : ServiceClient_specs
+    {
+        protected static Maybe<PagedResult<UserDto>> Result;
+        protected static BrowseUsers Query;
+        protected static string QueryString;
+
+        private Establish context = () =>
+        {
+            Initialize();
+            Query = new BrowseUsers { Page = 1, Results = 10 };
+            QueryString = Endpoint.ToQueryString(Query);
+        };
+
+        Because of = () => Result = ServiceClient
+            .GetFilteredCollectionAsync<BrowseUsers, UserDto>(Query, Url, Endpoint).Result;
+
+        It should_call_http_client_get_async = () => HttpClientMock.Verify(x => x.GetAsync(Url, QueryString), Times.Once);
+
+        It should_return_empty_result = () => Result.HasNoValue.ShouldBeTrue();
+    }
+
+    [Subject("ServiceClient GetStreamAsync")]
     public class when_invoking_service_client_get_stream_async : ServiceClient_specs
     {
         static AwaitResult<Maybe<Stream>> Result;
