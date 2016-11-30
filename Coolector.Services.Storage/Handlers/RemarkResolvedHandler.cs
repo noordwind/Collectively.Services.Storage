@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Coolector.Common.Events;
 using Coolector.Common.Events.Remarks;
 using Coolector.Services.Storage.Repositories;

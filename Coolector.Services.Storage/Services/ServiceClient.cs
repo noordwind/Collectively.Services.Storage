@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Coolector.Common.Extensions;
 using Coolector.Common.Queries;
 using Coolector.Common.Types;
-using Coolector.Services.Storage.Providers;
 using Newtonsoft.Json;
 
 namespace Coolector.Services.Storage.Services

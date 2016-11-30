@@ -4,7 +4,6 @@ using Coolector.Common.Dto.Operations;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Repositories;
 using Coolector.Services.Storage.Services.Operations;
-using Coolector.Services.Storage.Settings;
 
 namespace Coolector.Services.Storage.Providers.Operations
 {
