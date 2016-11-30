@@ -1,5 +1,5 @@
 ﻿using Coolector.Common.Dto.Remarks;
-using Coolector.Services.Storage.Providers;
+using Coolector.Services.Storage.Providers.Remarks;
 using Coolector.Services.Storage.Queries;
 
 namespace Coolector.Services.Storage.Modules

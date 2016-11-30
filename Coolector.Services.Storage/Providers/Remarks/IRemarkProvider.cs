@@ -4,7 +4,7 @@ using Coolector.Common.Dto.Remarks;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Queries;
 
-namespace Coolector.Services.Storage.Providers
+namespace Coolector.Services.Storage.Providers.Remarks
 {
     public interface IRemarkProvider
     {

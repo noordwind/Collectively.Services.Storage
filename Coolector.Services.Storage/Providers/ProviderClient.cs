@@ -7,8 +7,6 @@ namespace Coolector.Services.Storage.Providers
 {
     public class ProviderClient : IProviderClient
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public async Task<Maybe<T>> GetAsync<T>(params Func<Task<Maybe<T>>>[] fetch) where T : class
         {
             foreach (var func in fetch)
@@ -26,9 +24,7 @@ namespace Coolector.Services.Storage.Providers
             {
                 var result = await func();
                 if (result.HasValue && result.Value.IsNotEmpty)
-                {
                     return result;
-                }
             }
             return Maybe<PagedResult<T>>.Empty;
         }

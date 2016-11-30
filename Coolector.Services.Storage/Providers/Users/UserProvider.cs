@@ -34,8 +34,7 @@ namespace Coolector.Services.Storage.Providers.Users
 
         public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query) 
             => await _providerClient.GetCollectionAsync(
-                async () => await _userRepository.BrowseAsync(query),
-                async () => await _userServiceClient.BrowseAsync(query));
+                async () => await _userRepository.BrowseAsync(query));
 
         public async Task<Maybe<UserDto>> GetAsync(string userId) 
             => await _providerClient.GetAsync(

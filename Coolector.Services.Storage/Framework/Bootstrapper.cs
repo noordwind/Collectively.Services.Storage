@@ -19,6 +19,13 @@ using RawRabbit.vNext;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Coolector.Common.Extensions;
 using Coolector.Services.Storage.Cache;
+using Coolector.Services.Storage.Providers.Operations;
+using Coolector.Services.Storage.Providers.Remarks;
+using Coolector.Services.Storage.Providers.Users;
+using Coolector.Services.Storage.Services;
+using Coolector.Services.Storage.Services.Operations;
+using Coolector.Services.Storage.Services.Remarks;
+using Coolector.Services.Storage.Services.Users;
 using Polly;
 using RabbitMQ.Client.Exceptions;
 
@@ -78,8 +85,11 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterType<CustomHttpClient>().As<IHttpClient>();
                 builder.RegisterType<ServiceClient>().As<IServiceClient>();
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
+                builder.RegisterType<RemarkServiceClient>().As<IRemarkServiceClient>();
                 builder.RegisterType<RemarkProvider>().As<IRemarkProvider>();
+                builder.RegisterType<UserServiceClient>().As<IUserServiceClient>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
+                builder.RegisterType<OperationServiceClient>().As<IOperationServiceClient>();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>();
                 var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
                 builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
