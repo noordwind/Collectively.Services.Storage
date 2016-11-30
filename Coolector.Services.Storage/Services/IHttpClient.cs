@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Coolector.Common.Types;
 
-namespace Coolector.Services.Storage.Providers
+namespace Coolector.Services.Storage.Services
 {
     public interface IHttpClient
     {

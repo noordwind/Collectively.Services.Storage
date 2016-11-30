@@ -2,10 +2,12 @@
 using System.IO;
 using System.Threading.Tasks;
 using Coolector.Common.Extensions;
+using Coolector.Common.Queries;
 using Coolector.Common.Types;
+using Coolector.Services.Storage.Providers;
 using Newtonsoft.Json;
 
-namespace Coolector.Services.Storage.Providers
+namespace Coolector.Services.Storage.Services
 {
     public class ServiceClient : IServiceClient
     {
@@ -40,8 +42,16 @@ namespace Coolector.Services.Storage.Providers
             if (data.HasNoValue)
                 return new Maybe<PagedResult<T>>();
 
-
             return data.Value.PaginateWithoutLimit();
+        }
+
+        public async Task<Maybe<PagedResult<TResult>>> GetFilteredCollectionAsync<TQuery, TResult>(TQuery query, 
+            string url, string endpoint) 
+            where TQuery : class, IPagedQuery where TResult : class
+        {
+            var queryString = endpoint.ToQueryString(query);
+
+            return await GetCollectionAsync<TResult>(url, queryString);
         }
 
         private async Task<Maybe<T>> GetDataAsync<T>(string url, string endpoint) where T : class
