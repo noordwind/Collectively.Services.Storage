@@ -78,7 +78,5 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         Because of = () => Exception = Catch.Exception(() => Handler.HandleAsync(Event).Await());
 
         It should_fail = () => Exception.ShouldBeOfExactType<ServiceException>();
-
-        It should_have_a_specific_reason = () => Exception.Message.ShouldContain("User name cannot be changed because");
     }
 }

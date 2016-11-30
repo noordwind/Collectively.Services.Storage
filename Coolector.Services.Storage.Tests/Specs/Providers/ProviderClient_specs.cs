@@ -1,5 +1,7 @@
-﻿using Coolector.Common.Types;
+﻿using Coolector.Common.Extensions;
+using Coolector.Common.Types;
 using Coolector.Services.Storage.Providers;
+using Coolector.Services.Storage.Services;
 using Machine.Specifications;
 using Moq;
 using Coolector.Services.Storage.Tests.Framework;
@@ -12,143 +14,116 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
         protected static IProviderClient ProviderClient;
         protected static Mock<IServiceClient> ServiceClientMock;
         protected static Mock<IStorage> StorageMock;
+        protected static Mock<IStorage> EmptyStorageMock;
 
         protected static void Initialize()
         {
             ServiceClientMock = new Mock<IServiceClient>();
             StorageMock = new Mock<IStorage>();
+            EmptyStorageMock = new Mock<IStorage>();
 
-            ProviderClient = new ProviderClient(ServiceClientMock.Object);
+            ProviderClient = new ProviderClient();
+
+            var obj = new object();
+            var collection = new[] {new object(), new object()}.PaginateWithoutLimit();
+            StorageMock.Setup(x => x.FetchAsync()).ReturnsAsync(obj);
+            StorageMock.Setup(x => x.FetchCollectionAsync()).ReturnsAsync(collection);
+            EmptyStorageMock.Setup(x => x.FetchAsync()).ReturnsAsync(Maybe<object>.Empty);
+            EmptyStorageMock.Setup(x => x.FetchCollectionAsync()).ReturnsAsync(Maybe<PagedResult<object>>.Empty);
         }
     }
 
     [Subject("ProviderClient GetAsync")]
     public class When_get_async : ProviderClient_specs
     {
+        protected static Maybe<object> Result;
+
         Establish context = () => Initialize();
 
-        Because of = () => ProviderClient.GetAsync<object>("url", "endpoint");
+        Because of = () => Result = ProviderClient.GetAsync(async () => await StorageMock.Object.FetchAsync()).Result;
 
-        It should_call_service_client_get_async = () =>
-        {
-            ServiceClientMock.Verify(x => x.GetAsync<object>(
-                Moq.It.IsAny<string>(), 
-                Moq.It.IsAny<string>()), Times.Once);
-        };
+        It should_not_be_null = () => Result.ShouldNotBeNull();
+
+        It should_return_value = () => Result.HasValue.ShouldBeTrue();
     }
 
-    [Subject("ProviderClient GetSreamAsync")]
-    public class When_get_stream_async : ProviderClient_specs
+    [Subject("ProviderClient GetAsync")]
+    public class When_get_async_with_two_handlers_and_first_returns_value : ProviderClient_specs
     {
+        protected static Maybe<object> Result;
+
         Establish context = () => Initialize();
 
-        Because of = () => ProviderClient.GetStreamAsync("url", "endpoint");
+        Because of = () => Result = ProviderClient.GetAsync(
+            async () => await StorageMock.Object.FetchAsync(),
+            async () => await EmptyStorageMock.Object.FetchAsync()).Result;
 
-        It should_call_service_client_get_stream_async = () =>
-        {
-            ServiceClientMock.Verify(x => x.GetStreamAsync(
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<string>()), Times.Once);
-        };
+        It should_not_be_null = () => Result.ShouldNotBeNull();
+        It should_return_value = () => Result.HasValue.ShouldBeTrue();
+        It should_not_call_second_handler = () => EmptyStorageMock.Verify(x => x.FetchAsync(), Times.Never);
     }
 
-    [Subject("ProviderClient GetUsingStorageAsync")]
-    public class When_get_using_storage_async_and_storage_has_data : ProviderClient_specs
+    [Subject("ProviderClient GetAsync")]
+    public class When_get_async_with_two_handlers_and_second_returns_value : ProviderClient_specs
     {
-        protected static AwaitResult<Maybe<object>> Result;
+        protected static Maybe<object> Result;
 
-        Establish context = () =>
-        {
-            Initialize();
-            StorageMock.Setup(x => x.FetchAsync()).ReturnsAsync(new object());
-        };
+        Establish context = () => Initialize();
 
-        Because of = () => Result = ProviderClient.GetUsingStorageAsync("url", "endpoint",
-            async () => await StorageMock.Object.FetchAsync(),
-            async obj => await StorageMock.Object.SaveAsync(obj)).Await();
+        Because of = () => Result = ProviderClient.GetAsync(
+            async () => await EmptyStorageMock.Object.FetchAsync(),
+            async () => await StorageMock.Object.FetchAsync()).Result;
 
-        It should_call_fetch_data = () =>
-        {
-            StorageMock.Verify(x => x.FetchAsync(), Times.Once);
-        };
-
-        It should_not_call_save_data = () =>
-        {
-            StorageMock.Verify(x => x.SaveAsync(Moq.It.IsAny<object>()), Times.Never);
-        };
-
-        It should_return_a_value = () =>
-        {
-            Result.AsTask.Result.HasValue.ShouldBeTrue();
-        };
+        It should_not_be_null = () => Result.ShouldNotBeNull();
+        It should_return_value = () => Result.HasValue.ShouldBeTrue();
+        It should_call_first_handler = () => EmptyStorageMock.Verify(x => x.FetchAsync(), Times.Once);
+        It should_call_second_handler = () => StorageMock.Verify(x => x.FetchAsync(), Times.Once);
     }
 
-    [Subject("ProviderClient GetUsingStorageAsync")]
-    public class When_get_using_storage_async_and_storage_is_empty : ProviderClient_specs
+    [Subject("ProviderClient GetCollectionAsync")]
+    public class When_get_collection_async : ProviderClient_specs
     {
-        protected static AwaitResult<Maybe<object>> Result;
-        
-        Establish context = () =>
-        {
-            Initialize();
-            StorageMock.Setup(x => x.FetchAsync()).ReturnsAsync(null);
-            ServiceClientMock.Setup(x => x.GetAsync<object>(
-                Moq.It.IsAny<string>(), 
-                Moq.It.IsAny<string>()))
-                .ReturnsAsync(new object());
-        };
+        protected static Maybe<PagedResult<object>> Result;
 
-        Because of = () => Result = ProviderClient.GetUsingStorageAsync("url", "endpoint",
-            async () => await StorageMock.Object.FetchAsync(),
-            async obj => await StorageMock.Object.SaveAsync(obj)).Await();
+        Establish context = () => Initialize();
 
-        It should_call_fetch_data = () =>
-        {
-            StorageMock.Verify(x => x.FetchAsync(), Times.Once);
-        };
+        Because of = () => Result = ProviderClient.GetCollectionAsync(
+            async () => await StorageMock.Object.FetchCollectionAsync()).Result;
 
-        It should_call_save_data = () =>
-        {
-            StorageMock.Verify(x => x.SaveAsync(Moq.It.IsAny<object>()), Times.Once);
-        };
-
-        It should_return_a_value = () =>
-        {
-            Result.AsTask.Result.HasValue.ShouldBeTrue();
-        };
+        It should_not_be_null = () => Result.ShouldNotBeNull();
+        It should_return_value = () => Result.HasValue.ShouldBeTrue();
     }
 
-    public class When_get_using_storage_async_and_data_does_not_exist : ProviderClient_specs
+    [Subject("ProviderClient GetCollectionAsync")]
+    public class When_get_collection_async_with_two_handlers_and_first_returns_value : ProviderClient_specs
     {
-        protected static AwaitResult<Maybe<object>> Result;
+        protected static Maybe<PagedResult<object>> Result;
 
-        Establish context = () =>
-        {
-            Initialize();
-            StorageMock.Setup(x => x.FetchAsync()).ReturnsAsync(null);
-            ServiceClientMock.Setup(x => x.GetAsync<object>(
-                Moq.It.IsAny<string>(),
-                Moq.It.IsAny<string>()))
-                .ReturnsAsync(null);
-        };
+        Establish context = () => Initialize();
 
-        Because of = () => Result = ProviderClient.GetUsingStorageAsync("url", "endpoint",
-            async () => await StorageMock.Object.FetchAsync(),
-            async obj => await StorageMock.Object.SaveAsync(obj)).Await();
+        Because of = () => Result = ProviderClient.GetCollectionAsync(
+            async () => await StorageMock.Object.FetchCollectionAsync(),
+            async () => await EmptyStorageMock.Object.FetchCollectionAsync()).Result;
 
-        It should_call_fetch_data = () =>
-        {
-            StorageMock.Verify(x => x.FetchAsync(), Times.Once);
-        };
+        It should_not_be_null = () => Result.ShouldNotBeNull();
+        It should_return_value = () => Result.HasValue.ShouldBeTrue();
+        It should_not_call_second_handler = () => EmptyStorageMock.Verify(x => x.FetchCollectionAsync(), Times.Never);
+    }
 
-        It should_call_save_data = () =>
-        {
-            StorageMock.Verify(x => x.SaveAsync(Moq.It.IsAny<object>()), Times.Never);
-        };
+    [Subject("ProviderClient GetCollectionAsync")]
+    public class When_get_collection_async_with_two_handlers_and_second_returns_value : ProviderClient_specs
+    {
+        protected static Maybe<PagedResult<object>> Result;
 
-        It should_return_structure_without_value = () =>
-        {
-            Result.AsTask.Result.HasNoValue.ShouldBeTrue();
-        };
+        Establish context = () => Initialize();
+
+        Because of = () => Result = ProviderClient.GetCollectionAsync(
+            async () => await EmptyStorageMock.Object.FetchCollectionAsync(),
+            async () => await StorageMock.Object.FetchCollectionAsync()).Result;
+
+        It should_not_be_null = () => Result.ShouldNotBeNull();
+        It should_return_value = () => Result.HasValue.ShouldBeTrue();
+        It should_call_first_handler = () => EmptyStorageMock.Verify(x => x.FetchCollectionAsync(), Times.Once);
+        It should_call_second_handler = () => StorageMock.Verify(x => x.FetchCollectionAsync(), Times.Once);
     }
 }
