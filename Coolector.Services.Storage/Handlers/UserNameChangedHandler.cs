@@ -25,7 +25,10 @@ namespace Coolector.Services.Storage.Handlers
             Logger.Debug($"Handle {nameof(UserNameChanged)} event, userId:{@event.UserId}, newName:{@event.NewName}");
             var user = await _userRepository.GetByIdAsync(@event.UserId);
             if (user.HasNoValue)
-                throw new ServiceException($"User name cannot be changed because user: {@event.UserId} does not exist");
+            {
+                throw new ServiceException(OperationCodes.UserNotFound,
+                    $"User name cannot be changed because user: {@event.UserId} does not exist");
+            }
 
             Logger.Debug($"Update userName, userId:{@event.UserId}, newName:{@event.NewName}");
             user.Value.Name = @event.NewName;

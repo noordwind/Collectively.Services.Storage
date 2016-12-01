@@ -19,8 +19,10 @@ namespace Coolector.Services.Storage.Handlers
         {
             var user = await _userRepository.GetByIdAsync(@event.UserId);
             if (user.HasNoValue)
-                throw new ServiceException($"Avatar cannot be changed because user: {@event.UserId} does not exist");
-
+            {
+                throw new ServiceException(OperationCodes.UserNotFound,
+                    $"Avatar cannot be changed because user: {@event.UserId} does not exist");
+            }
             user.Value.PictureUrl = @event.PictureUrl;
             await _userRepository.EditAsync(user.Value);
         }
