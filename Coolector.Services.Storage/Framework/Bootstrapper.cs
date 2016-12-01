@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Autofac;
+using Coolector.Common.Exceptionless;
 using Coolector.Common.Mongo;
 using Coolector.Common.Nancy;
 using Coolector.Services.Storage.Framework.IoC;
@@ -18,6 +19,7 @@ using RawRabbit.Configuration;
 using RawRabbit.vNext;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Coolector.Common.Extensions;
+using Coolector.Common.Services;
 using Coolector.Services.Storage.Cache;
 using Coolector.Services.Storage.Providers.Operations;
 using Coolector.Services.Storage.Providers.Remarks;
@@ -34,6 +36,7 @@ namespace Coolector.Services.Storage.Framework
     public class Bootstrapper : AutofacNancyBootstrapper
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static IExceptionHandler _exceptionHandler;
         private static readonly string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
         private static readonly string InvalidDecimalSeparator = DecimalSeparator == "." ? "," : ".";
         private readonly IConfiguration _configuration;
@@ -91,6 +94,8 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
                 builder.RegisterType<OperationServiceClient>().As<IOperationServiceClient>();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>();
+                builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
+                builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
                 var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
                 builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
                 rmqRetryPolicy.Execute(() => builder
@@ -101,6 +106,17 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterModule<RedisModule>();
             });
             LifeTimeScope = container;
+        }
+
+        protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines, NancyContext context)
+        {
+            pipelines.OnError.AddItemToEndOfPipeline((ctx, ex) =>
+            {
+                _exceptionHandler.Handle(ex, ctx.ToExceptionData(),
+                    "Request details", "Coolector", "Service", "Storage");
+
+                return ctx.Response;
+            });
         }
 
         protected override void ApplicationStartup(ILifetimeScope container, IPipelines pipelines)
@@ -124,7 +140,8 @@ namespace Coolector.Services.Storage.Framework
                 ctx.Response.Headers.Add("Access-Control-Allow-Headers",
                     "Authorization, Origin, X-Requested-With, Content-Type, Accept");
             };
-            Logger.Info("Coolector.Services.Storage API Started");
+            _exceptionHandler = container.Resolve<IExceptionHandler>();
+            Logger.Info("Coolector.Services.Storage API has started.");
         }
 
         private void FixNumberFormat(NancyContext ctx)

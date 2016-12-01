@@ -63,7 +63,6 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
         It should_return_remarks_in_correct_order = () =>
         {
             RemarkDto previousRemark = null;
-            int i = 0;
             foreach (var remark in Remarks)
             {
                 if (previousRemark != null)

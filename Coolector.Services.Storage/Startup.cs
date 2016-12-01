@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Nancy.Owin;
 using NLog.Extensions.Logging;
+using Lockbox.Client.Extensions;
 
 namespace Coolector.Services.Storage
 {
@@ -21,6 +22,11 @@ namespace Coolector.Services.Storage
                 .AddJsonFile($"appsettings.{EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables()
                 .SetBasePath(env.ContentRootPath);
+
+            if (env.IsProduction())
+            {
+                builder.AddLockbox();
+            }
 
             Configuration = builder.Build();
         }
