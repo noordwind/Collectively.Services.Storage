@@ -27,14 +27,6 @@ namespace Coolector.Services.Storage.Services.Remarks
                 .GetAsync<RemarkDto>(_settings.RemarksApiUrl, $"remarks/{id}");
         }
 
-        public async Task<Maybe<PagedResult<RemarkDto>>> BrowseAsync(BrowseRemarks query)
-        {
-            Logger.Debug("Requesting BrowseAsync");
-            return await _serviceClient
-                .GetFilteredCollectionAsync<BrowseRemarks, RemarkDto>(
-                    query, _settings.RemarksApiUrl, "remarks");
-        }
-
         public async Task<Maybe<PagedResult<RemarkCategoryDto>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
         {
             Logger.Debug("Requesting BrowseCategoriesAsync");
