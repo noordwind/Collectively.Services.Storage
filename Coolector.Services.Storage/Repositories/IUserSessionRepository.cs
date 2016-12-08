@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.Users;
 using Coolector.Common.Types;
+using Coolector.Services.Users.Shared.Dto;
 
 namespace Coolector.Services.Storage.Repositories
 {

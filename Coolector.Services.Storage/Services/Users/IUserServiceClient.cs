@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Coolector.Common.Dto.General;
-using Coolector.Common.Dto.Users;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Queries;
+using Coolector.Services.Users.Shared.Dto;
 
 namespace Coolector.Services.Storage.Services.Users
 {

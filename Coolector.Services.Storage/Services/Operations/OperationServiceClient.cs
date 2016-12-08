@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.Operations;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Settings;
 using NLog;

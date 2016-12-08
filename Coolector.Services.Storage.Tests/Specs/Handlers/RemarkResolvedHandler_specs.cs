@@ -6,10 +6,9 @@ using Machine.Specifications;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Coolector.Common.Dto.General;
 using Coolector.Common.Dto.Remarks;
-using Coolector.Common.Dto.Users;
+using Coolector.Services.Users.Shared.Dto;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers

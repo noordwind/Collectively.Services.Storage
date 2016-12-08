@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Events;
-using Coolector.Common.Events.Users;
 using Coolector.Common.Domain;
 using Coolector.Services.Storage.Repositories;
+using Coolector.Services.Users.Shared.Events;
 
 namespace Coolector.Services.Storage.Handlers
 {

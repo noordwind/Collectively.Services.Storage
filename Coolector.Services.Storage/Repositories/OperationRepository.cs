@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.Operations;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;

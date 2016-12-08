@@ -1,8 +1,7 @@
-﻿using Coolector.Common.Events.Operations;
-using Coolector.Common.Events.Remarks;
-using Coolector.Common.Events.Users;
+﻿using Coolector.Common.Events.Remarks;
 using Coolector.Common.Host;
 using Coolector.Services.Storage.Framework;
+using Coolector.Services.Users.Shared.Events;
 
 namespace Coolector.Services.Storage
 {

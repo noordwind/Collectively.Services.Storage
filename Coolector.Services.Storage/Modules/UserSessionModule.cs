@@ -1,6 +1,6 @@
-﻿using Coolector.Common.Dto.Users;
-using Coolector.Services.Storage.Providers.Users;
+﻿using Coolector.Services.Storage.Providers.Users;
 using Coolector.Services.Storage.Queries;
+using Coolector.Services.Users.Shared.Dto;
 
 namespace Coolector.Services.Storage.Modules
 {

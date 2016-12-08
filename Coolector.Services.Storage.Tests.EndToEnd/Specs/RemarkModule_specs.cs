@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Coolector.Services.Storage.Tests.EndToEnd.Framework;
 using System.Linq;
 using Coolector.Common.Dto.Remarks;

@@ -1,10 +1,10 @@
-﻿using Coolector.Common.Events.Users;
-using Coolector.Services.Storage.Handlers;
+﻿using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
-using Coolector.Common.Dto.Users;
+using Coolector.Services.Users.Shared.Dto;
+using Coolector.Services.Users.Shared.Events;
 using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers

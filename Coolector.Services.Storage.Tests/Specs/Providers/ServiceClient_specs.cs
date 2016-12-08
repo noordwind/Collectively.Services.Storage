@@ -4,10 +4,10 @@ using Moq;
 using Coolector.Common.Types;
 using It = Machine.Specifications.It;
 using System.IO;
-using Coolector.Common.Dto.Users;
 using Coolector.Common.Extensions;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Services;
+using Coolector.Services.Users.Shared.Dto;
 
 namespace Coolector.Services.Storage.Tests.Specs.Providers
 {

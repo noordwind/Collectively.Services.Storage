@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.Users;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Repositories.Queries;
+using Coolector.Services.Users.Shared.Dto;
 using MongoDB.Driver;
 
 namespace Coolector.Services.Storage.Repositories

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Events;
-using Coolector.Common.Events.Operations;
 using Coolector.Services.Storage.Repositories;
 
 namespace Coolector.Services.Storage.Handlers

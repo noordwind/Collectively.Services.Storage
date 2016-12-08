@@ -1,5 +1,4 @@
-﻿using Coolector.Common.Dto.Operations;
-using Coolector.Services.Storage.Providers.Operations;
+﻿using Coolector.Services.Storage.Providers.Operations;
 using Coolector.Services.Storage.Queries;
 
 namespace Coolector.Services.Storage.Modules

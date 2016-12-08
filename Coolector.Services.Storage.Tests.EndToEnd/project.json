@@ -9,7 +9,8 @@
     "Coolector.Common": "1.0.*",
     "System.Drawing": "1.0.0-beta004",
     "Coolector.Services.Storage": "1.0.0-*",
-	  "System.Net.Http": "4.3.0"
+    "Coolector.Services.Users.Shared": "1.0.*",
+    "System.Net.Http": "4.3.0"
   },
   "testRunner": "mspec",
   "frameworks": {
