@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Coolector.Common.Extensions;
 using Coolector.Common.Mongo;
+using Coolector.Services.Operations.Shared.Dto;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

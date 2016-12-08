@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Coolector.Common.Events;
+using Coolector.Services.Operations.Shared.Dto;
+using Coolector.Services.Operations.Shared.Events;
 using Coolector.Services.Storage.Repositories;
 
 namespace Coolector.Services.Storage.Handlers

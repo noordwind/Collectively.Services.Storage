@@ -1,5 +1,6 @@
 ﻿using Coolector.Common.Events.Remarks;
 using Coolector.Common.Host;
+using Coolector.Services.Operations.Shared.Events;
 using Coolector.Services.Storage.Framework;
 using Coolector.Services.Users.Shared.Events;
 
