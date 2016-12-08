@@ -1,12 +1,12 @@
-﻿using Coolector.Common.Events.Remarks;
-using Coolector.Common.Events.Remarks.Models;
-using Coolector.Services.Storage.Handlers;
+﻿using Coolector.Services.Storage.Handlers;
 using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
 using System.Collections.Generic;
-using Coolector.Common.Dto.Remarks;
+using Coolector.Services.Remarks.Shared.Dto;
+using Coolector.Services.Remarks.Shared.Events;
+using Coolector.Services.Remarks.Shared.Events.Models;
 using Coolector.Services.Storage.Settings;
 using Coolector.Services.Users.Shared.Dto;
 using It = Machine.Specifications.It;

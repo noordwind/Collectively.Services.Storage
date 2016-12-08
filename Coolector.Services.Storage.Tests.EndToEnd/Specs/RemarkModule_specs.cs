@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Coolector.Services.Storage.Tests.EndToEnd.Framework;
 using System.Linq;
-using Coolector.Common.Dto.Remarks;
+using Coolector.Services.Remarks.Shared.Dto;
 using Machine.Specifications;
 
 namespace Coolector.Services.Storage.Tests.EndToEnd.Specs

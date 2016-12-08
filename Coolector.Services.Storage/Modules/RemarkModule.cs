@@ -1,4 +1,4 @@
-﻿using Coolector.Common.Dto.Remarks;
+﻿using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Storage.Providers.Remarks;
 using Coolector.Services.Storage.Queries;
 

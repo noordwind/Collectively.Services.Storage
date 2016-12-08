@@ -24,6 +24,7 @@
     "RawRabbit.vNext": "1.10.0",
     "Coolector.Common": "1.0.*",
     "Coolector.Services.Operations.Shared": "1.0.*",
+    "Coolector.Services.Remarks.Shared": "1.0.*",
     "Coolector.Services.Users.Shared": "1.0.*"
   },
   "frameworks": {

@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Events;
-using Coolector.Common.Events.Remarks;
 using Coolector.Services.Storage.Repositories;
 using System.Linq;
 using Coolector.Common.Dto.General;
-using Coolector.Common.Dto.Remarks;
+using Coolector.Services.Remarks.Shared.Dto;
+using Coolector.Services.Remarks.Shared.Events;
 
 namespace Coolector.Services.Storage.Handlers
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.Remarks;
 using Coolector.Common.Extensions;
 using Coolector.Common.Mongo;
 using Coolector.Common.Types;
+using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Storage.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;

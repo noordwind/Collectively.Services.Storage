@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.Remarks;
 using Coolector.Common.Types;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 using Coolector.Common.Mongo;
+using Coolector.Services.Remarks.Shared.Dto;
 
 namespace Coolector.Services.Storage.Repositories
 {

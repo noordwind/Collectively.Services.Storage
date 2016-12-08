@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.Remarks;
 using Coolector.Common.Types;
+using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Repositories;
 using Coolector.Services.Storage.Services.Remarks;
