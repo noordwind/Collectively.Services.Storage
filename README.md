@@ -57,6 +57,7 @@ Clone the repository and start the application via *dotnet run* command:
 ```
 git clone https://github.com/noordwind/Coolector.Services.Storage
 cd Coolector.Services.Storage/Coolector.Services.Storage
+dotnet restore --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/coolector/api/v3/index.json --no-cache
 dotnet run
 ```
 
