@@ -39,8 +39,9 @@ namespace Coolector.Services.Storage.Repositories.Queries
             var filter = FilterDefinition<RemarkDto>.Empty;
             if (IsLocationProvided(query))
             {
+                var maxDistance = query.Radius > 0 ? (double?) query.Radius/1000/6378.1 : null;
                 filter = filterBuilder.NearSphere(x => x.Location,
-                        query.Longitude, query.Latitude, query.Radius/1000/6378.1);
+                        query.Longitude, query.Latitude, maxDistance);
             }
             if (query.Latest)
                 filter = filterBuilder.Where(x => x.Id != Guid.Empty);
@@ -71,7 +72,6 @@ namespace Coolector.Services.Storage.Repositories.Queries
 
         private static bool IsLocationProvided(BrowseRemarks query)
             => (Math.Abs(query.Latitude) <= 0.0000000001 
-                || Math.Abs(query.Longitude) <= 0.0000000001 
-                || query.Radius <= 0) == false;
+                || Math.Abs(query.Longitude) <= 0.0000000001) == false;
     }
 }
