@@ -253,3 +253,4 @@ paket-files/
 
 appsettings.local.json
 appsettings.docker.json
+.vscode/
