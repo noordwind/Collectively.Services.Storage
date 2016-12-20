@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Coolector.Common.Extensions;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Shared.Dto;
 using Coolector.Services.Statistics.Shared.Queries;
@@ -22,15 +23,17 @@ namespace Coolector.Services.Storage.Services.Statistics
         public async Task<Maybe<PagedResult<ReporterDto>>> BrowseReportersAsync(BrowseReporters query)
         {
             Logger.Debug($"Requesting BrowseReportersAsync, page:{query.Page}, results:{query.Results}");
+            var queryString = "statistics/reporters".ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<ReporterDto>(_settings.StatisticsApiUrl, "statistics/reporters");
+                .GetCollectionAsync<ReporterDto>(_settings.StatisticsApiUrl, queryString);
         }
 
         public async Task<Maybe<PagedResult<ResolverDto>>> BrowseResolversAsync(BrowseResolvers query)
         {
             Logger.Debug($"Requesting BrowseResolversAsync, page:{query.Page}, results:{query.Results}");
+            var queryString = "statistics/resolvers".ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<ResolverDto>(_settings.StatisticsApiUrl, "statistics/resolvers");
+                .GetCollectionAsync<ResolverDto>(_settings.StatisticsApiUrl, queryString);
         }
     }
 }
