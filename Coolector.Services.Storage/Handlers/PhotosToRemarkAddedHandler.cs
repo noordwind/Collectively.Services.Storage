@@ -22,15 +22,13 @@ namespace Coolector.Services.Storage.Handlers
             if (remark.HasNoValue)
                 return;
 
-            var photos = @event.Photos.Select(x => new FileDto
+            remark.Value.Photos = @event.Photos.Select(x => new FileDto
             {
                 Name = x.Name,
                 Size = x.Size,
                 Url = x.Url,
                 Metadata = x.Metadata
-            });
-
-            remark.Value.Photos.AddRange(photos);
+            }).ToList();
             await _remarkRepository.UpdateAsync(remark.Value);
         }
     }
