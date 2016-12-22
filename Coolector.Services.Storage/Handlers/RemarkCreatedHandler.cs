@@ -30,20 +30,11 @@ namespace Coolector.Services.Storage.Handlers
         public async Task HandleAsync(RemarkCreated @event)
         {
             var user = await _userRepository.GetByIdAsync(@event.UserId);
-            var photos = @event.Photos.Select(x => new FileDto
-            {
-                Name = x.Name,
-                Size = x.Size,
-                Url = x.Url,
-                Metadata = x.Metadata
-            });
-
-            var remark = MapToDto(@event, photos, user.Value);
+            var remark = MapToDto(@event, user.Value);
             await _remarkRepository.AddAsync(remark);
         }
 
-        private static RemarkDto MapToDto(RemarkCreated @event, IEnumerable<FileDto> photos,
-                UserDto user)
+        private static RemarkDto MapToDto(RemarkCreated @event, UserDto user)
             => new RemarkDto
             {
                 Id = @event.RemarkId,
@@ -65,7 +56,7 @@ namespace Coolector.Services.Storage.Handlers
                     UserId = @event.UserId,
                     Name = user.Name
                 },
-                Photos = photos.ToList()
+                Photos = new List<FileDto>()
             };
     }
 }
