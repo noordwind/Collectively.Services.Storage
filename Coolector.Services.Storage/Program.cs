@@ -21,6 +21,7 @@ namespace Coolector.Services.Storage
                 .SubscribeToEvent<RemarkDeleted>()
                 .SubscribeToEvent<RemarkResolved>()
                 .SubscribeToEvent<PhotosToRemarkAdded>()
+                .SubscribeToEvent<PhotosFromRemarkRemoved>()
                 .SubscribeToEvent<OperationCreated>()
                 .SubscribeToEvent<OperationUpdated>()
                 .Build()
