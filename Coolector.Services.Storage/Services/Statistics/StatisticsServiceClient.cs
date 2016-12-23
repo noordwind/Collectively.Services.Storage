@@ -10,9 +10,11 @@ namespace Coolector.Services.Storage.Services.Statistics
 {
     public class StatisticsServiceClient : IStatisticsServiceClient
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
         private readonly ProviderSettings _settings;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private const string UserStatisticsEndpoint = "statistics/users";
 
         public StatisticsServiceClient(IServiceClient serviceClient, ProviderSettings settings)
         {
@@ -20,20 +22,20 @@ namespace Coolector.Services.Storage.Services.Statistics
             _settings = settings;
         }
 
-        public async Task<Maybe<PagedResult<ReporterDto>>> BrowseReportersAsync(BrowseReporters query)
+        public async Task<Maybe<PagedResult<UserStatisticsDto>>> BrowseUserStatisticsAsync(BrowseUserStatistics query)
         {
             Logger.Debug($"Requesting BrowseReportersAsync, page:{query.Page}, results:{query.Results}");
-            var queryString = "statistics/reporters".ToQueryString(query);
+            var queryString = UserStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<ReporterDto>(_settings.StatisticsApiUrl, queryString);
+                .GetCollectionAsync<UserStatisticsDto>(_settings.StatisticsApiUrl, queryString);
         }
 
-        public async Task<Maybe<PagedResult<ResolverDto>>> BrowseResolversAsync(BrowseResolvers query)
+        public async Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query)
         {
-            Logger.Debug($"Requesting BrowseResolversAsync, page:{query.Page}, results:{query.Results}");
-            var queryString = "statistics/resolvers".ToQueryString(query);
+            Logger.Debug($"Requesting GetUserStatisticsAsync, userId:{query.Id}");
+            var endpoint = $"{UserStatisticsEndpoint}/{query.Id}";
             return await _serviceClient
-                .GetCollectionAsync<ResolverDto>(_settings.StatisticsApiUrl, queryString);
+                .GetAsync<UserStatisticsDto>(_settings.StatisticsApiUrl, endpoint);
         }
     }
 }

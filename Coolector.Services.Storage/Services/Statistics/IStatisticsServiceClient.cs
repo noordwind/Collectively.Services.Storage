@@ -7,7 +7,7 @@ namespace Coolector.Services.Storage.Services.Statistics
 {
     public interface IStatisticsServiceClient
     {
-        Task<Maybe<PagedResult<ReporterDto>>> BrowseReportersAsync(BrowseReporters query);
-        Task<Maybe<PagedResult<ResolverDto>>> BrowseResolversAsync(BrowseResolvers query);
+        Task<Maybe<PagedResult<UserStatisticsDto>>> BrowseUserStatisticsAsync(BrowseUserStatistics query);
+        Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query);
     }
 }

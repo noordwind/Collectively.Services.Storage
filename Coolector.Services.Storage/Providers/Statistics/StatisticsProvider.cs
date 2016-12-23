@@ -18,12 +18,12 @@ namespace Coolector.Services.Storage.Providers.Statistics
             _statisticsServiceClient = statisticsServiceClient;
         }
 
-        public async Task<Maybe<PagedResult<ReporterDto>>> BrowseReportersAsync(BrowseReporters query)
+        public async Task<Maybe<PagedResult<UserStatisticsDto>>> BrowseUserStatisticsAsync(BrowseUserStatistics query)
             => await _providerClient.GetCollectionAsync(
-                async () => await _statisticsServiceClient.BrowseReportersAsync(query));
+                async () => await _statisticsServiceClient.BrowseUserStatisticsAsync(query));
 
-        public async Task<Maybe<PagedResult<ResolverDto>>> BrowseResolversAsync(BrowseResolvers query)
-            => await _providerClient.GetCollectionAsync(
-                async () => await _statisticsServiceClient.BrowseResolversAsync(query));
+        public async Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query)
+            => await _providerClient.GetAsync(
+                async () => await _statisticsServiceClient.GetUserStatisticsAsync(query));
     }
 }
