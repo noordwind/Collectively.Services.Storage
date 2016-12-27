@@ -18,7 +18,6 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static RemarkResolvedHandler Handler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IUserRepository> UserRepositoryMock;
-
         protected static RemarkResolved Event;
         protected static Guid RemarkId = Guid.NewGuid();
         protected static string UserId = "UserId";
@@ -45,7 +44,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 UserId = UserId,
                 Name = "TestUser"
             };
-            Photo = new RemarkFile("test.jpg", "small", "http://my-test-photo.com", "metadata");
+            Photo = new RemarkFile(Guid.NewGuid(), "test.jpg", "small", "http://my-test-photo.com", "metadata");
             Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, User.Name, new List<RemarkFile>{Photo}, ResolvedAt);
             Author = new RemarkAuthorDto
             {
