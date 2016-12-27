@@ -24,6 +24,7 @@ namespace Coolector.Services.Storage.Handlers
 
             remark.Value.Photos = @event.Photos.Select(x => new FileDto
             {
+                GroupId = x.GroupId,
                 Name = x.Name,
                 Size = x.Size,
                 Url = x.Url,
