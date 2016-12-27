@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.General;
 using Coolector.Common.Events;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;

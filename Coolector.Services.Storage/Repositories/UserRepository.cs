@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Coolector.Common.Dto.General;
 using Coolector.Common.Types;
 using Coolector.Common.Mongo;
 using Coolector.Services.Storage.Queries;

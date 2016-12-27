@@ -2,7 +2,6 @@
 using Coolector.Common.Events;
 using Coolector.Services.Storage.Repositories;
 using System.Linq;
-using Coolector.Common.Dto.General;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;
 
@@ -30,13 +29,14 @@ namespace Coolector.Services.Storage.Handlers
             if (user.HasNoValue)
                 return;
 
-            var photos = @event.Photos.Select(x => new FileDto
+            remark.Value.Photos = @event.Photos.Select(x => new FileDto
             {
+                GroupId = x.GroupId,
+                Name = x.Name,
                 Size = x.Size,
                 Url = x.Url,
                 Metadata = x.Metadata
-            });
-
+            }).ToList();
             remark.Value.Resolved = true;
             remark.Value.ResolvedAt = @event.ResolvedAt;
             remark.Value.Resolver = new RemarkAuthorDto
@@ -44,7 +44,6 @@ namespace Coolector.Services.Storage.Handlers
                 UserId = user.Value.UserId,
                 Name = user.Value.Name
             };
-            remark.Value.Photos = photos.ToList();
             await _remarkRepository.UpdateAsync(remark.Value);
         }
     }

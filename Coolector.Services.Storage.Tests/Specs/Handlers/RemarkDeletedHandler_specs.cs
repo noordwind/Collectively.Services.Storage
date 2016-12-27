@@ -4,7 +4,6 @@ using Machine.Specifications;
 using Moq;
 using System;
 using System.Collections.Generic;
-using Coolector.Common.Dto.General;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;
 using It = Machine.Specifications.It;

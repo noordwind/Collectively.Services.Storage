@@ -3,7 +3,7 @@ using System.Linq;
 using Coolector.Common.Events;
 using Coolector.Services.Remarks.Shared.Events;
 using Coolector.Services.Storage.Repositories;
-using Coolector.Common.Dto.General;
+using Coolector.Services.Remarks.Shared.Dto;
 
 namespace Coolector.Services.Storage.Handlers
 {
