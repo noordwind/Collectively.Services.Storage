@@ -55,6 +55,7 @@ namespace Coolector.Services.Storage.Handlers
                     UserId = @event.UserId,
                     Name = user.Name
                 },
+                Tags = @event.Tags.ToList(),
                 Photos = new List<FileDto>()
             };
     }

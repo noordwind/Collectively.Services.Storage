@@ -48,7 +48,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             Event = new RemarkCreated(Guid.NewGuid(), Guid.NewGuid(), User?.UserId, User?.Name,
                 new RemarkCreated.RemarkCategory(Guid.NewGuid(), "litter"), 
                 new RemarkCreated.RemarkLocation(string.Empty, 1, 1),
-                "test", DateTime.Now);
+                "test", new List<string>{ "tag1" }, DateTime.Now);
         }
     }
 
