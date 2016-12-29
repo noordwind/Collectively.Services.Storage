@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Coolector.Common.Extensions;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Shared.Dto;
@@ -13,8 +14,8 @@ namespace Coolector.Services.Storage.Services.Statistics
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
         private readonly ProviderSettings _settings;
-
-        private const string UserStatisticsEndpoint = "statistics/users";
+        private readonly string UserStatisticsEndpoint = "statistics/users";
+        private readonly string RemarkStatisticsEndpoint = "statistics/remarks";
 
         public StatisticsServiceClient(IServiceClient serviceClient, ProviderSettings settings)
         {
@@ -36,6 +37,22 @@ namespace Coolector.Services.Storage.Services.Statistics
             var endpoint = $"{UserStatisticsEndpoint}/{query.Id}";
             return await _serviceClient
                 .GetAsync<UserStatisticsDto>(_settings.StatisticsApiUrl, endpoint);
+        }
+
+        public async Task<Maybe<PagedResult<RemarkStatisticsDto>>> BrowseRemarkStatisticsAsync(BrowseRemarkStatistics query)
+        {
+            Logger.Debug($"Requesting BrowseRemarkStatisticsAsync, page:{query.Page}, results:{query.Results}");
+            var queryString = RemarkStatisticsEndpoint.ToQueryString(query);
+            return await _serviceClient
+                .GetCollectionAsync<RemarkStatisticsDto>(_settings.StatisticsApiUrl, queryString);
+        }
+
+        public async Task<Maybe<RemarkStatisticsDto>> GetRemarkStatisticsAsync(GetRemarkStatistics query)
+        {
+            Logger.Debug($"Requesting GetRemarkStatisticsAsync, userId:{query.Id}");
+            var endpoint = $"{RemarkStatisticsEndpoint}/{query.Id}";
+            return await _serviceClient
+                .GetAsync<RemarkStatisticsDto>(_settings.StatisticsApiUrl, endpoint);
         }
     }
 }

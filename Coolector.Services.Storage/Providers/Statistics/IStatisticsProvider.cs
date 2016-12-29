@@ -9,5 +9,7 @@ namespace Coolector.Services.Storage.Providers.Statistics
     {
         Task<Maybe<PagedResult<UserStatisticsDto>>> BrowseUserStatisticsAsync(BrowseUserStatistics query);
         Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query);
+        Task<Maybe<PagedResult<RemarkStatisticsDto>>> BrowseRemarkStatisticsAsync(BrowseRemarkStatistics query);
+        Task<Maybe<RemarkStatisticsDto>> GetRemarkStatisticsAsync(GetRemarkStatistics query);
     }
 }

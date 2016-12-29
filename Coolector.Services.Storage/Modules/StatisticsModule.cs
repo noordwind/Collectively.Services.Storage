@@ -10,6 +10,14 @@ namespace Coolector.Services.Storage.Modules
         public StatisticsModule(IStatisticsProvider statisticsProvider)
             :base("statistics")
         {
+            Get("remarks", async args => await FetchCollection<BrowseRemarkStatistics, RemarkStatisticsDto>
+                (async x => await statisticsProvider.BrowseRemarkStatisticsAsync(x))
+                .HandleAsync());
+
+            Get("remarks/{id}", async args => await Fetch<GetRemarkStatistics, RemarkStatisticsDto>
+                (async x => await statisticsProvider.GetRemarkStatisticsAsync(x))
+                .HandleAsync());
+
             Get("users", async args => await FetchCollection<BrowseUserStatistics, UserStatisticsDto>
                 (async x => await statisticsProvider.BrowseUserStatisticsAsync(x))
                 .HandleAsync());

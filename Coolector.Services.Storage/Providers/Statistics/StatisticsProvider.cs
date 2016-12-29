@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Shared.Dto;
 using Coolector.Services.Storage.Queries;
@@ -18,9 +19,17 @@ namespace Coolector.Services.Storage.Providers.Statistics
             _statisticsServiceClient = statisticsServiceClient;
         }
 
+        public async Task<Maybe<PagedResult<RemarkStatisticsDto>>> BrowseRemarkStatisticsAsync(BrowseRemarkStatistics query)
+            => await _providerClient.GetCollectionAsync(
+                async () => await _statisticsServiceClient.BrowseRemarkStatisticsAsync(query));
+
         public async Task<Maybe<PagedResult<UserStatisticsDto>>> BrowseUserStatisticsAsync(BrowseUserStatistics query)
             => await _providerClient.GetCollectionAsync(
                 async () => await _statisticsServiceClient.BrowseUserStatisticsAsync(query));
+
+        public async Task<Maybe<RemarkStatisticsDto>> GetRemarkStatisticsAsync(GetRemarkStatistics query)
+            => await _providerClient.GetAsync(
+                async () => await _statisticsServiceClient.GetRemarkStatisticsAsync(query));
 
         public async Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query)
             => await _providerClient.GetAsync(
