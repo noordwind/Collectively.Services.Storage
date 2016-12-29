@@ -27,7 +27,7 @@ namespace Coolector.Services.Storage.Repositories
                 .Query(query)
                 .PaginateAsync();
 
-        public async Task AddManyAsync(IEnumerable<RemarkCategoryDto> remarks)
-            => await _database.RemarkCategories().InsertManyAsync(remarks);
+        public async Task AddManyAsync(IEnumerable<RemarkCategoryDto> categories)
+            => await _database.RemarkCategories().InsertManyAsync(categories);
     }
 }

@@ -13,16 +13,19 @@ namespace Coolector.Services.Storage.Providers.Remarks
         private readonly IProviderClient _provider;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkCategoryRepository _categoryRepository;
+        private readonly ITagRepository _tagRepository;
         private readonly IRemarkServiceClient _serviceClient;
 
         public RemarkProvider(IProviderClient provider,
             IRemarkRepository remarkRepository,
             IRemarkCategoryRepository categoryRepository,
+            ITagRepository tagRepository,
             IRemarkServiceClient serviceClient)
         {
             _provider = provider;
             _remarkRepository = remarkRepository;
             _categoryRepository = categoryRepository;
+            _tagRepository = tagRepository;
             _serviceClient = serviceClient;
         }
 
@@ -38,5 +41,10 @@ namespace Coolector.Services.Storage.Providers.Remarks
             => await _provider.GetCollectionAsync(
                 async () => await _categoryRepository.BrowseAsync(query),
                 async () => await _serviceClient.BrowseCategoriesAsync(query));
+
+        public async Task<Maybe<PagedResult<TagDto>>> BrowseTagsAsync(BrowseRemarkTags query)
+            => await _provider.GetCollectionAsync(
+                async () => await _tagRepository.BrowseAsync(query),
+                async () => await _serviceClient.BrowseTagsAsync(query));
     }
 }

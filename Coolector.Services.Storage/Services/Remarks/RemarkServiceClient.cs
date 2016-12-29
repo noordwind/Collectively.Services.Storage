@@ -33,5 +33,12 @@ namespace Coolector.Services.Storage.Services.Remarks
             return await _serviceClient
                 .GetCollectionAsync<RemarkCategoryDto>(_settings.RemarksApiUrl, "remarks/categories");
         }
+
+        public async Task<Maybe<PagedResult<TagDto>>> BrowseTagsAsync(BrowseRemarkTags query)
+        {
+            Logger.Debug("Requesting BrowseTagsAsync");
+            return await _serviceClient
+                .GetCollectionAsync<TagDto>(_settings.RemarksApiUrl, "remarks/tags");
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace Coolector.Services.Storage.Providers.Remarks
         Task<Maybe<RemarkDto>> GetAsync(Guid id);
         Task<Maybe<PagedResult<RemarkDto>>> BrowseAsync(BrowseRemarks query);
         Task<Maybe<PagedResult<RemarkCategoryDto>>> BrowseCategoriesAsync(BrowseRemarkCategories query);
+        Task<Maybe<PagedResult<TagDto>>> BrowseTagsAsync(BrowseRemarkTags query);
     }
 }
