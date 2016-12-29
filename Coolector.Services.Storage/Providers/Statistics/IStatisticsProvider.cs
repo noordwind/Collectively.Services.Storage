@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Shared.Dto;
-using Coolector.Services.Statistics.Shared.Queries;
+using Coolector.Services.Storage.Queries;
 
 namespace Coolector.Services.Storage.Providers.Statistics
 {

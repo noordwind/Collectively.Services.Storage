@@ -2,7 +2,7 @@
 using Coolector.Common.Extensions;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Shared.Dto;
-using Coolector.Services.Statistics.Shared.Queries;
+using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Settings;
 using NLog;
 
