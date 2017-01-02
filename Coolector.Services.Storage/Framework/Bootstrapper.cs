@@ -5,6 +5,7 @@ using Coolector.Common.Exceptionless;
 using Coolector.Common.Mongo;
 using Coolector.Common.Nancy;
 using Coolector.Common.Nancy.Serialization;
+using Coolector.Common.Security;
 using Coolector.Services.Storage.Framework.IoC;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Repositories;
@@ -88,9 +89,10 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterType<StatisticsProvider>().As<IStatisticsProvider>();
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
-                RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
                 builder.RegisterModule<EventHandlersModule>();
                 builder.RegisterModule<RedisModule>();
+                SecurityContainer.Register(builder, _configuration);
+                RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
             });
             LifeTimeScope = container;
         }
