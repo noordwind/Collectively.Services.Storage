@@ -31,6 +31,10 @@ namespace Coolector.Services.Storage.Providers.Statistics
             => await _providerClient.GetAsync(
                 async () => await _statisticsServiceClient.GetRemarkStatisticsAsync(query));
 
+        public async Task<Maybe<RemarkGeneralStatisticsDto>> GetRemarkGeneralStatisticsAsync(GetRemarkGeneralStatistics query)
+            => await _providerClient.GetAsync(
+                async () => await _statisticsServiceClient.GetRemarkGeneralStatisticsAsync(query));
+
         public async Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query)
             => await _providerClient.GetAsync(
                 async () => await _statisticsServiceClient.GetUserStatisticsAsync(query));

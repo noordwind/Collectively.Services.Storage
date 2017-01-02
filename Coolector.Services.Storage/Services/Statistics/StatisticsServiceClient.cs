@@ -49,10 +49,18 @@ namespace Coolector.Services.Storage.Services.Statistics
 
         public async Task<Maybe<RemarkStatisticsDto>> GetRemarkStatisticsAsync(GetRemarkStatistics query)
         {
-            Logger.Debug($"Requesting GetRemarkStatisticsAsync, userId:{query.Id}");
+            Logger.Debug($"Requesting GetRemarkStatisticsAsync, remarkId:{query.Id}");
             var endpoint = $"{RemarkStatisticsEndpoint}/{query.Id}";
             return await _serviceClient
                 .GetAsync<RemarkStatisticsDto>(_settings.StatisticsApiUrl, endpoint);
+        }
+
+        public async Task<Maybe<RemarkGeneralStatisticsDto>> GetRemarkGeneralStatisticsAsync(GetRemarkGeneralStatistics query)
+        {
+            Logger.Debug($"Requesting GetRemarkGeneralStatisticsAsync, from:{query.From}, to:{query.To}");
+            var endpoint = $"{RemarkStatisticsEndpoint}/general".ToQueryString(query);
+            return await _serviceClient
+                .GetAsync<RemarkGeneralStatisticsDto>(_settings.StatisticsApiUrl, endpoint);
         }
     }
 }

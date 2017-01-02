@@ -18,6 +18,10 @@ namespace Coolector.Services.Storage.Modules
                 (async x => await statisticsProvider.GetRemarkStatisticsAsync(x))
                 .HandleAsync());
 
+            Get("remarks/general", async args => await Fetch<GetRemarkGeneralStatistics, RemarkGeneralStatisticsDto>
+                (async x => await statisticsProvider.GetRemarkGeneralStatisticsAsync(x))
+                .HandleAsync());
+
             Get("users", async args => await FetchCollection<BrowseUserStatistics, UserStatisticsDto>
                 (async x => await statisticsProvider.BrowseUserStatisticsAsync(x))
                 .HandleAsync());
