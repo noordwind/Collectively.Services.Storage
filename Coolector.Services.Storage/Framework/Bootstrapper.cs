@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using Autofac;
 using Coolector.Common.Exceptionless;
 using Coolector.Common.Mongo;
 using Coolector.Common.Nancy;
+using Coolector.Common.Nancy.Serialization;
 using Coolector.Services.Storage.Framework.IoC;
 using Coolector.Services.Storage.Providers;
 using Coolector.Services.Storage.Repositories;
@@ -13,13 +12,13 @@ using Coolector.Services.Storage.Settings;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
+using Newtonsoft.Json;
 using NLog;
-using RawRabbit;
 using RawRabbit.Configuration;
-using RawRabbit.vNext;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Coolector.Common.Extensions;
 using Coolector.Common.Services;
+using Coolector.Common.RabbitMq;
 using Coolector.Services.Storage.Cache;
 using Coolector.Services.Storage.Providers.Operations;
 using Coolector.Services.Storage.Providers.Remarks;
@@ -30,8 +29,6 @@ using Coolector.Services.Storage.Services.Operations;
 using Coolector.Services.Storage.Services.Remarks;
 using Coolector.Services.Storage.Services.Statistics;
 using Coolector.Services.Storage.Services.Users;
-using Polly;
-using RabbitMQ.Client.Exceptions;
 
 namespace Coolector.Services.Storage.Framework
 {
@@ -63,19 +60,9 @@ namespace Coolector.Services.Storage.Framework
             Logger.Info("Coolector.Services.Storage Configuring application container");
             base.ConfigureApplicationContainer(container);
 
-            var rmqRetryPolicy = Policy
-                .Handle<ConnectFailureException>()
-                .Or<BrokerUnreachableException>()
-                .Or<IOException>()
-                .WaitAndRetry(5, retryAttempt =>
-                    TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                    (exception, timeSpan, retryCount, context) => {
-                        Logger.Error(exception, $"Cannot connect to RabbitMQ. retryCount:{retryCount}, duration:{timeSpan}");
-                    }
-                );
-
             container.Update(builder =>
             {
+                builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<GeneralSettings>()).SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<ProviderSettings>()).SingleInstance();
@@ -101,12 +88,7 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterType<StatisticsProvider>().As<IStatisticsProvider>();
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
-                var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
-                builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
-                rmqRetryPolicy.Execute(() => builder
-                        .RegisterInstance(BusClientFactory.CreateDefault(rawRabbitConfiguration))
-                        .As<IBusClient>()
-                );
+                RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
                 builder.RegisterModule<EventHandlersModule>();
                 builder.RegisterModule<RedisModule>();
             });
