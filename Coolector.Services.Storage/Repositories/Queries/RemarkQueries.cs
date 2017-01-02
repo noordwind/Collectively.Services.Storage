@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Coolector.Common.Extensions;
 using Coolector.Common.Mongo;
 using Coolector.Common.Types;
+using Coolector.Services.Remarks.Shared;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Storage.Queries;
 using MongoDB.Driver;
@@ -51,9 +52,9 @@ namespace Coolector.Services.Storage.Repositories.Queries
                 filter = filter & filterBuilder.Where(x => x.Description.Contains(query.Description));
             if (query.Categories?.Any() == true)
                 filter = filter & filterBuilder.Where(x => query.Categories.Contains(x.Category.Name));
-            if (query.State.NotEmpty() && query.State != "all")
+            if (query.State.NotEmpty() && query.State != RemarkStates.All)
             {
-                if (query.State == "resolved")
+                if (query.State == RemarkStates.Resolved)
                     filter = filter & filterBuilder.Where(x => x.Resolved);
                 else
                     filter = filter & filterBuilder.Where(x => x.Resolved == false);
