@@ -1,11 +1,10 @@
-﻿using Coolector.Common.Nancy;
-using Coolector.Services.Statistics.Shared.Dto;
+﻿using Coolector.Services.Statistics.Shared.Dto;
 using Coolector.Services.Storage.Providers.Statistics;
 using Coolector.Services.Storage.Queries;
 
 namespace Coolector.Services.Storage.Modules
 {
-    public class StatisticsModule : ApiModuleBase
+    public class StatisticsModule : ModuleBase
     {
         public StatisticsModule(IStatisticsProvider statisticsProvider)
             :base("statistics")

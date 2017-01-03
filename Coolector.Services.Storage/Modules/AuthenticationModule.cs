@@ -17,7 +17,7 @@ namespace Coolector.Services.Storage.Modules
                     return HttpStatusCode.Unauthorized;
                 }
                 
-                return new { token };
+                return new { token = token.Value };
             });
         }        
     }

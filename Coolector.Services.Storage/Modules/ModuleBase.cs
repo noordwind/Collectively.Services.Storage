@@ -1,5 +1,4 @@
-﻿
-using Coolector.Common.Nancy;
+﻿using Coolector.Common.Nancy;
 using Nancy.Security;
 
 namespace Coolector.Services.Storage.Modules

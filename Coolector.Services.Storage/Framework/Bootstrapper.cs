@@ -129,6 +129,7 @@ namespace Coolector.Services.Storage.Framework
                 ctx.Response.Headers.Add("Access-Control-Allow-Headers",
                     "Authorization, Origin, X-Requested-With, Content-Type, Accept");
             };
+            pipelines.SetupTokenAuthentication(container);
             _exceptionHandler = container.Resolve<IExceptionHandler>();
             Logger.Info("Coolector.Services.Storage API has started.");
         }
