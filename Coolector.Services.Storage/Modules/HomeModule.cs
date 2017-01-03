@@ -1,12 +1,10 @@
-﻿using Nancy;
-
-namespace Coolector.Services.Storage.Modules
+﻿namespace Coolector.Services.Storage.Modules
 {
     public class HomeModule : ModuleBase
     {
-        public HomeModule()
+        public HomeModule() : base(requireAuthentication: false)
         {
-            Get("", args => Response.AsJson(new { name = "Coolector.Services.Storage" }));
+            Get("", args => "Welcome to the Coolector.Services.Storage API!");
         }
     }
 }
