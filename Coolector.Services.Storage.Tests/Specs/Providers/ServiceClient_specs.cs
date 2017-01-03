@@ -1,5 +1,4 @@
-﻿using Coolector.Services.Storage.Providers;
-using Machine.Specifications;
+﻿using Machine.Specifications;
 using Moq;
 using Coolector.Common.Types;
 using It = Machine.Specifications.It;
@@ -8,6 +7,7 @@ using Coolector.Common.Extensions;
 using Coolector.Services.Storage.Queries;
 using Coolector.Services.Storage.Services;
 using Coolector.Services.Users.Shared.Dto;
+using Coolector.Common.Security;
 
 namespace Coolector.Services.Storage.Tests.Specs.Providers
 {
@@ -15,13 +15,15 @@ namespace Coolector.Services.Storage.Tests.Specs.Providers
     {
         protected static IServiceClient ServiceClient;
         protected static Mock<IHttpClient> HttpClientMock;
+        protected static Mock<IServiceAuthenticatorClient> ServiceAuthenticatorClientMock;
         protected static string Url = "http://test";
         protected static string Endpoint = "users";
 
         protected static void Initialize()
         {
             HttpClientMock = new Mock<IHttpClient>();
-            ServiceClient = new ServiceClient(HttpClientMock.Object);
+            ServiceAuthenticatorClientMock = new Mock<IServiceAuthenticatorClient>();
+            ServiceClient = new ServiceClient(HttpClientMock.Object, ServiceAuthenticatorClientMock.Object);
         }
     }
 

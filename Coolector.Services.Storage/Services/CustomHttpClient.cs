@@ -16,6 +16,12 @@ namespace Coolector.Services.Storage.Services
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         }
 
+        public void SetAuthorizationHeader(string token)
+        {
+            _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+        }
+
         public async Task<Maybe<HttpResponseMessage>> GetAsync(string url, string endpoint)
         {
             try

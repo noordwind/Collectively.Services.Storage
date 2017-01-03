@@ -3,18 +3,30 @@ using System.IO;
 using System.Threading.Tasks;
 using Coolector.Common.Extensions;
 using Coolector.Common.Queries;
+using Coolector.Common.Security;
 using Coolector.Common.Types;
 using Newtonsoft.Json;
+using NLog;
 
 namespace Coolector.Services.Storage.Services
 {
     public class ServiceClient : IServiceClient
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private bool _isAuthenticated = false;
+        private ServiceSettings _serviceSettings;
         private readonly IHttpClient _httpClient;
+        private readonly IServiceAuthenticatorClient _serviceAuthenticatorClient;
 
-        public ServiceClient(IHttpClient httpClient)
+        public ServiceClient(IHttpClient httpClient, IServiceAuthenticatorClient serviceAuthenticatorClient)
         {
             _httpClient = httpClient;
+            _serviceAuthenticatorClient = serviceAuthenticatorClient;
+        }
+
+        public void SetSettings(ServiceSettings serviceSettings)
+        {
+            _serviceSettings = serviceSettings;
         }
 
         public async Task<Maybe<T>> GetAsync<T>(string url, string endpoint) where T : class
@@ -55,6 +67,24 @@ namespace Coolector.Services.Storage.Services
 
         private async Task<Maybe<T>> GetDataAsync<T>(string url, string endpoint) where T : class
         {
+            if (!_isAuthenticated && _serviceSettings != null)
+            {
+                var token = await _serviceAuthenticatorClient.AuthenticateAsync(_serviceSettings.Url, new Credentials
+                {
+                    Username = _serviceSettings.Username,
+                    Password = _serviceSettings.Password
+                });
+                if (token.HasNoValue)
+                {
+                    Logger.Error($"Could not get authentication token for service: '{_serviceSettings.Name}'.");
+
+                    return null;
+                }
+
+                _httpClient.SetAuthorizationHeader(token.Value);
+                _isAuthenticated = true;
+            }
+
             var response = await _httpClient.GetAsync(url, endpoint);
             if (response.HasNoValue)
                 return new Maybe<T>();
