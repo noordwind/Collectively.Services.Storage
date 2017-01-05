@@ -38,6 +38,14 @@ namespace Coolector.Services.Storage.Handlers
                     
                     foreach (var vote in votes)
                     {
+                        if (vote.Positive)
+                        {
+                            remark.Value.Rating--;
+                        }
+                        else
+                        {
+                            remark.Value.Rating++;
+                        }
                         remark.Value.Votes.Remove(vote);
                     }
                     await _remarkRepository.UpdateAsync(remark.Value);

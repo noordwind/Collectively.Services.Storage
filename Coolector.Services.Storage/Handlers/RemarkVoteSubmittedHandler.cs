@@ -32,6 +32,15 @@ namespace Coolector.Services.Storage.Handlers
                     {
                         return;
                     }
+
+                    if (@event.Positive)
+                    {
+                        remark.Value.Rating++;
+                    }
+                    else
+                    {
+                        remark.Value.Rating--;
+                    }
                     
                     remark.Value.Votes.Add(new VoteDto
                     {
