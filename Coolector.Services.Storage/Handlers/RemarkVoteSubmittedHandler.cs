@@ -32,7 +32,6 @@ namespace Coolector.Services.Storage.Handlers
                     {
                         return;
                     }
-
                     if (@event.Positive)
                     {
                         remark.Value.Rating++;
@@ -41,7 +40,6 @@ namespace Coolector.Services.Storage.Handlers
                     {
                         remark.Value.Rating--;
                     }
-                    
                     remark.Value.Votes.Add(new VoteDto
                     {
                         UserId = @event.UserId,

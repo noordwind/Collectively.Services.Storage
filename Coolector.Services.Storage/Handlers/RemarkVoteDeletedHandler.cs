@@ -32,22 +32,18 @@ namespace Coolector.Services.Storage.Handlers
                         return;
                     }
 
-                    var votes = remark.Value.Votes
-                        .Where(x => x.UserId == @event.UserId)
-                        .ToList();
-                    
-                    foreach (var vote in votes)
+                    var vote = remark.Value.Votes
+                        .SingleOrDefault(x => x.UserId == @event.UserId);
+
+                    if (vote.Positive)
                     {
-                        if (vote.Positive)
-                        {
-                            remark.Value.Rating--;
-                        }
-                        else
-                        {
-                            remark.Value.Rating++;
-                        }
-                        remark.Value.Votes.Remove(vote);
+                        remark.Value.Rating--;
                     }
+                    else
+                    {
+                        remark.Value.Rating++;
+                    }
+                    remark.Value.Votes.Remove(vote);
                     await _remarkRepository.UpdateAsync(remark.Value);
                 })
                 .ExecuteAsync();
