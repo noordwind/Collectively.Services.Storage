@@ -15,6 +15,8 @@ namespace Coolector.Services.Storage.Services.Statistics
         private readonly ServiceSettings _settings;
         private readonly string UserStatisticsEndpoint = "statistics/users";
         private readonly string RemarkStatisticsEndpoint = "statistics/remarks";
+        private readonly string CategoryStatisticsEndpoint = "statistics/categories";
+        private readonly string TagStatisticsEndpoint = "statistics/tags";
 
         public StatisticsServiceClient(IServiceClient serviceClient, ServiceSettings settings)
         {
@@ -61,6 +63,22 @@ namespace Coolector.Services.Storage.Services.Statistics
             var endpoint = $"{RemarkStatisticsEndpoint}/general".ToQueryString(query);
             return await _serviceClient
                 .GetAsync<RemarkGeneralStatisticsDto>(_settings.Url, endpoint);
+        }
+
+        public async Task<Maybe<PagedResult<CategoryStatisticsDto>>> BrowseCategoryStatisticsAsync(BrowseCategoryStatistics query)
+        {
+            Logger.Debug($"Requesting BrowseCategoryStatisticsAsync, page:{query.Page}, results:{query.Results}");
+            var queryString = CategoryStatisticsEndpoint.ToQueryString(query);
+            return await _serviceClient
+                .GetCollectionAsync<CategoryStatisticsDto>(_settings.Url, queryString);
+        }
+
+        public async Task<Maybe<PagedResult<TagStatisticsDto>>> BrowseTagStatisticsAsync(BrowseTagStatistics query)
+        {
+            Logger.Debug($"Requesting BrowseTagStatisticsAsync, page:{query.Page}, results:{query.Results}");
+            var queryString = TagStatisticsEndpoint.ToQueryString(query);
+            return await _serviceClient
+                .GetCollectionAsync<TagStatisticsDto>(_settings.Url, queryString);
         }
     }
 }

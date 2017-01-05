@@ -35,6 +35,14 @@ namespace Coolector.Services.Storage.Providers.Statistics
             => await _providerClient.GetAsync(
                 async () => await _statisticsServiceClient.GetRemarkGeneralStatisticsAsync(query));
 
+        public async Task<Maybe<PagedResult<CategoryStatisticsDto>>> BrowseCategoryStatisticsAsync(BrowseCategoryStatistics query)
+            => await _providerClient.GetCollectionAsync(
+                async () => await _statisticsServiceClient.BrowseCategoryStatisticsAsync(query));
+
+        public async Task<Maybe<PagedResult<TagStatisticsDto>>> BrowseTagStatisticsAsync(BrowseTagStatistics query)
+            => await _providerClient.GetCollectionAsync(
+                async () => await _statisticsServiceClient.BrowseTagStatisticsAsync(query));
+
         public async Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query)
             => await _providerClient.GetAsync(
                 async () => await _statisticsServiceClient.GetUserStatisticsAsync(query));
