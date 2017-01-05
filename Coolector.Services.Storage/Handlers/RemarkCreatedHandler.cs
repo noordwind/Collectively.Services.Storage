@@ -56,7 +56,8 @@ namespace Coolector.Services.Storage.Handlers
                     Name = user.Name
                 },
                 Tags = @event.Tags.ToList(),
-                Photos = new List<FileDto>()
+                Photos = new List<FileDto>(),
+                Votes = new List<VoteDto>()
             };
     }
 }

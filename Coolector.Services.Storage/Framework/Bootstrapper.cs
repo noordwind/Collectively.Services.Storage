@@ -26,10 +26,6 @@ using Coolector.Services.Storage.Providers.Remarks;
 using Coolector.Services.Storage.Providers.Statistics;
 using Coolector.Services.Storage.Providers.Users;
 using Coolector.Services.Storage.Services;
-using Coolector.Services.Storage.Services.Operations;
-using Coolector.Services.Storage.Services.Remarks;
-using Coolector.Services.Storage.Services.Statistics;
-using Coolector.Services.Storage.Services.Users;
 
 namespace Coolector.Services.Storage.Framework
 {
@@ -81,6 +77,7 @@ namespace Coolector.Services.Storage.Framework
                 builder.RegisterType<RemarkProvider>().As<IRemarkProvider>();
                 builder.RegisterType<StatisticsProvider>().As<IStatisticsProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
+                builder.RegisterType<Handler>().As<IHandler>();
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
                 builder.RegisterModule<EventHandlersModule>();
