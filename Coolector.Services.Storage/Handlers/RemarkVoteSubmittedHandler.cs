@@ -6,6 +6,7 @@ using RawRabbit;
 using Coolector.Services.Storage.Repositories;
 using Coolector.Services.Remarks.Shared.Dto;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Coolector.Services.Storage.Handlers
 {
@@ -32,14 +33,7 @@ namespace Coolector.Services.Storage.Handlers
                     {
                         return;
                     }
-                    if (@event.Positive)
-                    {
-                        remark.Value.Rating++;
-                    }
-                    else
-                    {
-                        remark.Value.Rating--;
-                    }
+                    Vote(remark.Value, @event.UserId, @event.Positive);
                     remark.Value.Votes.Add(new VoteDto
                     {
                         UserId = @event.UserId,
@@ -49,6 +43,31 @@ namespace Coolector.Services.Storage.Handlers
                     await _remarkRepository.UpdateAsync(remark.Value);
                 })
                 .ExecuteAsync();
+        }
+
+        private void Vote(RemarkDto remark, string userId, bool positive)
+        {
+            var vote = remark.Votes.SingleOrDefault(x => x.UserId == userId);
+            if (vote != null)
+            {
+                if (vote.Positive)
+                {
+                    remark.Rating--;
+                }
+                else
+                {
+                    remark.Rating++;
+                }
+                remark.Votes.Remove(vote);
+            }
+            if (positive)
+            {
+                remark.Rating++;
+            }
+            else
+            {
+                remark.Rating--;
+            }
         }
     }
 }
