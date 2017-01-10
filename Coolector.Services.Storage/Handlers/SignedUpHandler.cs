@@ -6,16 +6,16 @@ using Coolector.Services.Users.Shared.Events;
 
 namespace Coolector.Services.Storage.Handlers
 {
-    public class UserSignedUpHandler : IEventHandler<UserSignedUp>
+    public class SignedUpHandler : IEventHandler<SignedUp>
     {
         private readonly IUserRepository _repository;
 
-        public UserSignedUpHandler(IUserRepository repository)
+        public SignedUpHandler(IUserRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task HandleAsync(UserSignedUp @event)
+        public async Task HandleAsync(SignedUp @event)
         {
             if (await _repository.ExistsAsync(@event.UserId))
                 return;

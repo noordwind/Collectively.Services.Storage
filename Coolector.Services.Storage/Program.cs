@@ -14,7 +14,7 @@ namespace Coolector.Services.Storage
                 .Create<Startup>(port: 10000)
                 .UseAutofac(Bootstrapper.LifeTimeScope)
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
-                .SubscribeToEvent<UserSignedUp>()
+                .SubscribeToEvent<SignedUp>()
                 .SubscribeToEvent<UserNameChanged>()
                 .SubscribeToEvent<AvatarChanged>()
                 .SubscribeToEvent<RemarkCreated>()

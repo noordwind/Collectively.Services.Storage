@@ -9,18 +9,18 @@ using It = Machine.Specifications.It;
 
 namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
-    public abstract class UserSignedUpHandler_specs
+    public abstract class SignedUpHandler_specs
     {
-        protected static UserSignedUpHandler Handler;
+        protected static SignedUpHandler Handler;
         protected static Mock<IUserRepository> UserRepositoryMock;
-        protected static UserSignedUp Event;
+        protected static SignedUp Event;
         protected static UserDto User;
         protected static Exception Exception;
 
         protected static void Initialize(Action setup)
         {
             UserRepositoryMock = new Mock<IUserRepository>();
-            Handler = new UserSignedUpHandler(UserRepositoryMock.Object);
+            Handler = new SignedUpHandler(UserRepositoryMock.Object);
             setup();
         }
 
@@ -38,14 +38,14 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new UserSignedUp(Guid.NewGuid(), User?.UserId, User?.Email, User?.Name,
+            Event = new SignedUp(Guid.NewGuid(), User?.UserId, User?.Email, User?.Name,
                 User?.PictureUrl, User?.Role, User?.State, "coolector",
                 string.Empty, User?.CreatedAt ?? DateTime.UtcNow);
         }
     }
 
     [Subject("UserNameChangedHandler HandleAsync")]
-    public class when_invoking_user_signed_up_handle_async : UserSignedUpHandler_specs
+    public class when_invoking_user_signed_up_handle_async : SignedUpHandler_specs
     {
         Establish context = () => Initialize(() =>
         {
@@ -67,7 +67,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     }
 
     [Subject("UserNameChangedHandler HandleAsync")]
-    public class when_invoking_user_signed_up_for_existing_user : UserSignedUpHandler_specs
+    public class when_invoking_user_signed_up_for_existing_user : SignedUpHandler_specs
     {
         private Establish context = () => Initialize(() =>
         {
