@@ -15,7 +15,7 @@ namespace Coolector.Services.Storage
                 .UseAutofac(Bootstrapper.LifeTimeScope)
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
                 .SubscribeToEvent<SignedUp>()
-                .SubscribeToEvent<UserNameChanged>()
+                .SubscribeToEvent<UsernameChanged>()
                 .SubscribeToEvent<AvatarChanged>()
                 .SubscribeToEvent<RemarkCreated>()
                 .SubscribeToEvent<RemarkDeleted>()

@@ -12,10 +12,10 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
     public abstract class UsernameChangedHandler_specs
     {
-        protected static UserNameChangedHandler Handler;
+        protected static UsernameChangedHandler Handler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
-        protected static UserNameChanged Event;
+        protected static UsernameChanged Event;
         protected static UserDto User;
         protected static Exception Exception;
 
@@ -23,7 +23,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             UserRepositoryMock = new Mock<IUserRepository>();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
-            Handler = new UserNameChangedHandler(UserRepositoryMock.Object, RemarkRepositoryMock.Object);
+            Handler = new UsernameChangedHandler(UserRepositoryMock.Object, RemarkRepositoryMock.Object);
             setup();
         }
 
@@ -41,7 +41,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new UserNameChanged(Guid.NewGuid(), User?.UserId, User?.Name, User?.State);
+            Event = new UsernameChanged(Guid.NewGuid(), User?.UserId, User?.Name, User?.State);
         }
     }
 

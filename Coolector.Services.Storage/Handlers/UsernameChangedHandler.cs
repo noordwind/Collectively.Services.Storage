@@ -7,22 +7,22 @@ using NLog;
 
 namespace Coolector.Services.Storage.Handlers
 {
-    public class UserNameChangedHandler : IEventHandler<UserNameChanged>
+    public class UsernameChangedHandler : IEventHandler<UsernameChanged>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IUserRepository _userRepository;
         private readonly IRemarkRepository _remarkRepository;
 
-        public UserNameChangedHandler(IUserRepository userRepository, IRemarkRepository remarkRepository)
+        public UsernameChangedHandler(IUserRepository userRepository, IRemarkRepository remarkRepository)
         {
             _userRepository = userRepository;
             _remarkRepository = remarkRepository;
         }
 
-        public async Task HandleAsync(UserNameChanged @event)
+        public async Task HandleAsync(UsernameChanged @event)
         {
-            Logger.Debug($"Handle {nameof(UserNameChanged)} event, userId:{@event.UserId}, newName:{@event.NewName}");
+            Logger.Debug($"Handle {nameof(UsernameChanged)} event, userId:{@event.UserId}, newName:{@event.NewName}");
             var user = await _userRepository.GetByIdAsync(@event.UserId);
             if (user.HasNoValue)
             {
