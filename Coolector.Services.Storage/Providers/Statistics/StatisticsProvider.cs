@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Coolector.Common.Types;
 using Coolector.Services.Statistics.Shared.Dto;
 using Coolector.Services.Storage.Queries;

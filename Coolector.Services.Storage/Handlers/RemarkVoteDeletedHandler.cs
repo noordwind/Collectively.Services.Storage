@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Coolector.Common.Events;
 using Coolector.Common.Services;
 using Coolector.Services.Remarks.Shared.Events;
-using RawRabbit;
 using Coolector.Services.Storage.Repositories;
 using System.Linq;
 
@@ -11,13 +10,11 @@ namespace Coolector.Services.Storage.Handlers
     public class RemarkVoteDeletedHandler : IEventHandler<RemarkVoteDeleted>
     {
         private readonly IHandler _handler;
-        private readonly IBusClient _bus;
         private readonly IRemarkRepository _remarkRepository;
 
-        public RemarkVoteDeletedHandler(IHandler handler, IBusClient bus, IRemarkRepository remarkRepository)
+        public RemarkVoteDeletedHandler(IHandler handler, IRemarkRepository remarkRepository)
         {
             _handler = handler;
-            _bus = bus;
             _remarkRepository = remarkRepository;
         }
 
