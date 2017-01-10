@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Coolector.Common.Events;
 using Coolector.Common.Services;
@@ -43,6 +44,9 @@ namespace Coolector.Services.Storage.Handlers
 
         private void Vote(RemarkDto remark, string userId, bool positive)
         {
+            if (remark.Votes == null)
+                remark.Votes = new List<VoteDto>();
+
             var vote = remark.Votes.SingleOrDefault(x => x.UserId == userId);
             if (vote != null)
             {
