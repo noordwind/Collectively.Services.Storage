@@ -4,6 +4,7 @@ using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
+using Coolector.Common.Services;
 using Coolector.Services.Users.Shared.Dto;
 using Coolector.Services.Users.Shared.Events;
 using It = Machine.Specifications.It;
@@ -12,7 +13,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
     public abstract class UsernameChangedHandler_specs
     {
-        protected static UsernameChangedHandler Handler;
+        protected static IHandler Handler;
+        protected static UsernameChangedHandler UsernameChangedHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static UsernameChanged Event;
@@ -21,9 +23,11 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize(Action setup)
         {
+            Handler = new Handler();
             UserRepositoryMock = new Mock<IUserRepository>();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
-            Handler = new UsernameChangedHandler(UserRepositoryMock.Object, RemarkRepositoryMock.Object);
+            UsernameChangedHandler = new UsernameChangedHandler(Handler,
+                UserRepositoryMock.Object, RemarkRepositoryMock.Object);
             setup();
         }
 
@@ -54,7 +58,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             InitializeEvent();
         });
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => UsernameChangedHandler.HandleAsync(Event).Await();
 
         It should_call_user_repository_get_by_id_async = () =>
         {
@@ -65,18 +69,5 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             UserRepositoryMock.Verify(x => x.EditAsync(Moq.It.IsAny<UserDto>()), Times.Once);
         };
-    }
-
-    [Subject("UserNameChangedHandler HandleAsync")]
-    public class when_invoking_username_changed_handle_async_without_user : UsernameChangedHandler_specs
-    {
-        Establish context = () => Initialize(() =>
-        {
-            InitializeEvent();
-        });
-
-        Because of = () => Exception = Catch.Exception(() => Handler.HandleAsync(Event).Await());
-
-        It should_fail = () => Exception.ShouldBeOfExactType<ServiceException>();
     }
 }

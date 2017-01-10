@@ -4,6 +4,7 @@ using Machine.Specifications;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Coolector.Common.Services;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;
 using Coolector.Services.Remarks.Shared.Events.Models;
@@ -14,7 +15,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
     public class RemarkResolvedHandler_specs
     {
-        protected static RemarkResolvedHandler Handler;
+        protected static IHandler Handler;
+        protected static RemarkResolvedHandler RemarkResolvedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static RemarkResolved Event;
@@ -32,10 +34,12 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize()
         {
+            Handler = new Handler();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             UserRepositoryMock = new Mock<IUserRepository>();
 
-            Handler = new RemarkResolvedHandler(RemarkRepositoryMock.Object,
+            RemarkResolvedHandler = new RemarkResolvedHandler(Handler,
+                RemarkRepositoryMock.Object,
                 UserRepositoryMock.Object);
 
             User = new UserDto
@@ -84,7 +88,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
     {
         Establish context = () => Initialize();
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => RemarkResolvedHandler.HandleAsync(Event).Await();
 
         It should_fetch_remark = () =>
         {
@@ -114,7 +118,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 .ReturnsAsync(null);
         };
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => RemarkResolvedHandler.HandleAsync(Event).Await();
 
         It should_fetch_remark = () =>
         {
@@ -144,7 +148,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 .ReturnsAsync(null);
         };
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => RemarkResolvedHandler.HandleAsync(Event).Await();
 
         It should_fetch_remark = () =>
         {

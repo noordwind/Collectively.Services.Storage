@@ -3,6 +3,7 @@ using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
+using Coolector.Common.Services;
 using Coolector.Services.Users.Shared.Dto;
 using Coolector.Services.Users.Shared.Events;
 using It = Machine.Specifications.It;
@@ -11,7 +12,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
     public abstract class SignedUpHandler_specs
     {
-        protected static SignedUpHandler Handler;
+        protected static IHandler Handler;
+        protected static SignedUpHandler SignedUpHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static SignedUp Event;
         protected static UserDto User;
@@ -19,8 +21,9 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize(Action setup)
         {
+            Handler = new Handler();
             UserRepositoryMock = new Mock<IUserRepository>();
-            Handler = new SignedUpHandler(UserRepositoryMock.Object);
+            SignedUpHandler = new SignedUpHandler(Handler, UserRepositoryMock.Object);
             setup();
         }
 
@@ -53,7 +56,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             InitializeEvent();
         });
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => SignedUpHandler.HandleAsync(Event).Await();
 
         It should_call_user_repository_exists_async = () =>
         {
@@ -76,7 +79,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             UserRepositoryMock.Setup(x => x.ExistsAsync(User.UserId)).ReturnsAsync(true);
         });
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => SignedUpHandler.HandleAsync(Event).Await();
 
         It should_call_user_repository_exists_async = () =>
         {

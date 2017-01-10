@@ -4,6 +4,7 @@ using Machine.Specifications;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Coolector.Common.Services;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;
 using It = Machine.Specifications.It;
@@ -12,7 +13,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
     public abstract class RemarkDeletedHandler_specs
     {
-        protected static RemarkDeletedHandler Handler;
+        protected static IHandler Handler;
+        protected static RemarkDeletedHandler RemarkDeletedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
 
         protected static RemarkDto RemarkDto;
@@ -20,6 +22,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize()
         {
+            Handler = new Handler();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
 
             var guid = Guid.NewGuid();
@@ -30,7 +33,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             };
             Event = new RemarkDeleted(Guid.NewGuid(), guid, Moq.It.IsAny<string>());
 
-            Handler = new RemarkDeletedHandler(RemarkRepositoryMock.Object);
+            RemarkDeletedHandler = new RemarkDeletedHandler(Handler, RemarkRepositoryMock.Object);
         }
     }
 
@@ -46,7 +49,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         Because of = () =>
         {
-            Handler.HandleAsync(Event).Await();
+            RemarkDeletedHandler.HandleAsync(Event).Await();
         };
 
         It should_call_remark_repository_delete_async = () =>

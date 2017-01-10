@@ -4,6 +4,7 @@ using Machine.Specifications;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Coolector.Common.Services;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;
 using Coolector.Services.Remarks.Shared.Events.Models;
@@ -15,7 +16,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
     public abstract class RemarkCreatedHandler_specs
     {
-        protected static RemarkCreatedHandler Handler;
+        protected static IHandler Handler;
+        protected static RemarkCreatedHandler RemarkCreatedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static RemarkCreated Event;
@@ -24,10 +26,12 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize(Action setup)
         {
+            Handler = new Handler();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             UserRepositoryMock = new Mock<IUserRepository>();
-            Handler = new RemarkCreatedHandler(UserRepositoryMock.Object,
-                RemarkRepositoryMock.Object, new GeneralSettings());
+            RemarkCreatedHandler = new RemarkCreatedHandler(Handler, 
+                UserRepositoryMock.Object,
+                RemarkRepositoryMock.Object);
             setup();
         }
 
@@ -61,7 +65,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             InitializeEvent();
         });
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => RemarkCreatedHandler.HandleAsync(Event).Await();
 
         It should_call_user_repository_get_by_id_async = () =>
         {
@@ -72,20 +76,5 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             RemarkRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<RemarkDto>()), Times.Once);
         };
-    }
-
-    [Subject("RemarkCreatedHandler HandleAsync")]
-    public class when_invoking_remark_created_handle_async_without_user : RemarkCreatedHandler_specs
-    {
-        Establish context = () => Initialize(() =>
-        {
-            InitializeEvent();
-        });
-
-        Because of = () => Exception = Catch.Exception(() => Handler.HandleAsync(Event).Await());
-
-        It should_fail = () => Exception.ShouldBeOfExactType<InvalidOperationException>();
-
-        It should_have_a_specific_reason = () => Exception.Message.ShouldContain("Operation is not valid");
     }
 }

@@ -4,6 +4,7 @@ using Coolector.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
+using Coolector.Common.Services;
 using Coolector.Services.Users.Shared.Dto;
 using Coolector.Services.Users.Shared.Events;
 using It = Machine.Specifications.It;
@@ -12,7 +13,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 {
     public abstract class AvatarChangedHandler_specs
     {
-        protected static AvatarChangedHandler Handler;
+        protected static IHandler Handler;
+        protected static AvatarChangedHandler AvatarChangedHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static AvatarChanged Event;
         protected static UserDto User;
@@ -20,8 +22,9 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize(Action setup)
         {
+            Handler = new Handler();
             UserRepositoryMock = new Mock<IUserRepository>();
-            Handler = new AvatarChangedHandler(UserRepositoryMock.Object);
+            AvatarChangedHandler = new AvatarChangedHandler(Handler, UserRepositoryMock.Object);
             setup();
         }
 
@@ -52,7 +55,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
             InitializeEvent();
         });
 
-        Because of = () => Handler.HandleAsync(Event).Await();
+        Because of = () => AvatarChangedHandler.HandleAsync(Event).Await();
 
         It should_call_user_repository_get_by_id_async = () =>
         {
@@ -63,18 +66,5 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         {
             UserRepositoryMock.Verify(x => x.EditAsync(Moq.It.IsAny<UserDto>()), Times.Once);
         };
-    }
-
-    [Subject("AvatarChangedHandler HandleAsync")]
-    public class when_invoking_avatar_changed_handle_async_without_user : AvatarChangedHandler_specs
-    {
-        Establish context = () => Initialize(() =>
-        {
-            InitializeEvent();
-        });
-
-        Because of = () => Exception = Catch.Exception(() => Handler.HandleAsync(Event).Await());
-
-        It should_fail = () => Exception.ShouldBeOfExactType<ServiceException>();
     }
 }
