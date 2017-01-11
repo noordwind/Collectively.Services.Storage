@@ -14,6 +14,8 @@ namespace Coolector.Services.Storage.Repositories.Queries
 {
     public static class RemarkQueries
     {
+        private static readonly int NegativeVotesThreshold = -2;
+
         public static IMongoCollection<RemarkDto> Remarks(this IMongoDatabase database)
             => database.GetCollection<RemarkDto>();
 
@@ -58,6 +60,10 @@ namespace Coolector.Services.Storage.Repositories.Queries
                     filter = filter & filterBuilder.Where(x => x.Resolved);
                 else
                     filter = filter & filterBuilder.Where(x => x.Resolved == false);
+            }
+            if (!query.Disliked)
+            {
+                filter = filter & filterBuilder.Where(x => x.Rating > NegativeVotesThreshold);
             }
 
             var filteredRemarks = remarks.Find(filter);
