@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Coolector.Common.Types;
 
@@ -18,8 +19,7 @@ namespace Coolector.Services.Storage.Services
 
         public void SetAuthorizationHeader(string token)
         {
-            _httpClient.DefaultRequestHeaders.Remove("Authorization");
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public async Task<Maybe<HttpResponseMessage>> GetAsync(string url, string endpoint)
