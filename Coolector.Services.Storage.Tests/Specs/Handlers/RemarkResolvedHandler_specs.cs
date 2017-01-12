@@ -48,7 +48,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 Name = "TestUser"
             };
             Photo = new RemarkFile(Guid.NewGuid(), "test.jpg", "small", "http://my-test-photo.com", "metadata");
-            Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, User.Name, new List<RemarkFile>{Photo}, ResolvedAt);
+            Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, User.Name, null, new List<RemarkFile>{Photo}, ResolvedAt);
             Author = new RemarkAuthorDto
             {
                 UserId = UserId,
