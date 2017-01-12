@@ -35,7 +35,16 @@ namespace Coolector.Services.Storage.Handlers
                     var user = await _userRepository.GetByIdAsync(@event.UserId);
                     if (user.HasNoValue)
                         return;
-
+                    
+                    if (@event.ResolvedAtLocation != null)
+                    {
+                        remark.Value.ResolvedAtLocation = new LocationDto
+                        {
+                            Address = @event.ResolvedAtLocation.Address,
+                            Coordinates = new[] {@event.ResolvedAtLocation.Longitude, @event.ResolvedAtLocation.Latitude},
+                            Type = "Point"
+                        };
+                    }
                     remark.Value.Photos = @event.Photos.Select(x => new FileDto
                     {
                         GroupId = x.GroupId,
