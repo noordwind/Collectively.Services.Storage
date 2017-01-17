@@ -54,6 +54,8 @@ namespace Coolector.Services.Storage.Repositories.Queries
                 filter = filter & filterBuilder.Where(x => x.Description.Contains(query.Description));
             if (query.Categories?.Any() == true)
                 filter = filter & filterBuilder.Where(x => query.Categories.Contains(x.Category.Name));
+            if (query.Tags?.Any() == true)
+                filter = filter & filterBuilder.Where(x => x.Tags.Any(y => query.Tags.Contains(y)));
             if (query.State.NotEmpty() && query.State != RemarkStates.All)
             {
                 if (query.State == RemarkStates.Resolved)
