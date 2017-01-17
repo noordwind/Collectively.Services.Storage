@@ -119,7 +119,7 @@ namespace Coolector.Services.Storage.Framework
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 ctx.Response.Headers.Add("Access-Control-Allow-Methods", "POST,PUT,GET,OPTIONS,DELETE");
                 ctx.Response.Headers.Add("Access-Control-Allow-Headers",
-                    "Authorization, Origin, X-Requested-With, Content-Type, Accept");
+                    "Authorization, Origin, X-Requested-With, Content-Type, Accept, X-Total-Count");
             };
             pipelines.SetupTokenAuthentication(container);
             _exceptionHandler = container.Resolve<IExceptionHandler>();
