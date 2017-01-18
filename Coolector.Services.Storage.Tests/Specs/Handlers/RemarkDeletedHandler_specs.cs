@@ -16,13 +16,15 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static IHandler Handler;
         protected static RemarkDeletedHandler RemarkDeletedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
+        protected static Mock<IExceptionHandler> ExceptionHandlerMock;
 
         protected static RemarkDto RemarkDto;
         protected static RemarkDeleted Event;
 
         protected static void Initialize()
         {
-            Handler = new Handler();
+            ExceptionHandlerMock = new Mock<IExceptionHandler>();
+            Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
 
             var guid = Guid.NewGuid();

@@ -19,6 +19,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static RemarkResolvedHandler RemarkResolvedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IUserRepository> UserRepositoryMock;
+        protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static RemarkResolved Event;
         protected static Guid RemarkId = Guid.NewGuid();
         protected static string UserId = "UserId";
@@ -34,7 +35,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         protected static void Initialize()
         {
-            Handler = new Handler();
+            ExceptionHandlerMock = new Mock<IExceptionHandler>();
+            Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             UserRepositoryMock = new Mock<IUserRepository>();
 

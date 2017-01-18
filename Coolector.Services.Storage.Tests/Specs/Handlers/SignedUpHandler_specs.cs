@@ -15,13 +15,15 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static IHandler Handler;
         protected static SignedUpHandler SignedUpHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
+        protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static SignedUp Event;
         protected static UserDto User;
         protected static Exception Exception;
 
         protected static void Initialize(Action setup)
         {
-            Handler = new Handler();
+            ExceptionHandlerMock = new Mock<IExceptionHandler>();
+            Handler = new Handler(ExceptionHandlerMock.Object);
             UserRepositoryMock = new Mock<IUserRepository>();
             SignedUpHandler = new SignedUpHandler(Handler, UserRepositoryMock.Object);
             setup();
