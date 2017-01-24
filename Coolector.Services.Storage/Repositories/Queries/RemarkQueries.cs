@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Coolector.Common.Extensions;
 using Coolector.Common.Mongo;
@@ -71,13 +72,51 @@ namespace Coolector.Services.Storage.Repositories.Queries
             var filteredRemarks = remarks.Find(filter);
             var totalCount = await filteredRemarks.CountAsync();
             var totalPages = (int) totalCount / query.Results + 1;
-            var result = await filteredRemarks
+            var findResult = filteredRemarks
                 .Skip(query.Results * (query.Page - 1))
-                .Limit(query.Results)
-                .ToListAsync();
+                .Limit(query.Results);
 
+            findResult = SortRemarks(query, findResult);
+
+            var result = await findResult.ToListAsync();
             return PagedResult<RemarkDto>.Create(result, query.Page, query.Results, totalPages, totalCount);
         }
+
+        private static IFindFluent<RemarkDto,RemarkDto>  SortRemarks(BrowseRemarks query, 
+            IFindFluent<RemarkDto,RemarkDto> findResult)
+        {
+            if(query.OrderBy.Empty())
+            {
+                return findResult;
+            }
+            if(query.SortOrder.Empty())
+            {
+                query.SortOrder = "ascending";
+            }
+
+            query.OrderBy = query.OrderBy.ToLowerInvariant();
+            query.SortOrder = query.SortOrder.ToLowerInvariant();
+
+            switch(query.OrderBy)
+            {
+                case "userid": return SortRemarks(query, findResult, x => x.Author.UserId);
+                case "createdat": return SortRemarks(query, findResult, x => x.CreatedAt);
+            }
+
+            return findResult;
+        }
+
+        private static IFindFluent<RemarkDto,RemarkDto>  SortRemarks(BrowseRemarks query,
+            IFindFluent<RemarkDto,RemarkDto> findResult, Expression<Func<RemarkDto, object>> sortBy)
+        {
+            switch(query.SortOrder)
+            {
+                case "ascending": return findResult.SortBy(sortBy);
+                case "descending": return findResult.SortByDescending(sortBy);
+            }
+
+            return findResult;
+        }      
 
         private static bool IsLocationProvided(BrowseRemarks query)
             => (Math.Abs(query.Latitude) <= 0.0000000001 
