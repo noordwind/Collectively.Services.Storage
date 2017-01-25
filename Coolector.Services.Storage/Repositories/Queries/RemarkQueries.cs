@@ -51,6 +51,8 @@ namespace Coolector.Services.Storage.Repositories.Queries
                 filter = filterBuilder.Where(x => x.Id != Guid.Empty);
             if (query.AuthorId.NotEmpty())
                 filter = filter & filterBuilder.Where(x => x.Author.UserId == query.AuthorId);
+            if (query.ResolverId.NotEmpty())
+                filter = filter & filterBuilder.Where(x => x.Resolver != null && x.Resolver.UserId == query.ResolverId);
             if (!query.Description.Empty())
                 filter = filter & filterBuilder.Where(x => x.Description.Contains(query.Description));
             if (query.Categories?.Any() == true)
