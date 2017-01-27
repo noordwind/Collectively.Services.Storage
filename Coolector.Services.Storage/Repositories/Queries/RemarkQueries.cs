@@ -50,7 +50,18 @@ namespace Coolector.Services.Storage.Repositories.Queries
             if (query.Latest)
                 filter = filterBuilder.Where(x => x.Id != Guid.Empty);
             if (query.AuthorId.NotEmpty())
+            {
                 filter = filter & filterBuilder.Where(x => x.Author.UserId == query.AuthorId);
+                
+                if (query.OnlyLiked)
+                {
+                    filter = filter & filterBuilder.Where(x => x.Votes.Any(v => v.UserId == query.AuthorId && v.Positive));
+                }
+                else if (query.OnlyDisliked)
+                {
+                    filter = filter & filterBuilder.Where(x => x.Votes.Any(v => v.UserId == query.AuthorId && !v.Positive));
+                }
+            }
             if (query.ResolverId.NotEmpty())
                 filter = filter & filterBuilder.Where(x => x.Resolver != null && x.Resolver.UserId == query.ResolverId);
             if (!query.Description.Empty())
@@ -70,6 +81,7 @@ namespace Coolector.Services.Storage.Repositories.Queries
             {
                 filter = filter & filterBuilder.Where(x => x.Rating > NegativeVotesThreshold);
             }
+
 
             var filteredRemarks = remarks.Find(filter);
             var totalCount = await filteredRemarks.CountAsync();
