@@ -125,7 +125,7 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
         };
 
         It should_contain_only_resolved_remarks = () 
-            => Remarks.All(x => x.Resolved).ShouldBeTrue();
+            => Remarks.All(x => x.State.State == "resolved").ShouldBeTrue();
     }
 
     [Subject("StorageService fetch active remarks")]
@@ -152,7 +152,7 @@ namespace Coolector.Services.Storage.Tests.EndToEnd.Specs
         };
 
         It should_return_active_remarks = () 
-            => Remarks.All(x => x.Resolved == false).ShouldBeTrue();
+            => Remarks.All(x => x.State.State != "resolved").ShouldBeTrue();
     }
 
     [Subject("StorageService fetch single remark")]

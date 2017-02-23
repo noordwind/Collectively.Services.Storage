@@ -43,7 +43,8 @@ namespace Coolector.Services.Storage.Handlers
         }
 
         private static RemarkDto MapToDto(RemarkCreated @event, UserDto user)
-            => new RemarkDto
+        {   
+            var remarkDto  = new RemarkDto
             {
                 Id = @event.RemarkId,
                 Description = @event.Description,
@@ -59,14 +60,38 @@ namespace Coolector.Services.Storage.Handlers
                     Type = "Point"
                 },
                 CreatedAt = DateTime.UtcNow,
-                Author = new RemarkAuthorDto
+                Author = new RemarkUserDto
                 {
                     UserId = @event.UserId,
                     Name = user.Name
+                },
+                States = new List<RemarkStateDto>()
+                {
+                    new RemarkStateDto
+                    {
+                        State = @event.State.State,
+                        User = new RemarkUserDto
+                        {
+                            UserId = @event.State.UserId,
+                            Name = @event.State.Username
+                        },
+                        Description = @event.State.Description,
+                        Location = new LocationDto
+                        {
+                            Address = @event.State.Location.Address,
+                            Coordinates = new[] {@event.State.Location.Longitude, @event.State.Location.Latitude},
+                            Type = "Point"
+                        },
+                        CreatedAt = @event.State.CreatedAt
+                    }
                 },
                 Tags = @event.Tags.ToList(),
                 Photos = new List<FileDto>(),
                 Votes = new List<VoteDto>()
             };
+            remarkDto.State = remarkDto.States.First();
+
+            return remarkDto;
+        }
     }
 }

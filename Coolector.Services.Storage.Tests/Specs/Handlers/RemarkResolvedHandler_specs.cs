@@ -27,7 +27,7 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
         protected static DateTime CreatedAt = DateTime.Now - TimeSpan.FromMinutes(5.0);
         protected static DateTime ResolvedAt = DateTime.Now;
         protected static RemarkDto Remark;
-        protected static RemarkAuthorDto Author;
+        protected static RemarkUserDto Author;
         protected static RemarkCategoryDto Category;
         protected static LocationDto Location;
         protected static FileDto File;
@@ -50,8 +50,8 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
                 Name = "TestUser"
             };
             Photo = new RemarkFile(Guid.NewGuid(), "test.jpg", "small", "http://my-test-photo.com", "metadata");
-            Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, User.Name, null, new List<RemarkFile>{Photo}, ResolvedAt);
-            Author = new RemarkAuthorDto
+            Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, User.Name, string.Empty, null, ResolvedAt, new List<RemarkFile>{Photo});
+            Author = new RemarkUserDto
             {
                 UserId = UserId,
                 Name = "TestUser"
@@ -104,9 +104,9 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         It should_update_remark = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
-                && r.ResolvedAt == Event.ResolvedAt
-                && r.Resolver.UserId == Event.UserId)));
+            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.State.State == Event.State.State
+                && r.State.CreatedAt == Event.State.CreatedAt
+                && r.State.User.UserId == Event.State.UserId)), Times.Once);
         };
     }
 
@@ -134,9 +134,9 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         It should_not_update_remark = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
-                && r.ResolvedAt == Event.ResolvedAt
-                && r.Resolver.UserId == Event.UserId)), Times.Never);
+            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.State.State == Event.State.State
+                && r.State.CreatedAt == Event.State.CreatedAt
+                && r.State.User.UserId == Event.UserId)), Times.Never);
         };
     }
 
@@ -164,9 +164,9 @@ namespace Coolector.Services.Storage.Tests.Specs.Handlers
 
         It should_not_update_remark = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.Resolved
-                && r.ResolvedAt == Event.ResolvedAt
-                && r.Resolver.UserId == Event.UserId)), Times.Never);
+            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.State.State == Event.State.State
+                && r.State.CreatedAt == Event.State.CreatedAt
+                && r.State.User.UserId == Event.UserId)), Times.Never);
         };
     }
 }

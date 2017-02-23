@@ -8,7 +8,6 @@ using Coolector.Common.Services;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;
 using Coolector.Services.Remarks.Shared.Events.Models;
-using Coolector.Services.Storage.Settings;
 using Coolector.Services.Users.Shared.Dto;
 using It = Machine.Specifications.It;
 

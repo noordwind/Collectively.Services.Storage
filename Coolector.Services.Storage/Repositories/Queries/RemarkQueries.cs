@@ -35,9 +35,13 @@ namespace Coolector.Services.Storage.Repositories.Queries
                 return PagedResult<RemarkDto>.Empty;
 
             if (query.Page <= 0)
+            {
                 query.Page = 1;
+            }
             if (query.Results <= 0)
+            {
                 query.Results = 10;
+            }
 
             var filterBuilder = new FilterDefinitionBuilder<RemarkDto>();
             var filter = FilterDefinition<RemarkDto>.Empty;
@@ -48,7 +52,9 @@ namespace Coolector.Services.Storage.Repositories.Queries
                         query.Longitude, query.Latitude, maxDistance);
             }
             if (query.Latest)
+            {
                 filter = filterBuilder.Where(x => x.Id != Guid.Empty);
+            }
             if (query.AuthorId.NotEmpty())
             {
                 filter = filter & filterBuilder.Where(x => x.Author.UserId == query.AuthorId);
@@ -63,25 +69,36 @@ namespace Coolector.Services.Storage.Repositories.Queries
                 }
             }
             if (query.ResolverId.NotEmpty())
-                filter = filter & filterBuilder.Where(x => x.Resolver != null && x.Resolver.UserId == query.ResolverId);
+            {
+                filter = filter & filterBuilder.Where(x => x.State.State == "resolved" && x.State.User.UserId == query.ResolverId);
+            }
             if (!query.Description.Empty())
+            {
                 filter = filter & filterBuilder.Where(x => x.Description.Contains(query.Description));
+            }
             if (query.Categories?.Any() == true)
+            {
                 filter = filter & filterBuilder.Where(x => query.Categories.Contains(x.Category.Name));
+            }
             if (query.Tags?.Any() == true)
+            {
                 filter = filter & filterBuilder.Where(x => x.Tags.Any(y => query.Tags.Contains(y)));
+            }
             if (query.State.NotEmpty() && query.State != RemarkStates.All)
             {
                 if (query.State == RemarkStates.Resolved)
-                    filter = filter & filterBuilder.Where(x => x.Resolved);
+                {
+                    filter = filter & filterBuilder.Where(x => x.State.State == "resolved");
+                }
                 else
-                    filter = filter & filterBuilder.Where(x => x.Resolved == false);
+                {
+                    filter = filter & filterBuilder.Where(x => x.State.State != "resolved");
+                }
             }
             if (!query.Disliked)
             {
                 filter = filter & filterBuilder.Where(x => x.Rating > NegativeVotesThreshold);
             }
-
 
             var filteredRemarks = remarks.Find(filter);
             var totalCount = await filteredRemarks.CountAsync();

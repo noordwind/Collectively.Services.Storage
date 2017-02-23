@@ -40,8 +40,8 @@ namespace Coolector.Services.Storage.Repositories
             var updateAuthor = Builders<RemarkDto>.Update.Set("author.name", name);
             await _database.Remarks().UpdateManyAsync(x => x.Author.UserId == userId, updateAuthor);
 
-            var updateResolver = Builders<RemarkDto>.Update.Set("resolver.name", name);
-            await _database.Remarks().UpdateManyAsync(x => x.Resolver.UserId == userId, updateResolver);
+            var updateStateName = Builders<RemarkDto>.Update.Set("state.user.name", name);
+            await _database.Remarks().UpdateManyAsync(x => x.State.User.Name == name, updateStateName);
         }
 
         public async Task AddManyAsync(IEnumerable<RemarkDto> remarks)

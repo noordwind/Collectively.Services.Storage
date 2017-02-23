@@ -5,6 +5,7 @@ using System.Linq;
 using Coolector.Common.Services;
 using Coolector.Services.Remarks.Shared.Dto;
 using Coolector.Services.Remarks.Shared.Events;
+using System.Collections.Generic;
 
 namespace Coolector.Services.Storage.Handlers
 {
@@ -36,15 +37,6 @@ namespace Coolector.Services.Storage.Handlers
                     if (user.HasNoValue)
                         return;
                     
-                    if (@event.ResolvedAtLocation != null)
-                    {
-                        remark.Value.ResolvedAtLocation = new LocationDto
-                        {
-                            Address = @event.ResolvedAtLocation.Address,
-                            Coordinates = new[] {@event.ResolvedAtLocation.Longitude, @event.ResolvedAtLocation.Latitude},
-                            Type = "Point"
-                        };
-                    }
                     remark.Value.Photos = @event.Photos.Select(x => new FileDto
                     {
                         GroupId = x.GroupId,
@@ -53,13 +45,34 @@ namespace Coolector.Services.Storage.Handlers
                         Url = x.Url,
                         Metadata = x.Metadata
                     }).ToList();
-                    remark.Value.Resolved = true;
-                    remark.Value.ResolvedAt = @event.ResolvedAt;
-                    remark.Value.Resolver = new RemarkAuthorDto
+                    
+                    var state = new RemarkStateDto
                     {
-                        UserId = user.Value.UserId,
-                        Name = user.Value.Name
+                        State = @event.State.State,
+                        User = new RemarkUserDto
+                        {
+                            UserId = @event.State.UserId,
+                            Name = @event.State.Username
+                        },
+                        Description = @event.State.Description,
+                        CreatedAt = @event.State.CreatedAt
                     };
+                    if (@event.State.Location != null)
+                    {
+                        state.Location = new LocationDto
+                        {
+                            Address = @event.State.Location.Address,
+                            Coordinates = new[] {@event.State.Location.Longitude, @event.State.Location.Latitude},
+                            Type = "Point"
+                        };
+                    }
+
+                    remark.Value.State = state;
+                    if(remark.Value.States == null)
+                    {
+                        remark.Value.States = new List<RemarkStateDto>();
+                    }
+                    remark.Value.States.Add(state);
                     await _remarkRepository.UpdateAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
