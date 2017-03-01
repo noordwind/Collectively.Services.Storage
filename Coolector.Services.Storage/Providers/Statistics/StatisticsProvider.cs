@@ -30,9 +30,9 @@ namespace Coolector.Services.Storage.Providers.Statistics
             => await _providerClient.GetAsync(
                 async () => await _statisticsServiceClient.GetRemarkStatisticsAsync(query));
 
-        public async Task<Maybe<RemarkGeneralStatisticsDto>> GetRemarkGeneralStatisticsAsync(GetRemarkGeneralStatistics query)
+        public async Task<Maybe<RemarksCountStatisticsDto>> GetRemarksCountStatisticsAsync(GetRemarksCountStatistics query)
             => await _providerClient.GetAsync(
-                async () => await _statisticsServiceClient.GetRemarkGeneralStatisticsAsync(query));
+                async () => await _statisticsServiceClient.GetRemarksCountStatisticsAsync(query));
 
         public async Task<Maybe<PagedResult<CategoryStatisticsDto>>> BrowseCategoryStatisticsAsync(BrowseCategoryStatistics query)
             => await _providerClient.GetCollectionAsync(
