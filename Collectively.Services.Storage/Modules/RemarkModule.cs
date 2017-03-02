@@ -1,6 +1,6 @@
-﻿using Collectively.Services.Storage.Models.Remarks;
+﻿using Collectively.Common.ServiceClients.Queries;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Providers.Remarks;
-using Collectively.Services.Storage.Queries;
 
 namespace Collectively.Services.Storage.Modules
 {

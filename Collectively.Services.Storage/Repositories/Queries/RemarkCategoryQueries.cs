@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Collectively.Common.Mongo;
+using Collectively.Common.ServiceClients.Queries;
 using Collectively.Services.Storage.Models.Remarks;
-using Collectively.Services.Storage.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

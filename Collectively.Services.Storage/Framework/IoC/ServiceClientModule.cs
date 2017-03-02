@@ -1,11 +1,11 @@
 using System.Linq;
 using Autofac;
 using Collectively.Common.Security;
-using Collectively.Services.Storage.Services;
-using Collectively.Services.Storage.Services.Operations;
-using Collectively.Services.Storage.Services.Remarks;
-using Collectively.Services.Storage.Services.Statistics;
-using Collectively.Services.Storage.Services.Users;
+using Collectively.Common.ServiceClients;
+using Collectively.Common.ServiceClients.Operations;
+using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Common.ServiceClients.Statistics;
+using Collectively.Common.ServiceClients.Users;
 
 namespace Collectively.Services.Storage.Framework.IoC
 {
@@ -19,22 +19,22 @@ namespace Collectively.Services.Storage.Framework.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(x => x.Resolve<ServicesSettings>()
-                    .Single(s => s.Name == "operations"))
+                    .Single(s => s.Title == "operations"))
                 .Named<ServiceSettings>(OperationsSettingsKey)
                 .SingleInstance();
 
             builder.Register(x => x.Resolve<ServicesSettings>()
-                    .Single(s => s.Name == "remarks"))
+                    .Single(s => s.Title == "remarks"))
                 .Named<ServiceSettings>(RemarksSettingsKey)
                 .SingleInstance();
 
             builder.Register(x => x.Resolve<ServicesSettings>()
-                    .Single(s => s.Name == "statistics"))
+                    .Single(s => s.Title == "statistics"))
                 .Named<ServiceSettings>(StatisticsSettingsKey)
                 .SingleInstance();
 
             builder.Register(x => x.Resolve<ServicesSettings>()
-                    .Single(s => s.Name == "users"))
+                    .Single(s => s.Title == "users"))
                 .Named<ServiceSettings>(UsersSettingsKey)
                 .SingleInstance();
 

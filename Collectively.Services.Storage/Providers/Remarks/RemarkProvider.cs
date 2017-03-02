@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Collectively.Common.ServiceClients.Queries;
+using Collectively.Common.ServiceClients.Remarks;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
-using Collectively.Services.Storage.Queries;
 using Collectively.Services.Storage.Repositories;
-using Collectively.Services.Storage.Services.Remarks;
 
 namespace Collectively.Services.Storage.Providers.Remarks
 {
@@ -32,7 +32,7 @@ namespace Collectively.Services.Storage.Providers.Remarks
         public async Task<Maybe<Remark>> GetAsync(Guid id)
             => await _provider.GetAsync(
                 async () => await _remarkRepository.GetByIdAsync(id),
-                async () => await _serviceClient.GetAsync(id));
+                async () => await _serviceClient.GetAsync<Remark>(id));
 
         public async Task<Maybe<PagedResult<Remark>>> BrowseAsync(BrowseRemarks query)
             => await _provider.GetCollectionAsync(async () => await _remarkRepository.BrowseAsync(query));
@@ -40,11 +40,11 @@ namespace Collectively.Services.Storage.Providers.Remarks
         public async Task<Maybe<PagedResult<RemarkCategory>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
             => await _provider.GetCollectionAsync(
                 async () => await _categoryRepository.BrowseAsync(query),
-                async () => await _serviceClient.BrowseCategoriesAsync(query));
+                async () => await _serviceClient.BrowseCategoriesAsync<RemarkCategory>(query));
 
         public async Task<Maybe<PagedResult<Tag>>> BrowseTagsAsync(BrowseRemarkTags query)
             => await _provider.GetCollectionAsync(
                 async () => await _tagRepository.BrowseAsync(query),
-                async () => await _serviceClient.BrowseTagsAsync(query));
+                async () => await _serviceClient.BrowseTagsAsync<Tag>(query));
     }
 }

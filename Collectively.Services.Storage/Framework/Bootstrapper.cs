@@ -20,12 +20,12 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Collectively.Common.Extensions;
 using Collectively.Common.Services;
 using Collectively.Common.RabbitMq;
+using Collectively.Common.ServiceClients;
 using Collectively.Services.Storage.Cache;
 using Collectively.Services.Storage.Providers.Operations;
 using Collectively.Services.Storage.Providers.Remarks;
 using Collectively.Services.Storage.Providers.Statistics;
 using Collectively.Services.Storage.Providers.Users;
-using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Framework
 {

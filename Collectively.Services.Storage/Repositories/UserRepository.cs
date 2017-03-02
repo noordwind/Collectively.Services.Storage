@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Collectively.Common.Types;
 using Collectively.Common.Mongo;
+using Collectively.Common.ServiceClients.Queries;
 using Collectively.Services.Storage.Models.Users;
-using Collectively.Services.Storage.Queries;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 

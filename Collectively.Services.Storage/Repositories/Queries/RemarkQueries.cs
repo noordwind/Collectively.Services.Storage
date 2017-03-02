@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Collectively.Common.Extensions;
 using Collectively.Common.Mongo;
+using Collectively.Common.ServiceClients.Queries;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
-using Collectively.Services.Storage.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Collectively.Common.ServiceClients.Queries;
+using Collectively.Common.ServiceClients.Users;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Users;
-using Collectively.Services.Storage.Queries;
 using Collectively.Services.Storage.Repositories;
-using Collectively.Services.Storage.Services.Users;
 
 namespace Collectively.Services.Storage.Providers.Users
 {
@@ -29,7 +29,7 @@ namespace Collectively.Services.Storage.Providers.Users
         public async Task<Maybe<AvailableResource>> IsAvailableAsync(string name) 
             => await _providerClient.GetAsync(
                 async () => await _userRepository.IsNameAvailableAsync(name),
-                async () => await _userServiceClient.IsAvailableAsync(name));
+                async () => await _userServiceClient.IsAvailableAsync<AvailableResource>(name));
 
         public async Task<Maybe<PagedResult<User>>> BrowseAsync(BrowseUsers query) 
             => await _providerClient.GetCollectionAsync(
@@ -38,16 +38,16 @@ namespace Collectively.Services.Storage.Providers.Users
         public async Task<Maybe<User>> GetAsync(string userId) 
             => await _providerClient.GetAsync(
                 async () => await _userRepository.GetByIdAsync(userId),
-                async () => await _userServiceClient.GetAsync(userId));
+                async () => await _userServiceClient.GetAsync<User>(userId));
 
         public async Task<Maybe<User>> GetByNameAsync(string name)
             => await _providerClient.GetAsync(
                 async () => await _userRepository.GetByNameAsync(name),
-                async () => await _userServiceClient.GetByNameAsync(name));
+                async () => await _userServiceClient.GetByNameAsync<User>(name));
 
         public async Task<Maybe<UserSession>> GetSessionAsync(Guid id)
             => await _providerClient.GetAsync(
                 async () => await _userSessionRepository.GetByIdAsync(id),
-                async () => await _userServiceClient.GetSessionAsync(id));
+                async () => await _userServiceClient.GetSessionAsync<UserSession>(id));
     }
 }
