@@ -1,8 +1,8 @@
 using System;
 
-namespace Collectively.Services.Storage.Dto.Statistics
+namespace Collectively.Services.Storage.Models.Statistics
 {
-    public class VoteDto
+    public class Vote
     {
         public string UserId { get; set; }
         public Guid RemarkId { get; set; }

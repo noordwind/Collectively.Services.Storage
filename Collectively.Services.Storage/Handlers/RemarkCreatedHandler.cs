@@ -6,6 +6,8 @@ using Collectively.Messages.Events;
 using Collectively.Common.Services;
 
 using Collectively.Messages.Events.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
+using Collectively.Services.Storage.Models.Users;
 using Collectively.Services.Storage.Repositories;
 
 
@@ -42,41 +44,41 @@ namespace Collectively.Services.Storage.Handlers
                 .ExecuteAsync();
         }
 
-        private static RemarkDto MapToDto(RemarkCreated @event, UserDto user)
+        private static Remark MapToDto(RemarkCreated @event, User user)
         {   
-            var remarkDto  = new RemarkDto
+            var remarkDto  = new Remark
             {
                 Id = @event.RemarkId,
                 Description = @event.Description,
-                Category = new RemarkCategoryDto
+                Category = new RemarkCategory
                 {
                     Id = @event.Category.CategoryId,
                     Name = @event.Category.Name
                 },
-                Location = new LocationDto
+                Location = new Location
                 {
                     Address = @event.Location.Address,
                     Coordinates = new[] {@event.Location.Longitude, @event.Location.Latitude},
                     Type = "Point"
                 },
                 CreatedAt = DateTime.UtcNow,
-                Author = new RemarkUserDto
+                Author = new RemarkUser
                 {
                     UserId = @event.UserId,
                     Name = user.Name
                 },
-                States = new List<RemarkStateDto>()
+                States = new List<RemarkState>()
                 {
-                    new RemarkStateDto
+                    new RemarkState
                     {
                         State = @event.State.State,
-                        User = new RemarkUserDto
+                        User = new RemarkUser
                         {
                             UserId = @event.State.UserId,
                             Name = @event.State.Username
                         },
                         Description = @event.State.Description,
-                        Location = new LocationDto
+                        Location = new Location
                         {
                             Address = @event.State.Location.Address,
                             Coordinates = new[] {@event.State.Location.Longitude, @event.State.Location.Latitude},
@@ -86,8 +88,8 @@ namespace Collectively.Services.Storage.Handlers
                     }
                 },
                 Tags = @event.Tags.ToList(),
-                Photos = new List<FileDto>(),
-                Votes = new List<VoteDto>()
+                Photos = new List<File>(),
+                Votes = new List<Vote>()
             };
             remarkDto.State = remarkDto.States.First();
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Collectively.Common.Types;
-using Collectively.Services.Storage.Dto.Operations;
+using Collectively.Services.Storage.Models.Operations;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 
@@ -16,12 +16,12 @@ namespace Collectively.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<OperationDto>> GetAsync(Guid requestId)
+        public async Task<Maybe<Operation>> GetAsync(Guid requestId)
             => await _database.Operations().GetByRequestIdAsync(requestId);
 
-        public async Task AddAsync(OperationDto operation) => await _database.Operations().InsertOneAsync(operation);
+        public async Task AddAsync(Operation operation) => await _database.Operations().InsertOneAsync(operation);
 
-        public async Task UpdateAsync(OperationDto operation)
+        public async Task UpdateAsync(Operation operation)
             => await _database.Operations().ReplaceOneAsync(x => x.Id == operation.Id, operation);
     }
 }

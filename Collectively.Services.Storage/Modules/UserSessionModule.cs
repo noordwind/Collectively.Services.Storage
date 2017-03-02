@@ -1,6 +1,6 @@
-﻿using Collectively.Services.Storage.Providers.Users;
+﻿using Collectively.Services.Storage.Models.Users;
+using Collectively.Services.Storage.Providers.Users;
 using Collectively.Services.Storage.Queries;
-
 
 namespace Collectively.Services.Storage.Modules
 {
@@ -8,7 +8,7 @@ namespace Collectively.Services.Storage.Modules
     {
         public UserSessionModule(IUserProvider userProvider) : base("user-sessions")
         {
-            Get("{id}", async args => await Fetch<GetUserSession, UserSessionDto>
+            Get("{id}", async args => await Fetch<GetUserSession, UserSession>
                 (async x => await userProvider.GetSessionAsync(x.Id)).HandleAsync());
         }
     }

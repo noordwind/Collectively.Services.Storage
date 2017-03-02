@@ -4,8 +4,8 @@ using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Repositories;
-
 using System.Linq;
+using Collectively.Services.Storage.Models.Remarks;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -31,7 +31,7 @@ namespace Collectively.Services.Storage.Handlers
                         return;
                     }
                     Vote(remark.Value, @event.UserId, @event.Positive);
-                    remark.Value.Votes.Add(new VoteDto
+                    remark.Value.Votes.Add(new Vote
                     {
                         UserId = @event.UserId,
                         Positive = @event.Positive,
@@ -42,10 +42,10 @@ namespace Collectively.Services.Storage.Handlers
                 .ExecuteAsync();
         }
 
-        private void Vote(RemarkDto remark, string userId, bool positive)
+        private void Vote(Remark remark, string userId, bool positive)
         {
             if (remark.Votes == null)
-                remark.Votes = new List<VoteDto>();
+                remark.Votes = new List<Vote>();
 
             var vote = remark.Votes.SingleOrDefault(x => x.UserId == userId);
             if (vote != null)

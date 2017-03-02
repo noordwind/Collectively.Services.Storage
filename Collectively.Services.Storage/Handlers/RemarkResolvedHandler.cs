@@ -6,6 +6,7 @@ using Collectively.Common.Services;
 
 using Collectively.Messages.Events.Remarks;
 using System.Collections.Generic;
+using Collectively.Services.Storage.Models.Remarks;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -37,7 +38,7 @@ namespace Collectively.Services.Storage.Handlers
                     if (user.HasNoValue)
                         return;
                     
-                    remark.Value.Photos = @event.Photos.Select(x => new FileDto
+                    remark.Value.Photos = @event.Photos.Select(x => new File
                     {
                         GroupId = x.GroupId,
                         Name = x.Name,
@@ -46,10 +47,10 @@ namespace Collectively.Services.Storage.Handlers
                         Metadata = x.Metadata
                     }).ToList();
                     
-                    var state = new RemarkStateDto
+                    var state = new RemarkState
                     {
                         State = @event.State.State,
-                        User = new RemarkUserDto
+                        User = new RemarkUser
                         {
                             UserId = @event.State.UserId,
                             Name = @event.State.Username
@@ -59,7 +60,7 @@ namespace Collectively.Services.Storage.Handlers
                     };
                     if (@event.State.Location != null)
                     {
-                        state.Location = new LocationDto
+                        state.Location = new Location
                         {
                             Address = @event.State.Location.Address,
                             Coordinates = new[] {@event.State.Location.Longitude, @event.State.Location.Latitude},
@@ -70,7 +71,7 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.State = state;
                     if(remark.Value.States == null)
                     {
-                        remark.Value.States = new List<RemarkStateDto>();
+                        remark.Value.States = new List<RemarkState>();
                     }
                     remark.Value.States.Add(state);
                     await _remarkRepository.UpdateAsync(remark.Value);

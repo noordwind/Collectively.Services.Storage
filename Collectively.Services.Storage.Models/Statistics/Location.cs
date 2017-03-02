@@ -1,6 +1,6 @@
-namespace Collectively.Services.Storage.Dto.Statistics
+namespace Collectively.Services.Storage.Models.Statistics
 {
-      public class LocationDto
+      public class Location
       {
           public string Address { get; set; }
           public double[] Coordinates { get; set; }

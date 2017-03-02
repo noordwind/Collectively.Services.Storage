@@ -1,6 +1,6 @@
-﻿namespace Collectively.Services.Storage.Dto.Remarks
+﻿namespace Collectively.Services.Storage.Models.Remarks
 {
-    public class RemarkUserDto
+    public class RemarkUser
     {
         public string UserId { get; set; }
         public string Name { get; set; }

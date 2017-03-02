@@ -1,6 +1,6 @@
-namespace Collectively.Services.Storage.Dto.Statistics
+namespace Collectively.Services.Storage.Models.Statistics
 {
-    public class RemarksCountStatisticsDto
+    public class RemarksCountStatistics
     {
         public int NewCount { get; set; }
         public int ReportedCount { get; set; }

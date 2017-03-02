@@ -1,13 +1,13 @@
 using System;
 
-namespace Collectively.Services.Storage.Dto.Statistics
+namespace Collectively.Services.Storage.Models.Statistics
 {
-    public class RemarkStateDto
+    public class RemarkState
     {
         public string State { get; set; }
         public string UserId { get; set; }
         public string Description { get; set; }
-        public LocationDto Location { get; set; }
+        public Location Location { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

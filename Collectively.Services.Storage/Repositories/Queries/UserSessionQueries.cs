@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Collectively.Common.Mongo;
-using Collectively.Services.Storage.Dto.Users;
+using Collectively.Services.Storage.Models.Users;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -9,10 +9,10 @@ namespace Collectively.Services.Storage.Repositories.Queries
 {
     public static class UserSessionQueries
     {
-        public static IMongoCollection<UserSessionDto> UserSessions(this IMongoDatabase database)
-            => database.GetCollection<UserSessionDto>();
+        public static IMongoCollection<UserSession> UserSessions(this IMongoDatabase database)
+            => database.GetCollection<UserSession>();
 
-        public static async Task<UserSessionDto> GetByIdAsync(this IMongoCollection<UserSessionDto> sessions, Guid id)
+        public static async Task<UserSession> GetByIdAsync(this IMongoCollection<UserSession> sessions, Guid id)
         {
             if (id == Guid.Empty)
                 return null;

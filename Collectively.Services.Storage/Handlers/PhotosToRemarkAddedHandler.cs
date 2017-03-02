@@ -3,6 +3,7 @@ using System.Linq;
 using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
 
 
@@ -28,7 +29,7 @@ namespace Collectively.Services.Storage.Handlers
                     if (remark.HasNoValue)
                         return;
 
-                    remark.Value.Photos = @event.Photos.Select(x => new FileDto
+                    remark.Value.Photos = @event.Photos.Select(x => new File
                     {
                         GroupId = x.GroupId,
                         Name = x.Name,

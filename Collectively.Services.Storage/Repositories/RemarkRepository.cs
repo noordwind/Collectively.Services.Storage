@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Collectively.Common.Types;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Queries;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
@@ -18,10 +18,10 @@ namespace Collectively.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<RemarkDto>> GetByIdAsync(Guid id)
+        public async Task<Maybe<Remark>> GetByIdAsync(Guid id)
             => await _database.Remarks().GetByIdAsync(id);
 
-        public async Task<Maybe<PagedResult<RemarkDto>>> BrowseAsync(BrowseRemarks query)
+        public async Task<Maybe<PagedResult<Remark>>> BrowseAsync(BrowseRemarks query)
         {
             var results = await _database.Remarks()
                 .QueryAsync(query);
@@ -29,25 +29,25 @@ namespace Collectively.Services.Storage.Repositories
             return results;
         }
 
-        public async Task AddAsync(RemarkDto remark)
+        public async Task AddAsync(Remark remark)
             => await _database.Remarks().InsertOneAsync(remark);
 
-        public async Task UpdateAsync(RemarkDto remark)
+        public async Task UpdateAsync(Remark remark)
             => await _database.Remarks().ReplaceOneAsync(x => x.Id == remark.Id, remark);
 
         public async Task UpdateUserNamesAsync(string userId, string name)
         {
-            var updateAuthor = Builders<RemarkDto>.Update.Set("author.name", name);
+            var updateAuthor = Builders<Remark>.Update.Set("author.name", name);
             await _database.Remarks().UpdateManyAsync(x => x.Author.UserId == userId, updateAuthor);
 
-            var updateStateName = Builders<RemarkDto>.Update.Set("state.user.name", name);
+            var updateStateName = Builders<Remark>.Update.Set("state.user.name", name);
             await _database.Remarks().UpdateManyAsync(x => x.State.User.Name == name, updateStateName);
         }
 
-        public async Task AddManyAsync(IEnumerable<RemarkDto> remarks)
+        public async Task AddManyAsync(IEnumerable<Remark> remarks)
             => await _database.Remarks().InsertManyAsync(remarks);
 
-        public async Task DeleteAsync(RemarkDto remark)
+        public async Task DeleteAsync(Remark remark)
             => await _database.Remarks().DeleteOneAsync(x => x.Id == remark.Id);
     }
 }

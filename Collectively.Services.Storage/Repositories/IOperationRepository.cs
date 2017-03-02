@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Collectively.Common.Types;
-using Collectively.Services.Storage.Dto.Operations;
+using Collectively.Services.Storage.Models.Operations;
 
 namespace Collectively.Services.Storage.Repositories
 {
     public interface IOperationRepository
     {
-        Task<Maybe<OperationDto>> GetAsync(Guid requestId);
-        Task AddAsync(OperationDto operation);
-        Task UpdateAsync(OperationDto operation);
+        Task<Maybe<Operation>> GetAsync(Guid requestId);
+        Task AddAsync(Operation operation);
+        Task UpdateAsync(Operation operation);
     }
 }

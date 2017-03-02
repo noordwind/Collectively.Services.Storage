@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Collectively.Common.Extensions;
 using Collectively.Common.Mongo;
 using Collectively.Common.Types;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -16,10 +16,10 @@ namespace Collectively.Services.Storage.Repositories.Queries
     {
         private static readonly int NegativeVotesThreshold = -2;
 
-        public static IMongoCollection<RemarkDto> Remarks(this IMongoDatabase database)
-            => database.GetCollection<RemarkDto>();
+        public static IMongoCollection<Remark> Remarks(this IMongoDatabase database)
+            => database.GetCollection<Remark>();
 
-        public static async Task<RemarkDto> GetByIdAsync(this IMongoCollection<RemarkDto> remarks, Guid id)
+        public static async Task<Remark> GetByIdAsync(this IMongoCollection<Remark> remarks, Guid id)
         {
             if (id == Guid.Empty)
                 return null;
@@ -27,11 +27,11 @@ namespace Collectively.Services.Storage.Repositories.Queries
             return await remarks.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public static async Task<PagedResult<RemarkDto>> QueryAsync(this IMongoCollection<RemarkDto> remarks,
+        public static async Task<PagedResult<Remark>> QueryAsync(this IMongoCollection<Remark> remarks,
             BrowseRemarks query)
         {
             if (!IsLocationProvided(query) && query.AuthorId.Empty() && !query.Latest)
-                return PagedResult<RemarkDto>.Empty;
+                return PagedResult<Remark>.Empty;
 
             if (query.Page <= 0)
             {
@@ -42,8 +42,8 @@ namespace Collectively.Services.Storage.Repositories.Queries
                 query.Results = 10;
             }
 
-            var filterBuilder = new FilterDefinitionBuilder<RemarkDto>();
-            var filter = FilterDefinition<RemarkDto>.Empty;
+            var filterBuilder = new FilterDefinitionBuilder<Remark>();
+            var filter = FilterDefinition<Remark>.Empty;
             if (IsLocationProvided(query))
             {
                 var maxDistance = query.Radius > 0 ? (double?) query.Radius/1000/6378.1 : null;
@@ -83,9 +83,9 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 filter = filter & filterBuilder.Where(x => x.Tags.Any(y => query.Tags.Contains(y)));
             }
-            if (query.State.NotEmpty() && query.State != RemarkStates.All)
+            if (query.State.NotEmpty() && query.State != "all")
             {
-                if (query.State == RemarkStates.Resolved)
+                if (query.State == "resolved")
                 {
                     filter = filter & filterBuilder.Where(x => x.State.State == "resolved");
                 }
@@ -109,11 +109,11 @@ namespace Collectively.Services.Storage.Repositories.Queries
             findResult = SortRemarks(query, findResult);
 
             var result = await findResult.ToListAsync();
-            return PagedResult<RemarkDto>.Create(result, query.Page, query.Results, totalPages, totalCount);
+            return PagedResult<Remark>.Create(result, query.Page, query.Results, totalPages, totalCount);
         }
 
-        private static IFindFluent<RemarkDto,RemarkDto>  SortRemarks(BrowseRemarks query, 
-            IFindFluent<RemarkDto,RemarkDto> findResult)
+        private static IFindFluent<Remark,Remark>  SortRemarks(BrowseRemarks query, 
+            IFindFluent<Remark,Remark> findResult)
         {
             if(query.OrderBy.Empty())
             {
@@ -136,8 +136,8 @@ namespace Collectively.Services.Storage.Repositories.Queries
             return findResult;
         }
 
-        private static IFindFluent<RemarkDto,RemarkDto>  SortRemarks(BrowseRemarks query,
-            IFindFluent<RemarkDto,RemarkDto> findResult, Expression<Func<RemarkDto, object>> sortBy)
+        private static IFindFluent<Remark,Remark>  SortRemarks(BrowseRemarks query,
+            IFindFluent<Remark,Remark> findResult, Expression<Func<Remark, object>> sortBy)
         {
             switch(query.SortOrder)
             {

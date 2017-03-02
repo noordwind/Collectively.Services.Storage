@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Collectively.Common.Security;
 using Collectively.Common.Types;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Queries;
 using NLog;
 
@@ -21,25 +21,25 @@ namespace Collectively.Services.Storage.Services.Remarks
             _serviceClient.SetSettings(settings);
         }
 
-        public async Task<Maybe<RemarkDto>> GetAsync(Guid id)
+        public async Task<Maybe<Remark>> GetAsync(Guid id)
         {
             Logger.Debug($"Requesting GetAsync, id:{id}");
             return await _serviceClient
-                .GetAsync<RemarkDto>(_settings.Url, $"remarks/{id}");
+                .GetAsync<Remark>(_settings.Url, $"remarks/{id}");
         }
 
-        public async Task<Maybe<PagedResult<RemarkCategoryDto>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
+        public async Task<Maybe<PagedResult<RemarkCategory>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
         {
             Logger.Debug("Requesting BrowseCategoriesAsync");
             return await _serviceClient
-                .GetCollectionAsync<RemarkCategoryDto>(_settings.Url, "remarks/categories");
+                .GetCollectionAsync<RemarkCategory>(_settings.Url, "remarks/categories");
         }
 
-        public async Task<Maybe<PagedResult<TagDto>>> BrowseTagsAsync(BrowseRemarkTags query)
+        public async Task<Maybe<PagedResult<Tag>>> BrowseTagsAsync(BrowseRemarkTags query)
         {
             Logger.Debug("Requesting BrowseTagsAsync");
             return await _serviceClient
-                .GetCollectionAsync<TagDto>(_settings.Url, "remarks/tags");
+                .GetCollectionAsync<Tag>(_settings.Url, "remarks/tags");
         }
     }
 }

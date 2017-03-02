@@ -1,8 +1,8 @@
 using System;
 
-namespace Collectively.Services.Storage.Dto.Remarks
+namespace Collectively.Services.Storage.Models.Remarks
 {
-    public class FileDto
+    public class File
     {
         public Guid GroupId { get; set; }
         public string Name { get; set; }

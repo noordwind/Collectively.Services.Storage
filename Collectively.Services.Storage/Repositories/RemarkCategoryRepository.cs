@@ -6,7 +6,7 @@ using Collectively.Services.Storage.Queries;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 using Collectively.Common.Mongo;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 
 namespace Collectively.Services.Storage.Repositories
 {
@@ -19,15 +19,15 @@ namespace Collectively.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<RemarkCategoryDto>> GetByIdAsync(Guid id)
+        public async Task<Maybe<RemarkCategory>> GetByIdAsync(Guid id)
             => await _database.RemarkCategories().GetByIdAsync(id);
 
-        public async Task<Maybe<PagedResult<RemarkCategoryDto>>> BrowseAsync(BrowseRemarkCategories query)
+        public async Task<Maybe<PagedResult<RemarkCategory>>> BrowseAsync(BrowseRemarkCategories query)
             => await _database.RemarkCategories()
                 .Query(query)
                 .PaginateAsync();
 
-        public async Task AddManyAsync(IEnumerable<RemarkCategoryDto> categories)
+        public async Task AddManyAsync(IEnumerable<RemarkCategory> categories)
             => await _database.RemarkCategories().InsertManyAsync(categories);
     }
 }

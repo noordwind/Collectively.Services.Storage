@@ -2,7 +2,7 @@
 using Collectively.Common.Extensions;
 using Collectively.Common.Security;
 using Collectively.Common.Types;
-using Collectively.Services.Storage.Dto.Statistics;
+using Collectively.Services.Storage.Models.Statistics;
 using Collectively.Services.Storage.Queries;
 using NLog;
 
@@ -25,60 +25,60 @@ namespace Collectively.Services.Storage.Services.Statistics
             _serviceClient.SetSettings(settings);
         }
 
-        public async Task<Maybe<PagedResult<UserStatisticsDto>>> BrowseUserStatisticsAsync(BrowseUserStatistics query)
+        public async Task<Maybe<PagedResult<UserStatistics>>> BrowseUserStatisticsAsync(BrowseUserStatistics query)
         {
             Logger.Debug($"Requesting BrowseReportersAsync, page:{query.Page}, results:{query.Results}");
             var queryString = UserStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<UserStatisticsDto>(_settings.Url, queryString);
+                .GetCollectionAsync<UserStatistics>(_settings.Url, queryString);
         }
 
-        public async Task<Maybe<UserStatisticsDto>> GetUserStatisticsAsync(GetUserStatistics query)
+        public async Task<Maybe<UserStatistics>> GetUserStatisticsAsync(GetUserStatistics query)
         {
             Logger.Debug($"Requesting GetUserStatisticsAsync, userId:{query.Id}");
             var endpoint = $"{UserStatisticsEndpoint}/{query.Id}";
             return await _serviceClient
-                .GetAsync<UserStatisticsDto>(_settings.Url, endpoint);
+                .GetAsync<UserStatistics>(_settings.Url, endpoint);
         }
 
-        public async Task<Maybe<PagedResult<RemarkStatisticsDto>>> BrowseRemarkStatisticsAsync(BrowseRemarkStatistics query)
+        public async Task<Maybe<PagedResult<RemarkStatistics>>> BrowseRemarkStatisticsAsync(BrowseRemarkStatistics query)
         {
             Logger.Debug($"Requesting BrowseRemarkStatisticsAsync, page:{query.Page}, results:{query.Results}");
             var queryString = RemarkStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<RemarkStatisticsDto>(_settings.Url, queryString);
+                .GetCollectionAsync<RemarkStatistics>(_settings.Url, queryString);
         }
 
-        public async Task<Maybe<RemarkStatisticsDto>> GetRemarkStatisticsAsync(GetRemarkStatistics query)
+        public async Task<Maybe<RemarkStatistics>> GetRemarkStatisticsAsync(GetRemarkStatistics query)
         {
             Logger.Debug($"Requesting GetRemarkStatisticsAsync, remarkId:{query.Id}");
             var endpoint = $"{RemarkStatisticsEndpoint}/{query.Id}";
             return await _serviceClient
-                .GetAsync<RemarkStatisticsDto>(_settings.Url, endpoint);
+                .GetAsync<RemarkStatistics>(_settings.Url, endpoint);
         }
 
-        public async Task<Maybe<RemarksCountStatisticsDto>> GetRemarksCountStatisticsAsync(GetRemarksCountStatistics query)
+        public async Task<Maybe<RemarksCountStatistics>> GetRemarksCountStatisticsAsync(GetRemarksCountStatistics query)
         {
             Logger.Debug($"Requesting GetRemarksCountStatisticsAsync, from:{query.From}, to:{query.To}");
             var endpoint = $"{RemarkStatisticsEndpoint}/general".ToQueryString(query);
             return await _serviceClient
-                .GetAsync<RemarksCountStatisticsDto>(_settings.Url, endpoint);
+                .GetAsync<RemarksCountStatistics>(_settings.Url, endpoint);
         }
 
-        public async Task<Maybe<PagedResult<CategoryStatisticsDto>>> BrowseCategoryStatisticsAsync(BrowseCategoryStatistics query)
+        public async Task<Maybe<PagedResult<CategoryStatistics>>> BrowseCategoryStatisticsAsync(BrowseCategoryStatistics query)
         {
             Logger.Debug($"Requesting BrowseCategoryStatisticsAsync, page:{query.Page}, results:{query.Results}");
             var queryString = CategoryStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<CategoryStatisticsDto>(_settings.Url, queryString);
+                .GetCollectionAsync<CategoryStatistics>(_settings.Url, queryString);
         }
 
-        public async Task<Maybe<PagedResult<TagStatisticsDto>>> BrowseTagStatisticsAsync(BrowseTagStatistics query)
+        public async Task<Maybe<PagedResult<TagStatistics>>> BrowseTagStatisticsAsync(BrowseTagStatistics query)
         {
             Logger.Debug($"Requesting BrowseTagStatisticsAsync, page:{query.Page}, results:{query.Results}");
             var queryString = TagStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<TagStatisticsDto>(_settings.Url, queryString);
+                .GetCollectionAsync<TagStatistics>(_settings.Url, queryString);
         }
     }
 }

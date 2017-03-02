@@ -60,7 +60,7 @@ namespace Collectively.Services.Storage.Framework
 
             container.Update(builder =>
             {
-                builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
+                builder.RegisterType<JsonNetSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<GeneralSettings>()).SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
                 builder.RegisterModule<MongoDbModule>();

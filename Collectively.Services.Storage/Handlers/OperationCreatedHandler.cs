@@ -4,6 +4,7 @@ using Collectively.Messages.Events;
 using Collectively.Common.Services;
 
 using Collectively.Messages.Events.Operations;
+using Collectively.Services.Storage.Models.Operations;
 using Collectively.Services.Storage.Repositories;
 
 namespace Collectively.Services.Storage.Handlers
@@ -24,7 +25,7 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var operation = new OperationDto
+                    var operation = new Operation
                     {
                         Id = Guid.NewGuid(),
                         RequestId = @event.RequestId,

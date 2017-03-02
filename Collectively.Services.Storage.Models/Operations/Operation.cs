@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Collectively.Services.Storage.Dto.Operations
+namespace Collectively.Services.Storage.Models.Operations
 {
-    public class OperationDto
+    public class Operation
     {
         public Guid Id { get; set; }
         public Guid RequestId { get; set; }

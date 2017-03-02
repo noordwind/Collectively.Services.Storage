@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Collectively.Common.Mongo;
-
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 
@@ -19,7 +19,7 @@ namespace Collectively.Services.Storage.Framework
         {
             if (await _database.Remarks().AsQueryable().AnyAsync() == false)
             {
-                var index = new IndexKeysDefinitionBuilder<RemarkDto>().Geo2DSphere(x => x.Location);
+                var index = new IndexKeysDefinitionBuilder<Remark>().Geo2DSphere(x => x.Location);
                 await _database.Remarks().Indexes.CreateOneAsync(index);
             }
         }

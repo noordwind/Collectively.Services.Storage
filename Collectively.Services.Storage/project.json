@@ -32,6 +32,7 @@
     "RawRabbit.vNext": "1.10.3",
     "Collectively.Common": "1.0.*",
     "Collectively.Messages": "1.0.*",
+    "Collectively.Services.Storage.Models": "1.0.*" 
   },
   "frameworks": {
 	  "netcoreapp1.1": {

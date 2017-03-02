@@ -1,8 +1,8 @@
 using System;
 
-namespace Collectively.Services.Storage.Dto.Remarks
+namespace Collectively.Services.Storage.Models.Remarks
 {
-    public class VoteDto
+    public class Vote
     {
         public string UserId { get; set; }
         public bool Positive { get; set; }

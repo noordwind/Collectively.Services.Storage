@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Collectively.Common.Types;
-
+using Collectively.Services.Storage.Models.Operations;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.Services.Operations;
 
@@ -22,7 +22,7 @@ namespace Collectively.Services.Storage.Providers.Operations
             _serviceClient = serviceClient;
         }
 
-        public async Task<Maybe<OperationDto>> GetAsync(Guid requestId)
+        public async Task<Maybe<Operation>> GetAsync(Guid requestId)
             => await _provider.GetAsync(
                 async () => await _operationRepository.GetAsync(requestId),
                 async () => await _serviceClient.GetAsync(requestId));

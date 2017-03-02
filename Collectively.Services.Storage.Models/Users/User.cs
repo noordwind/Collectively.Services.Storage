@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Collectively.Services.Storage.Dto.Users
+namespace Collectively.Services.Storage.Models.Users
 {
-    public class UserDto
+    public class User
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }

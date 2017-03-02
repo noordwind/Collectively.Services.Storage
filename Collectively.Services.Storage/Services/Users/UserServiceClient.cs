@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Collectively.Common.Security;
 using Collectively.Common.Types;
+using Collectively.Services.Storage.Models.Users;
 using Collectively.Services.Storage.Queries;
-using Collectively.Services.Storage.Dto.Users;
 using NLog;
 
 namespace Collectively.Services.Storage.Services.Users
@@ -21,34 +21,34 @@ namespace Collectively.Services.Storage.Services.Users
             _serviceClient.SetSettings(settings);
         }
 
-        public async Task<Maybe<AvailableResourceDto>> IsAvailableAsync(string name)
+        public async Task<Maybe<AvailableResource>> IsAvailableAsync(string name)
         {
             Logger.Debug($"Requesting IsAvailableAsync, name:{name}");
-            return await _serviceClient.GetAsync<AvailableResourceDto>(_settings.Url, $"users/{name}/available");
+            return await _serviceClient.GetAsync<AvailableResource>(_settings.Url, $"users/{name}/available");
         }
 
-        public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query)
+        public async Task<Maybe<PagedResult<User>>> BrowseAsync(BrowseUsers query)
         {
             Logger.Debug($"Requesting BrowseAsync, page:{query.Page}, results:{query.Results}");
-            return await _serviceClient.GetCollectionAsync<UserDto>(_settings.Url, "users");
+            return await _serviceClient.GetCollectionAsync<User>(_settings.Url, "users");
         }
 
-        public async Task<Maybe<UserDto>> GetAsync(string userId)
+        public async Task<Maybe<User>> GetAsync(string userId)
         {
             Logger.Debug($"Requesting GetAsync, userId:{userId}");
-            return await _serviceClient.GetAsync<UserDto>(_settings.Url, $"users/{userId}");
+            return await _serviceClient.GetAsync<User>(_settings.Url, $"users/{userId}");
         }
 
-        public async Task<Maybe<UserDto>> GetByNameAsync(string name)
+        public async Task<Maybe<User>> GetByNameAsync(string name)
         {
             Logger.Debug($"Requesting GetByNameAsync, name:{name}");
-            return await _serviceClient.GetAsync<UserDto>(_settings.Url, $"users/{name}/account");
+            return await _serviceClient.GetAsync<User>(_settings.Url, $"users/{name}/account");
         }
 
-        public async Task<Maybe<UserSessionDto>> GetSessionAsync(Guid id)
+        public async Task<Maybe<UserSession>> GetSessionAsync(Guid id)
         {
             Logger.Debug($"Requesting GetSessionAsync, id:{id}");
-            return await _serviceClient.GetAsync<UserSessionDto>(_settings.Url, $"user-sessions/{id}");
+            return await _serviceClient.GetAsync<UserSession>(_settings.Url, $"user-sessions/{id}");
         }
     }
 }

@@ -4,6 +4,7 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Repositories;
 
 using Collectively.Messages.Events.Users;
+using Collectively.Services.Storage.Models.Users;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -27,7 +28,7 @@ namespace Collectively.Services.Storage.Handlers
                     if (await _repository.ExistsAsync(@event.UserId))
                         return;
 
-                    var user = new UserDto
+                    var user = new User
                     {
                         UserId = @event.UserId,
                         Name = @event.Name,
