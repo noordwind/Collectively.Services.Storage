@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Collectively.Common.Events;
+using Collectively.Messages.Events;
 using System.Reflection;
 using Module = Autofac.Module;
 

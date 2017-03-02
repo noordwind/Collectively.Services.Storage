@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Collectively.Common.Events;
+using Collectively.Messages.Events;
 using Collectively.Services.Storage.Repositories;
 using System.Linq;
 using Collectively.Common.Services;
