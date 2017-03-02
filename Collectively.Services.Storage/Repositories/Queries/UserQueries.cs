@@ -2,7 +2,7 @@
 using Collectively.Common.Extensions;
 using Collectively.Common.Mongo;
 using Collectively.Services.Storage.Queries;
-
+using Collectively.Services.Storage.Dto.Users;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

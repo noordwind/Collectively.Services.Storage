@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Collectively.Services.Storage.Tests.EndToEnd.Framework;
 using System.Linq;
-
+using Collectively.Services.Storage.Dto.Remarks;
 using Machine.Specifications;
 
 namespace Collectively.Services.Storage.Tests.EndToEnd.Specs

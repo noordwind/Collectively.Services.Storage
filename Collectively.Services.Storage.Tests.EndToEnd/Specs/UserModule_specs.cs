@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Collectively.Services.Storage.Tests.EndToEnd.Framework;
 using Machine.Specifications;
 using System.Linq;
-
+using Collectively.Services.Storage.Dto.Users;
 
 namespace Collectively.Services.Storage.Tests.EndToEnd.Specs
 {

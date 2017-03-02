@@ -5,7 +5,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using Collectively.Common.Services;
-
+using Collectively.Services.Storage.Dto.Remarks;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Messages.Events.Remarks.Models;
 

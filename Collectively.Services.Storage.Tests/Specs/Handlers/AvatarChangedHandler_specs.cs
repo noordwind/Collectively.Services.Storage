@@ -5,7 +5,7 @@ using Machine.Specifications;
 using Moq;
 using System;
 using Collectively.Common.Services;
-
+using Collectively.Services.Storage.Dto.Users;
 using Collectively.Messages.Events.Users;
 using It = Machine.Specifications.It;
 

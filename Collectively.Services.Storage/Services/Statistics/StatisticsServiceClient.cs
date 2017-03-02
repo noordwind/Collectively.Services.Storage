@@ -2,7 +2,7 @@
 using Collectively.Common.Extensions;
 using Collectively.Common.Security;
 using Collectively.Common.Types;
-
+using Collectively.Services.Storage.Dto.Statistics;
 using Collectively.Services.Storage.Queries;
 using NLog;
 

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Collectively.Common.Types;
-
+using Collectively.Services.Storage.Dto.Statistics;
 using Collectively.Services.Storage.Queries;
 
 namespace Collectively.Services.Storage.Services.Statistics

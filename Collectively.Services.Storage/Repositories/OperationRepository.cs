@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Collectively.Common.Types;
-
+using Collectively.Services.Storage.Dto.Operations;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 

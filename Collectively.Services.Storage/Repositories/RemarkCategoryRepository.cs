@@ -6,7 +6,7 @@ using Collectively.Services.Storage.Queries;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 using Collectively.Common.Mongo;
-
+using Collectively.Services.Storage.Dto.Remarks;
 
 namespace Collectively.Services.Storage.Repositories
 {

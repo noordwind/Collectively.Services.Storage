@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Repositories.Queries;
-
+using Collectively.Services.Storage.Dto.Users;
 using MongoDB.Driver;
 
 namespace Collectively.Services.Storage.Repositories

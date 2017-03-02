@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Collectively.Common.Security;
 using Collectively.Common.Types;
-
+using Collectively.Services.Storage.Dto.Operations;
 using NLog;
 
 namespace Collectively.Services.Storage.Services.Operations

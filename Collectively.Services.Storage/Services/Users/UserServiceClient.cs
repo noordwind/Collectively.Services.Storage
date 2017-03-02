@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Collectively.Common.Security;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Queries;
-
+using Collectively.Services.Storage.Dto.Users;
 using NLog;
 
 namespace Collectively.Services.Storage.Services.Users
