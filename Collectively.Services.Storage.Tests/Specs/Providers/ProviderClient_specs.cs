@@ -1,11 +1,11 @@
 ﻿using Collectively.Common.Extensions;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Providers;
-using Collectively.Services.Storage.Services;
 using Machine.Specifications;
 using Moq;
 using Collectively.Services.Storage.Tests.Framework;
 using It = Machine.Specifications.It;
+using Collectively.Common.ServiceClients;
 
 namespace Collectively.Services.Storage.Tests.Specs.Providers
 {

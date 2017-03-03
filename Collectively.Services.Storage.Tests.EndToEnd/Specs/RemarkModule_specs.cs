@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Collectively.Services.Storage.Tests.EndToEnd.Framework;
 using System.Linq;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Machine.Specifications;
 
 namespace Collectively.Services.Storage.Tests.EndToEnd.Specs
@@ -10,9 +10,9 @@ namespace Collectively.Services.Storage.Tests.EndToEnd.Specs
     public abstract class RemarkModule_specs
     {
         protected static IHttpClient HttpClient = new CustomHttpClient("http://localhost:10000");
-        protected static RemarkDto Remark;
-        protected static IEnumerable<RemarkDto> Remarks;
-        protected static IEnumerable<RemarkCategoryDto> Categories;
+        protected static Remark Remark;
+        protected static IEnumerable<Remark> Remarks;
+        protected static IEnumerable<RemarkCategory> Categories;
         protected static Guid RemarkId;
 
         protected static void InitializeAndFetch()
@@ -21,23 +21,23 @@ namespace Collectively.Services.Storage.Tests.EndToEnd.Specs
             RemarkId = remark.Id;
         }
 
-        protected static IEnumerable<RemarkDto> FetchRemarks()
-            => HttpClient.GetAsync<IEnumerable<RemarkDto>>("remarks?latest=true").WaitForResult();
+        protected static IEnumerable<Remark> FetchRemarks()
+            => HttpClient.GetAsync<IEnumerable<Remark>>("remarks?latest=true").WaitForResult();
 
-        protected static IEnumerable<RemarkDto> FetchNearestRemarks()
-            => HttpClient.GetCollectionAsync<RemarkDto>("remarks?results=100&radius=10000&longitude=1.0&latitude=1.0").WaitForResult();
+        protected static IEnumerable<Remark> FetchNearestRemarks()
+            => HttpClient.GetCollectionAsync<Remark>("remarks?results=100&radius=10000&longitude=1.0&latitude=1.0").WaitForResult();
 
-        protected static IEnumerable<RemarkDto> GetRemarksWithCategory(string categoryName)
-            => HttpClient.GetCollectionAsync<RemarkDto>($"remarks?radius=10000&longitude=1.0&latitude=1.0&categories={categoryName}").WaitForResult();
+        protected static IEnumerable<Remark> GetRemarksWithCategory(string categoryName)
+            => HttpClient.GetCollectionAsync<Remark>($"remarks?radius=10000&longitude=1.0&latitude=1.0&categories={categoryName}").WaitForResult();
 
-        protected static IEnumerable<RemarkDto> GetRemarksWithState(string state)
-            => HttpClient.GetCollectionAsync<RemarkDto>($"remarks?radius=10000&longitude=1.0&latitude=1.0&state={state}").WaitForResult();
+        protected static IEnumerable<Remark> GetRemarksWithState(string state)
+            => HttpClient.GetCollectionAsync<Remark>($"remarks?radius=10000&longitude=1.0&latitude=1.0&state={state}").WaitForResult();
 
-        protected static IEnumerable<RemarkCategoryDto> FetchCategories()
-            => HttpClient.GetAsync<IEnumerable<RemarkCategoryDto>>("remarks/categories").WaitForResult();
+        protected static IEnumerable<RemarkCategory> FetchCategories()
+            => HttpClient.GetAsync<IEnumerable<RemarkCategory>>("remarks/categories").WaitForResult();
 
-        protected static RemarkDto FetchRemark(Guid id)
-            => HttpClient.GetAsync<RemarkDto>($"remarks/{id}").WaitForResult();
+        protected static Remark FetchRemark(Guid id)
+            => HttpClient.GetAsync<Remark>($"remarks/{id}").WaitForResult();
     }
 
     [Subject("StorageService fetch remarks")]
@@ -61,7 +61,7 @@ namespace Collectively.Services.Storage.Tests.EndToEnd.Specs
 
         It should_return_remarks_in_correct_order = () =>
         {
-            RemarkDto previousRemark = null;
+            Remark previousRemark = null;
             foreach (var remark in Remarks)
             {
                 if (previousRemark != null)

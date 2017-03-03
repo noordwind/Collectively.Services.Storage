@@ -34,7 +34,7 @@ namespace Collectively.Services.Storage.Handlers
                 .Run(async () =>
                 {
                     var user = await _userRepository.GetByIdAsync(@event.UserId);
-                    var remark = MapToDto(@event, user.Value);
+                    var remark = MapTo(@event, user.Value);
                     await _remarkRepository.AddAsync(remark);
                 })
                 .OnError((ex, logger) =>
@@ -44,9 +44,9 @@ namespace Collectively.Services.Storage.Handlers
                 .ExecuteAsync();
         }
 
-        private static Remark MapToDto(RemarkCreated @event, User user)
+        private static Remark MapTo(RemarkCreated @event, User user)
         {   
-            var remarkDto  = new Remark
+            var remark  = new Remark
             {
                 Id = @event.RemarkId,
                 Description = @event.Description,
@@ -91,9 +91,9 @@ namespace Collectively.Services.Storage.Handlers
                 Photos = new List<File>(),
                 Votes = new List<Vote>()
             };
-            remarkDto.State = remarkDto.States.First();
+            remark.State = remark.States.First();
 
-            return remarkDto;
+            return remark;
         }
     }
 }

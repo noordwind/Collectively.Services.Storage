@@ -9,6 +9,7 @@
     "System.Drawing": "1.0.0-beta004",
     "Collectively.Common": "1.0.*",
     "Collectively.Messages": "1.0.*",
+    "Collectively.Services.Storage": "1.0.0-*",
     "System.Net.Http": "4.3.0"
   },
   "testRunner": "mspec",

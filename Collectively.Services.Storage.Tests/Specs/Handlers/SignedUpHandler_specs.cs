@@ -4,7 +4,7 @@ using Machine.Specifications;
 using Moq;
 using System;
 using Collectively.Common.Services;
-using Collectively.Services.Storage.Dto.Users;
+using Collectively.Services.Storage.Models.Users;
 using Collectively.Messages.Events.Users;
 using It = Machine.Specifications.It;
 
@@ -17,7 +17,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static SignedUp Event;
-        protected static UserDto User;
+        protected static User User;
         protected static Exception Exception;
 
         protected static void Initialize(Action setup)
@@ -31,7 +31,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeUser()
         {
-            User = new UserDto
+            User = new User
             {
                 Id = Guid.NewGuid(),
                 UserId = Guid.NewGuid().ToString(),
@@ -67,7 +67,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         It should_call_user_repository_add_async = () =>
         {
-            UserRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<UserDto>()), Times.Once);
+            UserRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<User>()), Times.Once);
         };
     }
 
@@ -90,7 +90,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         It should_not_call_user_repository_add_async = () =>
         {
-            UserRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<UserDto>()), Times.Never);
+            UserRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<User>()), Times.Never);
         };
     }
 }

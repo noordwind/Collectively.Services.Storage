@@ -5,11 +5,12 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using Collectively.Common.Services;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Messages.Events.Remarks.Models;
-
+using Collectively.Services.Storage.Models.Users;
 using It = Machine.Specifications.It;
+using RemarkCategory = Collectively.Services.Storage.Models.Remarks.RemarkCategory;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -26,12 +27,12 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static RemarkFile Photo;
         protected static DateTime CreatedAt = DateTime.Now - TimeSpan.FromMinutes(5.0);
         protected static DateTime ResolvedAt = DateTime.Now;
-        protected static RemarkDto Remark;
-        protected static RemarkUserDto Author;
-        protected static RemarkCategoryDto Category;
-        protected static LocationDto Location;
-        protected static FileDto File;
-        protected static UserDto User;
+        protected static Remark Remark;
+        protected static RemarkUser Author;
+        protected static RemarkCategory Category;
+        protected static Location Location;
+        protected static File File;
+        protected static User User;
 
         protected static void Initialize()
         {
@@ -44,30 +45,30 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
                 RemarkRepositoryMock.Object,
                 UserRepositoryMock.Object);
 
-            User = new UserDto
+            User = new User
             {
                 UserId = UserId,
                 Name = "TestUser"
             };
             Photo = new RemarkFile(Guid.NewGuid(), "test.jpg", "small", "http://my-test-photo.com", "metadata");
             Event = new RemarkResolved(Guid.NewGuid(), RemarkId, UserId, User.Name, string.Empty, null, ResolvedAt, new List<RemarkFile>{Photo});
-            Author = new RemarkUserDto
+            Author = new RemarkUser
             {
                 UserId = UserId,
                 Name = "TestUser"
             };
-            Category = new RemarkCategoryDto
+            Category = new RemarkCategory
             {
                 Id = Guid.NewGuid(),
                 Name = "Test"
             };
-            Location = new LocationDto
+            Location = new Location
             {
                 Address = "address",
                 Coordinates = new[] {1.0, 1.0},
                 Type = "point"
             };
-            Remark = new RemarkDto
+            Remark = new Remark
             {
                 Id = RemarkId,
                 Author = Author,
@@ -75,7 +76,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
                 CreatedAt = CreatedAt,
                 Description = "test",
                 Location = Location,
-                Photos = new List<FileDto>()
+                Photos = new List<File>()
             };
 
             RemarkRepositoryMock.Setup(x => x.GetByIdAsync(Moq.It.IsAny<Guid>()))
@@ -104,7 +105,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         It should_update_remark = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.State.State == Event.State.State
+            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<Remark>(r => r.State.State == Event.State.State
                 && r.State.CreatedAt == Event.State.CreatedAt
                 && r.State.User.UserId == Event.State.UserId)), Times.Once);
         };
@@ -134,7 +135,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         It should_not_update_remark = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.State.State == Event.State.State
+            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<Remark>(r => r.State.State == Event.State.State
                 && r.State.CreatedAt == Event.State.CreatedAt
                 && r.State.User.UserId == Event.UserId)), Times.Never);
         };
@@ -164,7 +165,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         It should_not_update_remark = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<RemarkDto>(r => r.State.State == Event.State.State
+            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<Remark>(r => r.State.State == Event.State.State
                 && r.State.CreatedAt == Event.State.CreatedAt
                 && r.State.User.UserId == Event.UserId)), Times.Never);
         };

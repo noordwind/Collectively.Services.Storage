@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Collectively.Services.Storage.Tests.EndToEnd.Framework;
 using Machine.Specifications;
 using System.Linq;
-using Collectively.Services.Storage.Dto.Users;
+using Collectively.Services.Storage.Models.Users;
 
 namespace Collectively.Services.Storage.Tests.EndToEnd.Specs
 {
     public abstract class UserModule_specs
     {
         protected static IHttpClient HttpClient = new CustomHttpClient("http://localhost:10000");
-        protected static UserDto User;
-        protected static IEnumerable<UserDto> Users;
+        protected static User User;
+        protected static IEnumerable<User> Users;
         protected static string UserId;
         protected static string UserName;
 
@@ -28,14 +28,14 @@ namespace Collectively.Services.Storage.Tests.EndToEnd.Specs
             UserName = user.Name;
         }
 
-        protected static UserDto FetchUser(string id)
-            => HttpClient.GetAsync<UserDto>($"users/{id}").WaitForResult();
+        protected static User FetchUser(string id)
+            => HttpClient.GetAsync<User>($"users/{id}").WaitForResult();
 
-        protected static UserDto FetchUserByName(string name)
-            => HttpClient.GetAsync<UserDto>($"users/{name}/account").WaitForResult();
+        protected static User FetchUserByName(string name)
+            => HttpClient.GetAsync<User>($"users/{name}/account").WaitForResult();
 
-        protected static IEnumerable<UserDto> FetchUsers()
-            => HttpClient.GetAsync<IEnumerable<UserDto>>("users").WaitForResult();
+        protected static IEnumerable<User> FetchUsers()
+            => HttpClient.GetAsync<IEnumerable<User>>("users").WaitForResult();
     }
 
     [Subject("StorageService fetch users")]

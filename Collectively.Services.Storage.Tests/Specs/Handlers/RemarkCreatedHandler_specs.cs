@@ -5,11 +5,12 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using Collectively.Common.Services;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Messages.Events.Remarks.Models;
-
+using Collectively.Services.Storage.Models.Users;
 using It = Machine.Specifications.It;
+using RemarkCategory = Collectively.Messages.Events.Remarks.Models.RemarkCategory;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -21,7 +22,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static RemarkCreated Event;
-        protected static UserDto User;
+        protected static User User;
         protected static Exception Exception;
 
         protected static void Initialize(Action setup)
@@ -38,7 +39,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeUser()
         {
-            User = new UserDto
+            User = new User
             {
                 Id = Guid.NewGuid(),
                 UserId = Guid.NewGuid().ToString(),
@@ -75,7 +76,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         It should_call_remark_repository_add_async = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<RemarkDto>()), Times.Once);
+            RemarkRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<Remark>()), Times.Once);
         };
     }
 }

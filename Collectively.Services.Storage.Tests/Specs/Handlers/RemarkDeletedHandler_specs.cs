@@ -5,7 +5,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using Collectively.Common.Services;
-using Collectively.Services.Storage.Dto.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Messages.Events.Remarks;
 using It = Machine.Specifications.It;
 
@@ -18,7 +18,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
 
-        protected static RemarkDto RemarkDto;
+        protected static Remark Remark;
         protected static RemarkDeleted Event;
 
         protected static void Initialize()
@@ -28,10 +28,10 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
 
             var guid = Guid.NewGuid();
-            RemarkDto = new RemarkDto
+            Remark = new Remark
             {
                 Id = guid,
-                Photos = new List<FileDto>()
+                Photos = new List<File>()
             };
             Event = new RemarkDeleted(Guid.NewGuid(), guid, Moq.It.IsAny<string>());
 
@@ -46,7 +46,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         {
             Initialize();
             RemarkRepositoryMock.Setup(x => x.GetByIdAsync(Moq.It.IsAny<Guid>()))
-                .ReturnsAsync(RemarkDto);
+                .ReturnsAsync(Remark);
         };
 
         Because of = () =>
@@ -56,7 +56,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         It should_call_remark_repository_delete_async = () =>
         {
-            RemarkRepositoryMock.Verify(x => x.DeleteAsync(Moq.It.IsAny<RemarkDto>()), Times.Once);
+            RemarkRepositoryMock.Verify(x => x.DeleteAsync(Moq.It.IsAny<Remark>()), Times.Once);
         };
     }
 }
