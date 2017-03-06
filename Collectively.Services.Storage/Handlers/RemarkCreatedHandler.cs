@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Collectively.Messages.Events;
 using Collectively.Common.Services;
-
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Models.Users;
 using Collectively.Services.Storage.Repositories;
-
+using Collectively.Common.ServiceClients.Remarks;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -18,14 +17,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly IRemarkServiceClient _remarkServiceClient;
 
         public RemarkCreatedHandler(IHandler handler, 
             IUserRepository userRepository,
-            IRemarkRepository remarkRepository)
+            IRemarkRepository remarkRepository,
+            IRemarkServiceClient remarkServiceClient)
         {
             _handler = handler;
             _userRepository = userRepository;
             _remarkRepository = remarkRepository;
+            _remarkServiceClient = remarkServiceClient;
         }
 
         public async Task HandleAsync(RemarkCreated @event)
@@ -34,66 +36,14 @@ namespace Collectively.Services.Storage.Handlers
                 .Run(async () =>
                 {
                     var user = await _userRepository.GetByIdAsync(@event.UserId);
-                    var remark = MapTo(@event, user.Value);
-                    await _remarkRepository.AddAsync(remark);
+                    var remark = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
+                    await _remarkRepository.AddAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {
                     logger.Error(ex, $"Error occured while handling {@event.GetType().Name} event");
                 })
                 .ExecuteAsync();
-        }
-
-        private static Remark MapTo(RemarkCreated @event, User user)
-        {   
-            var remark  = new Remark
-            {
-                Id = @event.RemarkId,
-                Description = @event.Description,
-                Category = new RemarkCategory
-                {
-                    Id = @event.Category.CategoryId,
-                    Name = @event.Category.Name
-                },
-                Location = new Location
-                {
-                    Address = @event.Location.Address,
-                    Coordinates = new[] {@event.Location.Longitude, @event.Location.Latitude},
-                    Type = "Point"
-                },
-                CreatedAt = DateTime.UtcNow,
-                Author = new RemarkUser
-                {
-                    UserId = @event.UserId,
-                    Name = user.Name
-                },
-                States = new List<RemarkState>()
-                {
-                    new RemarkState
-                    {
-                        State = @event.State.State,
-                        User = new RemarkUser
-                        {
-                            UserId = @event.State.UserId,
-                            Name = @event.State.Username
-                        },
-                        Description = @event.State.Description,
-                        Location = new Location
-                        {
-                            Address = @event.State.Location.Address,
-                            Coordinates = new[] {@event.State.Location.Longitude, @event.State.Location.Latitude},
-                            Type = "Point"
-                        },
-                        CreatedAt = @event.State.CreatedAt
-                    }
-                },
-                Tags = @event.Tags.ToList(),
-                Photos = new List<File>(),
-                Votes = new List<Vote>()
-            };
-            remark.State = remark.States.First();
-
-            return remark;
         }
     }
 }

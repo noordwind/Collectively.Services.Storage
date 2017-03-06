@@ -7,6 +7,8 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Models.Users;
 using Collectively.Messages.Events.Users;
 using It = Machine.Specifications.It;
+using Collectively.Common.ServiceClients.Users;
+using Collectively.Messages.Events;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -16,6 +18,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static SignedUpHandler SignedUpHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
+        protected static Mock<IUserServiceClient> UserServiceClientMock;
         protected static SignedUp Event;
         protected static User User;
         protected static Exception Exception;
@@ -25,7 +28,9 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             ExceptionHandlerMock = new Mock<IExceptionHandler>();
             Handler = new Handler(ExceptionHandlerMock.Object);
             UserRepositoryMock = new Mock<IUserRepository>();
-            SignedUpHandler = new SignedUpHandler(Handler, UserRepositoryMock.Object);
+            UserServiceClientMock = new Mock<IUserServiceClient>();
+            SignedUpHandler = new SignedUpHandler(Handler, UserRepositoryMock.Object, 
+                UserServiceClientMock.Object);
             setup();
         }
 
@@ -39,17 +44,18 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             };
             UserRepositoryMock.Setup(x => x.GetByIdAsync(User.UserId))
                 .ReturnsAsync(User);
+            UserServiceClientMock.Setup(x => x.GetAsync<User>(User.UserId))
+                .ReturnsAsync(User);            
         }
 
         protected static void InitializeEvent()
         {
-            Event = new SignedUp(Guid.NewGuid(), User?.UserId, User?.Email, User?.Name,
-                User?.PictureUrl, User?.Role, User?.State, "collectively",
-                string.Empty, User?.CreatedAt ?? DateTime.UtcNow);
+            Event = new SignedUp(Guid.NewGuid(), Resource.Create("test", "test"), 
+                User?.UserId, "collectively");
         }
     }
 
-    [Subject("UserNameChangedHandler HandleAsync")]
+    [Subject("SignedUpHandler HandleAsync")]
     public class when_invoking_user_signed_up_handle_async : SignedUpHandler_specs
     {
         Establish context = () => Initialize(() =>
@@ -59,38 +65,10 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         });
 
         Because of = () => SignedUpHandler.HandleAsync(Event).Await();
-
-        It should_call_user_repository_exists_async = () =>
-        {
-            UserRepositoryMock.Verify(x => x.ExistsAsync(User.UserId), Times.Once);
-        };
-
+        
         It should_call_user_repository_add_async = () =>
         {
             UserRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<User>()), Times.Once);
-        };
-    }
-
-    [Subject("UserNameChangedHandler HandleAsync")]
-    public class when_invoking_user_signed_up_for_existing_user : SignedUpHandler_specs
-    {
-        private Establish context = () => Initialize(() =>
-        {
-            InitializeUser();
-            InitializeEvent();
-            UserRepositoryMock.Setup(x => x.ExistsAsync(User.UserId)).ReturnsAsync(true);
-        });
-
-        Because of = () => SignedUpHandler.HandleAsync(Event).Await();
-
-        It should_call_user_repository_exists_async = () =>
-        {
-            UserRepositoryMock.Verify(x => x.ExistsAsync(User.UserId), Times.Once);
-        };
-
-        It should_not_call_user_repository_add_async = () =>
-        {
-            UserRepositoryMock.Verify(x => x.AddAsync(Moq.It.IsAny<User>()), Times.Never);
         };
     }
 }

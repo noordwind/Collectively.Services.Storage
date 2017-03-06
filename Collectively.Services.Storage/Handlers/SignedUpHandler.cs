@@ -2,9 +2,9 @@
 using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Services.Storage.Repositories;
-
 using Collectively.Messages.Events.Users;
 using Collectively.Services.Storage.Models.Users;
+using Collectively.Common.ServiceClients.Users;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -12,12 +12,14 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IUserRepository _repository;
+        private readonly IUserServiceClient _userServiceClient;
 
         public SignedUpHandler(IHandler handler, 
-            IUserRepository repository)
+            IUserRepository repository, IUserServiceClient userServiceClient)
         {
             _handler = handler;
             _repository = repository;
+            _userServiceClient = userServiceClient;
         }
 
         public async Task HandleAsync(SignedUp @event)
@@ -25,22 +27,8 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    if (await _repository.ExistsAsync(@event.UserId))
-                        return;
-
-                    var user = new User
-                    {
-                        UserId = @event.UserId,
-                        Name = @event.Name,
-                        Email = @event.Email,
-                        State = @event.State,
-                        CreatedAt = @event.CreatedAt,
-                        PictureUrl = @event.PictureUrl,
-                        Role = @event.Role,
-                        Provider = @event.Provider,
-                        ExternalUserId = @event.ExternalUserId
-                    };
-                    await _repository.AddAsync(user);
+                    var user = await _userServiceClient.GetAsync<User>(@event.UserId);
+                    await _repository.AddAsync(user.Value);
                 })
                 .OnError((ex, logger) =>
                 {

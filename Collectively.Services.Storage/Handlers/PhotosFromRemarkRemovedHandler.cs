@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
-using System.Linq;
 using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Repositories;
+using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Services.Storage.Models.Remarks;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -11,11 +12,14 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly IRemarkServiceClient _remarkServiceClient;
 
-        public PhotosFromRemarkRemovedHandler(IHandler handler, IRemarkRepository remarkRepository)
+        public PhotosFromRemarkRemovedHandler(IHandler handler, IRemarkRepository remarkRepository,
+            IRemarkServiceClient remarkServiceClient)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
+            _remarkServiceClient = remarkServiceClient;
         }
 
         public async Task HandleAsync(PhotosFromRemarkRemoved @event)
@@ -27,13 +31,11 @@ namespace Collectively.Services.Storage.Handlers
                     if (remark.HasNoValue)
                         return;
 
-                    foreach (var name in @event.Photos)
+                    var remarkDto = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
+                    remark.Value.Photos.Clear();
+                    foreach(var photo in remarkDto.Value.Photos)
                     {
-                        var photo = remark.Value.Photos.FirstOrDefault(x => x.Name == name);
-                        if (photo != null)
-                        {
-                            remark.Value.Photos.Remove(photo);
-                        }
+                        remark.Value.Photos.Add(photo);
                     }
                     await _remarkRepository.UpdateAsync(remark.Value);
                 })

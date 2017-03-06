@@ -3,14 +3,13 @@ using Collectively.Services.Storage.Repositories;
 using Machine.Specifications;
 using Moq;
 using System;
-using System.Collections.Generic;
 using Collectively.Common.Services;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Messages.Events.Remarks;
-using Collectively.Messages.Events.Remarks.Models;
 using Collectively.Services.Storage.Models.Users;
 using It = Machine.Specifications.It;
-using RemarkCategory = Collectively.Messages.Events.Remarks.Models.RemarkCategory;
+using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Messages.Events;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -21,8 +20,11 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
+        protected static Mock<IRemarkServiceClient> RemarkServiceClientMock;
         protected static RemarkCreated Event;
+        protected static Guid RemarkId = Guid.NewGuid();
         protected static User User;
+        protected static Remark Remark;
         protected static Exception Exception;
 
         protected static void Initialize(Action setup)
@@ -31,9 +33,15 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             UserRepositoryMock = new Mock<IUserRepository>();
+            RemarkServiceClientMock = new Mock<IRemarkServiceClient>();
+            Remark = new Remark();
+            RemarkServiceClientMock
+                .Setup(x => x.GetAsync<Remark>(RemarkId))
+                .ReturnsAsync(Remark);
             RemarkCreatedHandler = new RemarkCreatedHandler(Handler, 
                 UserRepositoryMock.Object,
-                RemarkRepositoryMock.Object);
+                RemarkRepositoryMock.Object, 
+                RemarkServiceClientMock.Object);
             setup();
         }
 
@@ -51,10 +59,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new RemarkCreated(Guid.NewGuid(), Guid.NewGuid(), User?.UserId, User?.Name,
-                new RemarkCategory(Guid.NewGuid(), "litter"), 
-                new RemarkLocation(string.Empty, 1, 1),
-                "test", new List<string>{ "tag1" }, DateTime.Now);
+            Event = new RemarkCreated(Guid.NewGuid(), Resource.Create("test", "test"), User.UserId, RemarkId);
         }
     }
 
