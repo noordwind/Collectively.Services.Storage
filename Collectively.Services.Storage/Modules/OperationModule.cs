@@ -1,6 +1,6 @@
-﻿using Collectively.Common.ServiceClients.Queries;
+﻿using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Services.Storage.Models.Operations;
-using Collectively.Services.Storage.Providers.Operations;
+using Collectively.Services.Storage.Providers;
 
 namespace Collectively.Services.Storage.Modules
 {

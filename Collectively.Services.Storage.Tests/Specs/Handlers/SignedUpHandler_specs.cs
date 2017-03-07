@@ -7,7 +7,7 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Models.Users;
 using Collectively.Messages.Events.Users;
 using It = Machine.Specifications.It;
-using Collectively.Common.ServiceClients.Users;
+using Collectively.Services.Storage.ServiceClients;
 using Collectively.Messages.Events;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers

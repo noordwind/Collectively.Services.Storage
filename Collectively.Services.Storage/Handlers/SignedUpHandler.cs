@@ -4,7 +4,7 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Messages.Events.Users;
 using Collectively.Services.Storage.Models.Users;
-using Collectively.Common.ServiceClients.Users;
+using Collectively.Services.Storage.ServiceClients;
 
 namespace Collectively.Services.Storage.Handlers
 {

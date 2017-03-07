@@ -10,7 +10,7 @@ using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Models.Users;
 using It = Machine.Specifications.It;
 using RemarkCategory = Collectively.Services.Storage.Models.Remarks.RemarkCategory;
-using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Services.Storage.ServiceClients;
 using Collectively.Messages.Events;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers

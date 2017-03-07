@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Collectively.Common.Extensions;
 using Collectively.Common.Mongo;
-using Collectively.Common.ServiceClients.Queries;
+using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Services.Storage.Models.Users;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Collectively.Common.Mongo;
-using Collectively.Common.ServiceClients.Queries;
+using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories.Queries;

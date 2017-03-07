@@ -3,7 +3,7 @@ using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Repositories;
-using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Services.Storage.ServiceClients;
 using Collectively.Services.Storage.Models.Remarks;
 
 namespace Collectively.Services.Storage.Handlers

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Collectively.Common.ServiceClients.Queries;
-using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Services.Storage.ServiceClients.Queries;
+using Collectively.Services.Storage.ServiceClients;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
 
-namespace Collectively.Services.Storage.Providers.Remarks
+namespace Collectively.Services.Storage.Providers
 {
     public class RemarkProvider : IRemarkProvider
     {

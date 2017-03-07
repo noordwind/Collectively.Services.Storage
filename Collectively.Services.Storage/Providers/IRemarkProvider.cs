@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Collectively.Common.ServiceClients.Queries;
+using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
 
-namespace Collectively.Services.Storage.Providers.Remarks
+namespace Collectively.Services.Storage.Providers
 {
     public interface IRemarkProvider
     {

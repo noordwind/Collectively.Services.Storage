@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Collectively.Common.ServiceClients.Operations;
+using Collectively.Services.Storage.ServiceClients;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Operations;
 using Collectively.Services.Storage.Repositories;
 
-namespace Collectively.Services.Storage.Providers.Operations
+namespace Collectively.Services.Storage.Providers
 {
     public class OperationProvider : IOperationProvider
     {

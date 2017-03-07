@@ -20,12 +20,8 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Collectively.Common.Extensions;
 using Collectively.Common.Services;
 using Collectively.Common.RabbitMq;
-using Collectively.Common.ServiceClients;
 using Collectively.Services.Storage.Cache;
-using Collectively.Services.Storage.Providers.Operations;
-using Collectively.Services.Storage.Providers.Remarks;
-using Collectively.Services.Storage.Providers.Statistics;
-using Collectively.Services.Storage.Providers.Users;
+using Collectively.Common.ServiceClients;
 
 namespace Collectively.Services.Storage.Framework
 {
@@ -71,7 +67,6 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<TagRepository>().As<ITagRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
                 builder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>();
-                builder.RegisterType<CustomHttpClient>().As<IHttpClient>();
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>();
                 builder.RegisterType<RemarkProvider>().As<IRemarkProvider>();
@@ -82,6 +77,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
                 builder.RegisterModule<EventHandlersModule>();
                 builder.RegisterModule<ServiceClientModule>();
+                builder.RegisterModule<ServiceClientsModule>();
                 builder.RegisterModule<RedisModule>();
                 SecurityContainer.Register(builder, _configuration);
                 RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());

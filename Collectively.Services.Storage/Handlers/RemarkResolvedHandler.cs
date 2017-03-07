@@ -1,13 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Collectively.Messages.Events;
 using Collectively.Services.Storage.Repositories;
-using System.Linq;
 using Collectively.Common.Services;
-
 using Collectively.Messages.Events.Remarks;
-using System.Collections.Generic;
 using Collectively.Services.Storage.Models.Remarks;
-using Collectively.Common.ServiceClients.Remarks;
+using Collectively.Services.Storage.ServiceClients;
 
 namespace Collectively.Services.Storage.Handlers
 {

@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Collectively.Common.ServiceClients.Queries;
-using Collectively.Common.ServiceClients.Statistics;
+using Collectively.Services.Storage.ServiceClients.Queries;
+using Collectively.Services.Storage.ServiceClients;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Statistics;
 
-namespace Collectively.Services.Storage.Providers.Statistics
+namespace Collectively.Services.Storage.Providers
 {
     public class StatisticsProvider : IStatisticsProvider
     {
