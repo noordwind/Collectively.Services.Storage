@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Collectively.Common.Security;
 using Collectively.Common.ServiceClients;
 using Collectively.Common.Types;
 using NLog;
@@ -11,18 +10,18 @@ namespace Collectively.Services.Storage.ServiceClients
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
-        private readonly ServiceSettings _settings;
+        private readonly string _name;
 
-        public OperationServiceClient(IServiceClient serviceClient, ServiceSettings settings)
+        public OperationServiceClient(IServiceClient serviceClient, string name)
         {
             _serviceClient = serviceClient;
-            _settings = settings;
+            _name = name;
         }
 
         public async Task<Maybe<T>> GetAsync<T>(Guid requestId) where T : class 
         {
             Logger.Debug($"Requesting GetAsync, requestId:{requestId}");
-            return await _serviceClient.GetAsync<T>(_settings.Name, $"/operations/{requestId}");
+            return await _serviceClient.GetAsync<T>(_name, $"/operations/{requestId}");
         }
 
         public async Task<Maybe<dynamic>> GetAsync(Guid requestId)

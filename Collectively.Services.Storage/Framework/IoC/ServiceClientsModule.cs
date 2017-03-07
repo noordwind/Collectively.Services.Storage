@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Autofac;
 using Collectively.Common.Security;
 using Collectively.Common.ServiceClients;
@@ -18,12 +19,17 @@ namespace Collectively.Services.Storage.Framework.IoC
 
         private void RegisterService<TService, TInterface>(ContainerBuilder builder, string title) where TService : TInterface
         {
-            var settingsKey = $"{title}-settings";
-            builder.Register(x => (TService)Activator.CreateInstance(typeof(TService), 
-                new object[]{x.Resolve<IServiceClient>(), 
-                x.ResolveNamed<ServiceSettings>(settingsKey)}))
-                .As<TInterface>()
-                .InstancePerLifetimeScope();
+            builder.Register(x =>
+            {
+                var name = x.Resolve<ServicesSettings>()
+                            .Single(s => s.Title == $"{title}-service")
+                            .Name;
+
+                return (TService)Activator.CreateInstance(typeof(TService), 
+                                new object[]{x.Resolve<IServiceClient>(), name});
+            }) 
+            .As<TInterface>()
+            .SingleInstance();
         }
     }
 }

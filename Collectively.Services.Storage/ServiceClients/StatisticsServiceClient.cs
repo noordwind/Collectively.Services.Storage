@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Collectively.Common.Extensions;
-using Collectively.Common.Security;
 using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Common.Types;
 using NLog;
@@ -12,16 +11,16 @@ namespace Collectively.Services.Storage.ServiceClients
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
-        private readonly ServiceSettings _settings;
+        private readonly string _name;
         private readonly string UserStatisticsEndpoint = "statistics/users";
         private readonly string RemarkStatisticsEndpoint = "statistics/remarks";
         private readonly string CategoryStatisticsEndpoint = "statistics/categories";
         private readonly string TagStatisticsEndpoint = "statistics/tags";
 
-        public StatisticsServiceClient(IServiceClient serviceClient, ServiceSettings settings)
+        public StatisticsServiceClient(IServiceClient serviceClient, string name)
         {
             _serviceClient = serviceClient;
-            _settings = settings;
+            _name = name;
         }
 
         public async Task<Maybe<PagedResult<T>>> BrowseUserStatisticsAsync<T>(BrowseUserStatistics query)
@@ -30,7 +29,7 @@ namespace Collectively.Services.Storage.ServiceClients
             Logger.Debug($"Requesting BrowseReportersAsync, page:{query.Page}, results:{query.Results}");
             var queryString = UserStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<T>(_settings.Name, queryString);
+                .GetCollectionAsync<T>(_name, queryString);
         }
 
         public async Task<Maybe<PagedResult<dynamic>>> BrowseUserStatisticsAsync(BrowseUserStatistics query)
@@ -42,7 +41,7 @@ namespace Collectively.Services.Storage.ServiceClients
             Logger.Debug($"Requesting GetUserStatisticsAsync, userId:{query.Id}");
             var endpoint = $"{UserStatisticsEndpoint}/{query.Id}";
             return await _serviceClient
-                .GetAsync<T>(_settings.Name, endpoint);
+                .GetAsync<T>(_name, endpoint);
         }
 
         public async Task<Maybe<dynamic>> GetUserStatisticsAsync(GetUserStatistics query)
@@ -54,7 +53,7 @@ namespace Collectively.Services.Storage.ServiceClients
             Logger.Debug($"Requesting BrowseRemarkStatisticsAsync, page:{query.Page}, results:{query.Results}");
             var queryString = RemarkStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<T>(_settings.Name, queryString);
+                .GetCollectionAsync<T>(_name, queryString);
         }
 
         public async Task<Maybe<PagedResult<dynamic>>> BrowseRemarkStatisticsAsync(BrowseRemarkStatistics query)
@@ -66,7 +65,7 @@ namespace Collectively.Services.Storage.ServiceClients
             Logger.Debug($"Requesting GetRemarkStatisticsAsync, remarkId:{query.Id}");
             var endpoint = $"{RemarkStatisticsEndpoint}/{query.Id}";
             return await _serviceClient
-                .GetAsync<T>(_settings.Name, endpoint);
+                .GetAsync<T>(_name, endpoint);
         }
 
         public async Task<Maybe<dynamic>> GetRemarkStatisticsAsync(GetRemarkStatistics query)
@@ -78,7 +77,7 @@ namespace Collectively.Services.Storage.ServiceClients
             Logger.Debug($"Requesting GetRemarksCountStatisticsAsync, from:{query.From}, to:{query.To}");
             var endpoint = $"{RemarkStatisticsEndpoint}/general".ToQueryString(query);
             return await _serviceClient
-                .GetAsync<T>(_settings.Name, endpoint);
+                .GetAsync<T>(_name, endpoint);
         }
 
         public async Task<Maybe<dynamic>> GetRemarksCountStatisticsAsync(GetRemarksCountStatistics query)
@@ -90,7 +89,7 @@ namespace Collectively.Services.Storage.ServiceClients
             Logger.Debug($"Requesting BrowseCategoryStatisticsAsync, page:{query.Page}, results:{query.Results}");
             var queryString = CategoryStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<T>(_settings.Name, queryString);
+                .GetCollectionAsync<T>(_name, queryString);
         }
 
         public async Task<Maybe<PagedResult<dynamic>>> BrowseCategoryStatisticsAsync(BrowseCategoryStatistics query)
@@ -102,7 +101,7 @@ namespace Collectively.Services.Storage.ServiceClients
             Logger.Debug($"Requesting BrowseTagStatisticsAsync, page:{query.Page}, results:{query.Results}");
             var queryString = TagStatisticsEndpoint.ToQueryString(query);
             return await _serviceClient
-                .GetCollectionAsync<T>(_settings.Name, queryString);
+                .GetCollectionAsync<T>(_name, queryString);
         }
 
         public async Task<Maybe<PagedResult<dynamic>>> BrowseTagStatisticsAsync(BrowseTagStatistics query)

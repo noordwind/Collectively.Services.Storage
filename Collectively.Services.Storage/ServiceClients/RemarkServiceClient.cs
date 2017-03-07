@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Collectively.Common.Security;
 using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Common.Types;
 using NLog;
@@ -12,19 +11,19 @@ namespace Collectively.Services.Storage.ServiceClients
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
-        private readonly ServiceSettings _settings;
+        private readonly string _name;
 
-        public RemarkServiceClient(IServiceClient serviceClient, ServiceSettings settings)
+        public RemarkServiceClient(IServiceClient serviceClient, string name)
         {
             _serviceClient = serviceClient;
-            _settings = settings;
+            _name = name;
         }
 
         public async Task<Maybe<T>> GetAsync<T>(Guid id) where T : class 
         {
             Logger.Debug($"Requesting GetAsync, id:{id}");
             return await _serviceClient
-                .GetAsync<T>(_settings.Name, $"remarks/{id}");
+                .GetAsync<T>(_name, $"remarks/{id}");
         }
 
         public async Task<Maybe<dynamic>> GetAsync(Guid id)
@@ -35,7 +34,7 @@ namespace Collectively.Services.Storage.ServiceClients
         {
             Logger.Debug("Requesting BrowseCategoriesAsync");
             return await _serviceClient
-                .GetCollectionAsync<T>(_settings.Name, "remarks/categories");
+                .GetCollectionAsync<T>(_name, "remarks/categories");
         }
 
         public async Task<Maybe<PagedResult<dynamic>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
@@ -46,7 +45,7 @@ namespace Collectively.Services.Storage.ServiceClients
         {
             Logger.Debug("Requesting BrowseTagsAsync");
             return await _serviceClient
-                .GetCollectionAsync<T>(_settings.Name, "remarks/tags");
+                .GetCollectionAsync<T>(_name, "remarks/tags");
         }
 
         public async Task<Maybe<PagedResult<dynamic>>> BrowseTagsAsync(BrowseRemarkTags query)

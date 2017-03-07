@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Collectively.Common.Security;
 using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Common.Types;
 using NLog;
@@ -12,18 +11,18 @@ namespace Collectively.Services.Storage.ServiceClients
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
-        private readonly ServiceSettings _settings;
+        private readonly string _name;
 
-        public UserServiceClient(IServiceClient serviceClient, ServiceSettings settings)
+        public UserServiceClient(IServiceClient serviceClient, string name)
         {
             _serviceClient = serviceClient;
-            _settings = settings;
+            _name = name;
         }
 
         public async Task<Maybe<T>> IsAvailableAsync<T>(string name) where T : class
         {
             Logger.Debug($"Requesting IsAvailableAsync, name:{name}");
-            return await _serviceClient.GetAsync<T>(_settings.Name, $"users/{name}/available");
+            return await _serviceClient.GetAsync<T>(_name, $"users/{name}/available");
         }
 
         public async Task<Maybe<dynamic>> IsAvailableAsync(string name)
@@ -32,7 +31,7 @@ namespace Collectively.Services.Storage.ServiceClients
         public async Task<Maybe<PagedResult<T>>> BrowseAsync<T>(BrowseUsers query) where T : class
         {
             Logger.Debug($"Requesting BrowseAsync, page:{query.Page}, results:{query.Results}");
-            return await _serviceClient.GetCollectionAsync<T>(_settings.Name, "users");
+            return await _serviceClient.GetCollectionAsync<T>(_name, "users");
         }
 
         public async Task<Maybe<PagedResult<dynamic>>> BrowseAsync(BrowseUsers query)
@@ -41,7 +40,7 @@ namespace Collectively.Services.Storage.ServiceClients
         public async Task<Maybe<T>> GetAsync<T>(string userId) where T : class
         {
             Logger.Debug($"Requesting GetAsync, userId:{userId}");
-            return await _serviceClient.GetAsync<T>(_settings.Name, $"users/{userId}");
+            return await _serviceClient.GetAsync<T>(_name, $"users/{userId}");
         }
 
         public async Task<Maybe<dynamic>> GetAsync(string userId)
@@ -50,7 +49,7 @@ namespace Collectively.Services.Storage.ServiceClients
         public async Task<Maybe<T>> GetByNameAsync<T>(string name) where T : class
         {
             Logger.Debug($"Requesting GetByNameAsync, name:{name}");
-            return await _serviceClient.GetAsync<T>(_settings.Name, $"users/{name}/account");
+            return await _serviceClient.GetAsync<T>(_name, $"users/{name}/account");
         }
 
         public async Task<Maybe<dynamic>> GetByNameAsync(string name)
@@ -59,7 +58,7 @@ namespace Collectively.Services.Storage.ServiceClients
         public async Task<Maybe<T>> GetSessionAsync<T>(Guid id) where T : class
         {
             Logger.Debug($"Requesting GetSessionAsync, id:{id}");
-            return await _serviceClient.GetAsync<T>(_settings.Name, $"user-sessions/{id}");
+            return await _serviceClient.GetAsync<T>(_name, $"user-sessions/{id}");
         }
 
         public async Task<Maybe<dynamic>> GetSessionAsync(Guid id)
