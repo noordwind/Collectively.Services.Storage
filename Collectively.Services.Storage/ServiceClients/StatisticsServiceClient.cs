@@ -22,7 +22,6 @@ namespace Collectively.Services.Storage.ServiceClients
         {
             _serviceClient = serviceClient;
             _settings = settings;
-            _serviceClient.SetSettings(settings);
         }
 
         public async Task<Maybe<PagedResult<T>>> BrowseUserStatisticsAsync<T>(BrowseUserStatistics query)

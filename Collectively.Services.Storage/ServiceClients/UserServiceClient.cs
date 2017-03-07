@@ -18,7 +18,6 @@ namespace Collectively.Services.Storage.ServiceClients
         {
             _serviceClient = serviceClient;
             _settings = settings;
-            _serviceClient.SetSettings(settings);
         }
 
         public async Task<Maybe<T>> IsAvailableAsync<T>(string name) where T : class

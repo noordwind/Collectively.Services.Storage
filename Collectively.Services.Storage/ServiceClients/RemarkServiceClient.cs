@@ -18,7 +18,6 @@ namespace Collectively.Services.Storage.ServiceClients
         {
             _serviceClient = serviceClient;
             _settings = settings;
-            _serviceClient.SetSettings(settings);
         }
 
         public async Task<Maybe<T>> GetAsync<T>(Guid id) where T : class 
