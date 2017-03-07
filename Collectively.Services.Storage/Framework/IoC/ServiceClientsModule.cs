@@ -23,7 +23,7 @@ namespace Collectively.Services.Storage.Framework.IoC
                 new object[]{x.Resolve<IServiceClient>(), 
                 x.ResolveNamed<ServiceSettings>(settingsKey)}))
                 .As<TInterface>()
-                .SingleInstance();
+                .InstancePerLifetimeScope();
         }
     }
 }
