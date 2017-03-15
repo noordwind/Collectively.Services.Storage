@@ -23,7 +23,7 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var remark = await _repository.GetByIdAsync(@event.Id);
+                    var remark = await _repository.GetByIdAsync(@event.RemarkId);
                     if (remark.HasNoValue)
                         return;
 
