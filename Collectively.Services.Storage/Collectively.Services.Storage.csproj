@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Collectively.Common/Collectively.Common/Collectively.Common.csproj" />
     <ProjectReference Include="../Collectively.Services.Storage.Models/Collectively.Services.Storage.Models.csproj" />
   </ItemGroup>
 
@@ -50,6 +49,7 @@
     <PackageReference Include="RawRabbit" Version="1.10.3" />
     <PackageReference Include="RawRabbit.vNext" Version="1.10.3" />
     <PackageReference Include="Collectively.Messages" Version="1.0.*" />
+    <PackageReference Include="Collectively.Common" Version="1.0.*" />
   </ItemGroup>
 
 </Project>
