@@ -20,7 +20,6 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static IHandler Handler;
         protected static RemarkResolvedHandler RemarkResolvedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
-        protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IRemarkServiceClient> RemarkServiceClientMock;
         protected static RemarkResolved Event;
@@ -40,12 +39,10 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             ExceptionHandlerMock = new Mock<IExceptionHandler>();
             Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
-            UserRepositoryMock = new Mock<IUserRepository>();
             RemarkServiceClientMock = new Mock<IRemarkServiceClient>();
 
             RemarkResolvedHandler = new RemarkResolvedHandler(Handler,
                 RemarkRepositoryMock.Object,
-                UserRepositoryMock.Object,
                 RemarkServiceClientMock.Object);
 
             User = new User
@@ -103,8 +100,6 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
                 .ReturnsAsync(resolvedRemark);
             RemarkRepositoryMock.Setup(x => x.GetByIdAsync(Moq.It.IsAny<Guid>()))
                 .ReturnsAsync(Remark);
-            UserRepositoryMock.Setup(x => x.GetByIdAsync(Moq.It.IsAny<string>()))
-                .ReturnsAsync(User);
         }
     }
 
@@ -118,11 +113,6 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         It should_fetch_remark = () =>
         {
             RemarkRepositoryMock.Verify(x => x.GetByIdAsync(RemarkId), Times.Once);
-        };
-
-        It should_fetch_user = () =>
-        {
-            UserRepositoryMock.Verify(x => x.GetByIdAsync(UserId), Times.Once);
         };
 
         It should_update_remark = () =>
@@ -149,43 +139,9 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             RemarkRepositoryMock.Verify(x => x.GetByIdAsync(RemarkId), Times.Once);
         };
 
-        It should_not_fetch_user = () =>
-        {
-            UserRepositoryMock.Verify(x => x.GetByIdAsync(UserId), Times.Never);
-        };
-
         It should_not_update_remark = () =>
         {
             RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<Remark>(r => r.State.State == "resolved"
-                && r.State.User.UserId == Event.UserId)), Times.Never);
-        };
-    }
-
-    [Subject("RemarkResolvedHandler HandleAsync")]
-    public class when_invoking_handle_async_and_user_does_not_exist : RemarkResolvedHandler_specs
-    {
-        Establish context = () =>
-        {
-            Initialize();
-            UserRepositoryMock.Setup(x => x.GetByIdAsync(Moq.It.IsAny<string>()))
-                .ReturnsAsync(null);
-        };
-
-        Because of = () => RemarkResolvedHandler.HandleAsync(Event).Await();
-
-        It should_fetch_remark = () =>
-        {
-            RemarkRepositoryMock.Verify(x => x.GetByIdAsync(RemarkId), Times.Once);
-        };
-
-        It should_fetch_user = () =>
-        {
-            UserRepositoryMock.Verify(x => x.GetByIdAsync(UserId), Times.Once);
-        };
-
-        It should_not_update_remark = () =>
-        {
-            RemarkRepositoryMock.Verify(x => x.UpdateAsync(Moq.It.Is<Remark>(r => r.State.State !=  "resolved"
                 && r.State.User.UserId == Event.UserId)), Times.Never);
         };
     }

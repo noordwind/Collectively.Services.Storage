@@ -1,20 +1,20 @@
 ﻿using System.Threading.Tasks;
 using Collectively.Messages.Events;
+using Collectively.Services.Storage.Repositories;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Models.Remarks;
-using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
 
 namespace Collectively.Services.Storage.Handlers
 {
-    public class RemarkCreatedHandler : IEventHandler<RemarkCreated>
+    public class RemarkRenewedHandler : IEventHandler<RemarkRenewed>
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
 
-        public RemarkCreatedHandler(IHandler handler, 
+        public RemarkRenewedHandler(IHandler handler, 
             IRemarkRepository remarkRepository,
             IRemarkServiceClient remarkServiceClient)
         {
@@ -23,13 +23,21 @@ namespace Collectively.Services.Storage.Handlers
             _remarkServiceClient = remarkServiceClient;
         }
 
-        public async Task HandleAsync(RemarkCreated @event)
+        public async Task HandleAsync(RemarkRenewed @event)
         {
             await _handler
                 .Run(async () =>
                 {
-                    var remark = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
-                    await _remarkRepository.AddAsync(remark.Value);
+                    var remark = await _remarkRepository.GetByIdAsync(@event.RemarkId);
+                    if (remark.HasNoValue)
+                        return;
+
+                    var remarkDto = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
+                    remark.Value.State = remarkDto.Value.State;
+                    remark.Value.States = remarkDto.Value.States;
+                    remark.Value.Photos = remarkDto.Value.Photos;
+                    remark.Value.Resolved = false;
+                    await _remarkRepository.UpdateAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {

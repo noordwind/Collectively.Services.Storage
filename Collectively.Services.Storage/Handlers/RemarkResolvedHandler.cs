@@ -12,17 +12,14 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
 
         public RemarkResolvedHandler(IHandler handler, 
             IRemarkRepository remarkRepository,
-            IUserRepository userRepository,
             IRemarkServiceClient remarkServiceClient)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
-            _userRepository = userRepository;
             _remarkServiceClient = remarkServiceClient;
         }
 
@@ -35,7 +32,6 @@ namespace Collectively.Services.Storage.Handlers
                     if (remark.HasNoValue)
                         return;
 
-                    var user = await _userRepository.GetByIdAsync(@event.UserId);
                     var remarkDto = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
                     remark.Value.State = remarkDto.Value.State;
                     remark.Value.States = remarkDto.Value.States;

@@ -18,7 +18,6 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static IHandler Handler;
         protected static RemarkCreatedHandler RemarkCreatedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
-        protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IRemarkServiceClient> RemarkServiceClientMock;
         protected static RemarkCreated Event;
@@ -32,14 +31,12 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             ExceptionHandlerMock = new Mock<IExceptionHandler>();
             Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
-            UserRepositoryMock = new Mock<IUserRepository>();
             RemarkServiceClientMock = new Mock<IRemarkServiceClient>();
             Remark = new Remark();
             RemarkServiceClientMock
                 .Setup(x => x.GetAsync<Remark>(RemarkId))
                 .ReturnsAsync(Remark);
             RemarkCreatedHandler = new RemarkCreatedHandler(Handler, 
-                UserRepositoryMock.Object,
                 RemarkRepositoryMock.Object, 
                 RemarkServiceClientMock.Object);
             setup();
@@ -53,8 +50,6 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
                 UserId = Guid.NewGuid().ToString(),
                 Name = "user"
             };
-            UserRepositoryMock.Setup(x => x.GetByIdAsync(User.UserId))
-                .ReturnsAsync(User);
         }
 
         protected static void InitializeEvent()
@@ -73,11 +68,6 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         });
 
         Because of = () => RemarkCreatedHandler.HandleAsync(Event).Await();
-
-        It should_call_user_repository_get_by_id_async = () =>
-        {
-            UserRepositoryMock.Verify(x => x.GetByIdAsync(User.UserId), Times.Once);
-        };
 
         It should_call_remark_repository_add_async = () =>
         {
