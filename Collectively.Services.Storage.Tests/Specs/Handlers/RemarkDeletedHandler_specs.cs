@@ -8,6 +8,7 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Messages.Events.Remarks;
 using It = Machine.Specifications.It;
+using Collectively.Messages.Events;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -17,7 +18,6 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static RemarkDeletedHandler RemarkDeletedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
-
         protected static Remark Remark;
         protected static RemarkDeleted Event;
 
@@ -27,14 +27,12 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
 
-            var guid = Guid.NewGuid();
             Remark = new Remark
             {
-                Id = guid,
+                Id = Guid.NewGuid(),
                 Photos = new List<File>()
             };
-            Event = new RemarkDeleted(Guid.NewGuid(), guid, Moq.It.IsAny<string>());
-
+            Event = new RemarkDeleted(Guid.NewGuid(), Resource.Create("test", "test"), "userId", Remark.Id);
             RemarkDeletedHandler = new RemarkDeletedHandler(Handler, RemarkRepositoryMock.Object);
         }
     }
