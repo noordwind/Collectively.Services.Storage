@@ -12,7 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Collectively.Common/Collectively.Common/Collectively.Common.csproj" />
     <ProjectReference Include="../Collectively.Services.Storage/Collectively.Services.Storage.csproj" />
   </ItemGroup>
 
@@ -23,6 +22,7 @@
     <PackageReference Include="Machine.Specifications.Should" Version="0.11.0" />
     <PackageReference Include="dotnet-test-mspec" Version="*" />
     <PackageReference Include="Collectively.Messages" Version="1.0.*" />
+    <PackageReference Include="Collectively.Common" Version="1.0.*" />
     <PackageReference Include="Moq" Version="4.6.38-alpha" />
   </ItemGroup>
 
