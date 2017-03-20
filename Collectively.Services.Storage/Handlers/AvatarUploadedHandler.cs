@@ -29,7 +29,7 @@ namespace Collectively.Services.Storage.Handlers
                         throw new ServiceException(OperationCodes.UserNotFound,
                             $"Avatar cannot be changed because user: {@event.UserId} does not exist");
                     }
-                    // user.Value.AvatarUrl = @event.AvatarUrl;
+                    user.Value.AvatarUrl = @event.AvatarUrl;
                     await _userRepository.EditAsync(user.Value);
                 })
                 .OnError((ex, logger) =>

@@ -29,7 +29,7 @@ namespace Collectively.Services.Storage.Handlers
                         throw new ServiceException(OperationCodes.UserNotFound,
                             $"Avatar cannot be removed because user: {@event.UserId} does not exist");
                     }
-                    // user.Value.AvatarUrl = string.Empty;
+                    user.Value.AvatarUrl = string.Empty;
                     await _userRepository.EditAsync(user.Value);
                 })
                 .OnError((ex, logger) =>

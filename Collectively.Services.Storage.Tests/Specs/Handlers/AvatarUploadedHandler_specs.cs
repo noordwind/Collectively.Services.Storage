@@ -43,7 +43,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new AvatarUploaded(Guid.NewGuid(), User?.UserId, User?.PictureUrl);
+            Event = new AvatarUploaded(Guid.NewGuid(), User?.UserId, User?.AvatarUrl);
         }
     }
 
