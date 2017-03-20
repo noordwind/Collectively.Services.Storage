@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Collectively.Services.Storage": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:10000"
+    }
+  }
+}
