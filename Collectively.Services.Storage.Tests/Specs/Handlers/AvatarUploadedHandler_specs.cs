@@ -10,10 +10,10 @@ using It = Machine.Specifications.It;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
-    public abstract class AvatarChangedHandler_specs
+    public abstract class AvatarUploadedHandler_specs
     {
         protected static IHandler Handler;
-        protected static AvatarChangedHandler AvatarChangedHandler;
+        protected static AvatarUploadedHandler AvatarUploadedHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static AvatarChanged Event;
@@ -25,7 +25,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             ExceptionHandlerMock = new Mock<IExceptionHandler>();
             Handler = new Handler(ExceptionHandlerMock.Object);
             UserRepositoryMock = new Mock<IUserRepository>();
-            AvatarChangedHandler = new AvatarChangedHandler(Handler, UserRepositoryMock.Object);
+            AvatarUploadedHandler = new AvatarUploadedHandler(Handler, UserRepositoryMock.Object);
             setup();
         }
 
@@ -43,12 +43,12 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new AvatarChanged(Guid.NewGuid(), User?.UserId, User?.PictureUrl);
+            Event = new AvatarChanged(Guid.NewGuid(), User?.UserId, User?.AvatarUrl);
         }
     }
 
     [Subject("AvatarChangedHandler HandleAsync")]
-    public class when_invoking_avatar_changed_handle_async : AvatarChangedHandler_specs
+    public class when_invoking_avatar_changed_handle_async : AvatarUploadedHandler_specs
     {
         Establish context = () => Initialize(() =>
         {

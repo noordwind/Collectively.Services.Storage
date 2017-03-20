@@ -7,18 +7,18 @@ using Collectively.Messages.Events.Users;
 
 namespace Collectively.Services.Storage.Handlers
 {
-    public class AvatarChangedHandler : IEventHandler<AvatarChanged>
+    public class AvatarUploadedHandler : IEventHandler<AvatarUploaded>
     {
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
 
-        public AvatarChangedHandler(IHandler handler, IUserRepository userRepository)
+        public AvatarUploadedHandler(IHandler handler, IUserRepository userRepository)
         {
             _handler = handler;
             _userRepository = userRepository;
         }
 
-        public async Task HandleAsync(AvatarChanged @event)
+        public async Task HandleAsync(AvatarUploaded @event)
         {
             await _handler
                 .Run(async () =>
@@ -29,7 +29,7 @@ namespace Collectively.Services.Storage.Handlers
                         throw new ServiceException(OperationCodes.UserNotFound,
                             $"Avatar cannot be changed because user: {@event.UserId} does not exist");
                     }
-                    user.Value.PictureUrl = @event.PictureUrl;
+                    // user.Value.AvatarUrl = @event.AvatarUrl;
                     await _userRepository.EditAsync(user.Value);
                 })
                 .OnError((ex, logger) =>

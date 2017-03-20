@@ -9,7 +9,7 @@ namespace Collectively.Services.Storage.Models.Users
         public string Email { get; set; }
         public string Name { get; set; }
         public string Provider { get; set; }
-        public string PictureUrl { get; set; }
+        public string AvatarUrl { get; set; }
         public string Role { get; set; }
         public string State { get; set; }
         public string ExternalUserId { get; set; }
