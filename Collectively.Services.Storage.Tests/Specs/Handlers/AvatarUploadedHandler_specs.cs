@@ -16,7 +16,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static AvatarUploadedHandler AvatarUploadedHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
-        protected static AvatarChanged Event;
+        protected static AvatarUploaded Event;
         protected static User User;
         protected static Exception Exception;
 
@@ -43,12 +43,12 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
 
         protected static void InitializeEvent()
         {
-            Event = new AvatarChanged(Guid.NewGuid(), User?.UserId, User?.AvatarUrl);
+            Event = new AvatarUploaded(Guid.NewGuid(), User?.UserId, User?.PictureUrl);
         }
     }
 
-    [Subject("AvatarChangedHandler HandleAsync")]
-    public class when_invoking_avatar_changed_handle_async : AvatarUploadedHandler_specs
+    [Subject("AvatarUploadedHandler HandleAsync")]
+    public class when_invoking_avatar_uploaded_handle_async : AvatarUploadedHandler_specs
     {
         Establish context = () => Initialize(() =>
         {
@@ -56,7 +56,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             InitializeEvent();
         });
 
-        Because of = () => AvatarChangedHandler.HandleAsync(Event).Await();
+        Because of = () => AvatarUploadedHandler.HandleAsync(Event).Await();
 
         It should_call_user_repository_get_by_id_async = () =>
         {
