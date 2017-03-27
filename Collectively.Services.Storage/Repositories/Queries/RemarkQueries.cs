@@ -83,16 +83,9 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 filter = filter & filterBuilder.Where(x => x.Tags.Any(y => query.Tags.Contains(y)));
             }
-            if (query.State.NotEmpty() && query.State != "all")
+            if (query.States?.Any() == true)
             {
-                if (query.State == "resolved")
-                {
-                    filter = filter & filterBuilder.Where(x => x.State.State == "resolved");
-                }
-                else
-                {
-                    filter = filter & filterBuilder.Where(x => x.State.State != "resolved");
-                }
+                filter = filter & filterBuilder.Where(x => query.States.Contains(x.State.State));
             }
             if (!query.Disliked)
             {
