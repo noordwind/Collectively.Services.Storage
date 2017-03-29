@@ -36,9 +36,10 @@ namespace Collectively.Services.Storage.Handlers
                     {
                         return;
                     }
+                    comment.Text = @event.Text;
                     comment.History.Add(new CommentHistory
                     {
-                        Text = @event.Text,
+                        Text = comment.Text,
                         CreatedAt = @event.CreatedAt
                     });
                     await _repository.UpdateAsync(remark.Value);
