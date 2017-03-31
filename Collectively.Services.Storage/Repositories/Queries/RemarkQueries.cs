@@ -31,8 +31,9 @@ namespace Collectively.Services.Storage.Repositories.Queries
             BrowseRemarks query)
         {
             if (!IsLocationProvided(query) && query.AuthorId.Empty() && !query.Latest)
+            {
                 return PagedResult<Remark>.Empty;
-
+            }
             if (query.Page <= 0)
             {
                 query.Page = 1;
@@ -53,7 +54,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
             if (query.Latest)
             {
                 filter = filterBuilder.Where(x => x.Id != Guid.Empty);
-            }
+            }           
             if (query.AuthorId.NotEmpty())
             {
                 filter = filter & filterBuilder.Where(x => x.Author.UserId == query.AuthorId);
@@ -90,6 +91,10 @@ namespace Collectively.Services.Storage.Repositories.Queries
             if (!query.Disliked)
             {
                 filter = filter & filterBuilder.Where(x => x.Rating > NegativeVotesThreshold);
+            }
+            if(query.UserFavorites.NotEmpty())
+            {
+                filter = filterBuilder.Where(x => x.UserFavorites.Contains(query.UserFavorites));
             }
 
             var filteredRemarks = remarks.Find(filter);

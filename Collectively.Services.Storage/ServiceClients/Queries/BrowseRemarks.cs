@@ -15,6 +15,7 @@ namespace Collectively.Services.Storage.ServiceClients.Queries
         public bool Disliked { get; set; }
         public bool OnlyLiked { get; set; }
         public bool OnlyDisliked { get; set; }
+        public string UserFavorites { get; set; }
         public IEnumerable<string> States { get; set; }
         public IEnumerable<string> Categories { get; set; }
         public IEnumerable<string> Tags { get; set; }
