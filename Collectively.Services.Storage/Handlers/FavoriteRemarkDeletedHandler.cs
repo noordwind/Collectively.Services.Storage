@@ -13,11 +13,14 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
+        private readonly IRemarkRepository _remarkRepository;
 
-        public FavoriteRemarkDeletedHandler(IHandler handler, IUserRepository userRepository)
+        public FavoriteRemarkDeletedHandler(IHandler handler, IUserRepository userRepository,
+            IRemarkRepository remarkRepository)
         {
             _handler = handler;
             _userRepository = userRepository;
+            _remarkRepository = remarkRepository;
         }
 
         public async Task HandleAsync(FavoriteRemarkDeleted @event)
@@ -33,6 +36,14 @@ namespace Collectively.Services.Storage.Handlers
                     }
                     user.Value.FavoriteRemarks.Remove(@event.RemarkId);
                     await _userRepository.EditAsync(user.Value);
+                    
+                    var remark = await _remarkRepository.GetByIdAsync(@event.RemarkId);
+                    if (remark.HasNoValue)
+                    {
+                        return;
+                    }
+                    remark.Value.UserFavorites.Remove(@event.UserId);
+                    await _remarkRepository.UpdateAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {

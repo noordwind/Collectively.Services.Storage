@@ -13,11 +13,14 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
+        private readonly IRemarkRepository _remarkRepository;
 
-        public FavoriteRemarkAddedHandler(IHandler handler, IUserRepository userRepository)
+        public FavoriteRemarkAddedHandler(IHandler handler, IUserRepository userRepository,
+            IRemarkRepository remarkRepository)
         {
             _handler = handler;
             _userRepository = userRepository;
+            _remarkRepository = remarkRepository;
         }
 
         public async Task HandleAsync(FavoriteRemarkAdded @event)
@@ -31,12 +34,23 @@ namespace Collectively.Services.Storage.Handlers
                         throw new ServiceException(OperationCodes.UserNotFound,
                             $"Favorite remark cannot be added because user: {@event.UserId} does not exist");
                     }
+                    var remark = await _remarkRepository.GetByIdAsync(@event.RemarkId);
+                    if (remark.HasNoValue)
+                    {
+                        return;
+                    }
                     if (user.Value.FavoriteRemarks == null) 
                     {
-                        user.Value.FavoriteRemarks = new List<Guid>();
+                        user.Value.FavoriteRemarks = new HashSet<Guid>();
+                    }
+                    if (remark.Value.UserFavorites == null) 
+                    {
+                        remark.Value.UserFavorites = new HashSet<string>();
                     }
                     user.Value.FavoriteRemarks.Add(@event.RemarkId);
+                    remark.Value.UserFavorites.Add(@event.UserId);
                     await _userRepository.EditAsync(user.Value);
+                    await _remarkRepository.UpdateAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {
