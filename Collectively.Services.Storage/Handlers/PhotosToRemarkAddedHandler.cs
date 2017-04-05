@@ -29,7 +29,9 @@ namespace Collectively.Services.Storage.Handlers
                 {
                     var remark = await _remarkRepository.GetByIdAsync(@event.RemarkId);
                     if (remark.HasNoValue)
+                    {
                         return;
+                    }
 
                     var remarkDto = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
                     remark.Value.Photos.Clear();
