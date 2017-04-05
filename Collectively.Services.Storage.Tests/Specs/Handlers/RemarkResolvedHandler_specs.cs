@@ -129,7 +129,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         {
             Initialize();
             RemarkRepositoryMock.Setup(x => x.GetByIdAsync(Moq.It.IsAny<Guid>()))
-                .ReturnsAsync(null);
+                .ReturnsAsync(() => null);
         };
 
         Because of = () => RemarkResolvedHandler.HandleAsync(Event).Await();

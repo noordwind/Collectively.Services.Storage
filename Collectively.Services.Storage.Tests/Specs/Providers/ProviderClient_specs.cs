@@ -34,7 +34,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Providers
     }
 
     [Subject("ProviderClient GetAsync")]
-    public class When_get_async : ProviderClient_specs
+    public class when_get_async : ProviderClient_specs
     {
         protected static Maybe<object> Result;
 
@@ -48,7 +48,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Providers
     }
 
     [Subject("ProviderClient GetAsync")]
-    public class When_get_async_with_two_handlers_and_first_returns_value : ProviderClient_specs
+    public class when_get_async_with_two_handlers_and_first_returns_value : ProviderClient_specs
     {
         protected static Maybe<object> Result;
 
@@ -64,7 +64,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Providers
     }
 
     [Subject("ProviderClient GetAsync")]
-    public class When_get_async_with_two_handlers_and_second_returns_value : ProviderClient_specs
+    public class when_get_async_with_two_handlers_and_second_returns_value : ProviderClient_specs
     {
         protected static Maybe<object> Result;
 
@@ -81,7 +81,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Providers
     }
 
     [Subject("ProviderClient GetCollectionAsync")]
-    public class When_get_collection_async : ProviderClient_specs
+    public class when_get_collection_async : ProviderClient_specs
     {
         protected static Maybe<PagedResult<object>> Result;
 
@@ -95,7 +95,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Providers
     }
 
     [Subject("ProviderClient GetCollectionAsync")]
-    public class When_get_collection_async_with_two_handlers_and_first_returns_value : ProviderClient_specs
+    public class when_get_collection_async_with_two_handlers_and_first_returns_value : ProviderClient_specs
     {
         protected static Maybe<PagedResult<object>> Result;
 
@@ -111,7 +111,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Providers
     }
 
     [Subject("ProviderClient GetCollectionAsync")]
-    public class When_get_collection_async_with_two_handlers_and_second_returns_value : ProviderClient_specs
+    public class when_get_collection_async_with_two_handlers_and_second_returns_value : ProviderClient_specs
     {
         protected static Maybe<PagedResult<object>> Result;
 
