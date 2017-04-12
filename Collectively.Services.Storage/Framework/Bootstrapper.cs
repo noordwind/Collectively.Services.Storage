@@ -72,6 +72,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<RemarkProvider>().As<IRemarkProvider>();
                 builder.RegisterType<StatisticsProvider>().As<IStatisticsProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
+                builder.RegisterType<NotificationProvider>().As<INotificationProvider>();
                 builder.RegisterType<Handler>().As<IHandler>();
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
