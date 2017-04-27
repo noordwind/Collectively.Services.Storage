@@ -39,6 +39,7 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<RemarkActionCanceled>()             
                 .SubscribeToEvent<OperationCreated>()
                 .SubscribeToEvent<OperationUpdated>()
+                .SubscribeToEvent<RemarkStateDeleted>()
                 .Build()
                 .Run();
         }
