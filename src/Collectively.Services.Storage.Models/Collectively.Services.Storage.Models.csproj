@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>Collectively.Services.Storage.Model</AssemblyTitle>
+    <Authors>Noordwind</Authors>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Collectively.Services.Storage.Models</AssemblyName>
+    <PackageId>Collectively.Services.Storage.Models</PackageId>
+    <PackageProjectUrl>https://github.com/noordwind/Collectively.Services.Storage.Models</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/noordwind/Collectively.Services.Storage.Models/blob/master/LICENSE</PackageLicenseUrl>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
+
+</Project>
