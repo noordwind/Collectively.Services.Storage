@@ -11,7 +11,7 @@ namespace Collectively.Services.Storage
         public static void Main(string[] args)
         {
             WebServiceHost
-                .Create<Startup>(port: 10000)
+                .Create<Startup>()
                 .UseAutofac(Bootstrapper.LifeTimeScope)
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
                 .SubscribeToEvent<SignedUp>()
