@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Messages.Events.Users;
 using Collectively.Services.Storage.Models.Users;
 using Collectively.Services.Storage.ServiceClients;
+using System.Collections.Generic;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -28,6 +30,10 @@ namespace Collectively.Services.Storage.Handlers
                 .Run(async () =>
                 {
                     var user = await _userServiceClient.GetAsync<User>(@event.UserId);
+                    if(user.Value.FavoriteRemarks == null)
+                    {
+                        user.Value.FavoriteRemarks = new HashSet<Guid>();
+                    }
                     await _repository.AddAsync(user.Value);
                 })
                 .OnError((ex, logger) =>
