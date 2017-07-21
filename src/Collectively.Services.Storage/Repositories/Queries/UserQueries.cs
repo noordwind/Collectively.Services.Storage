@@ -35,14 +35,6 @@ namespace Collectively.Services.Storage.Repositories.Queries
             return await users.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
         }
 
-        public static async Task<User> GetByEmailAsync(this IMongoCollection<User> users, string email)
-        {
-            if (email.Empty())
-                return null;
-
-            return await users.AsQueryable().FirstOrDefaultAsync(x => x.Email == email);
-        }
-
         public static IMongoQueryable<User> Query(this IMongoCollection<User> users,
             BrowseUsers query)
         {
