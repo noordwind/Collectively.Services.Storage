@@ -5,11 +5,7 @@
     <AssemblyName>Collectively.Services.Storage.Tests.EndToEnd</AssemblyName>
     <PackageId>Collectively.Services.Storage.Tests.EndToEnd</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8</PackageTargetFallback>
     <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +21,6 @@
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.*" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
-    <PackageReference Include="System.Drawing" Version="1.0.0-beta006" />
     <PackageReference Include="Collectively.Common" Version="1.0.*" />
   </ItemGroup>
 
