@@ -3,6 +3,7 @@ using Collectively.Messages.Events.Operations;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Framework;
 using Collectively.Messages.Events.Users;
+using Collectively.Messages.Events.Groups;
 
 namespace Collectively.Services.Storage
 {
@@ -40,6 +41,8 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<OperationCreated>()
                 .SubscribeToEvent<OperationUpdated>()
                 .SubscribeToEvent<RemarkStateDeleted>()
+                .SubscribeToEvent<GroupCreated>()
+                .SubscribeToEvent<OrganizationCreated>()
                 .Build()
                 .Run();
         }

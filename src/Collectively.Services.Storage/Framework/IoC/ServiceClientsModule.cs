@@ -13,6 +13,7 @@ namespace Collectively.Services.Storage.Framework.IoC
             RegisterService<UserServiceClient, IUserServiceClient>(builder, "users");
             RegisterService<StatisticsServiceClient, IStatisticsServiceClient>(builder, "statistics");
             RegisterService<NotificationServiceClient, INotificationServiceClient>(builder, "notifications");
+            RegisterService<GroupServiceClient, IGroupServiceClient>(builder, "groups");
         }
     }
 }

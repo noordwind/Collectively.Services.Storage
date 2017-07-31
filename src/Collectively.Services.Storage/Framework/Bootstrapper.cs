@@ -67,12 +67,16 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<TagRepository>().As<ITagRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
                 builder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>();
+                builder.RegisterType<GroupRepository>().As<IGroupRepository>();
+                builder.RegisterType<OrganizationRepository>().As<IOrganizationRepository>();
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>();
                 builder.RegisterType<RemarkProvider>().As<IRemarkProvider>();
                 builder.RegisterType<StatisticsProvider>().As<IStatisticsProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
                 builder.RegisterType<NotificationProvider>().As<INotificationProvider>();
+                builder.RegisterType<GroupProvider>().As<IGroupProvider>();
+                builder.RegisterType<OrganizationProvider>().As<IOrganizationProvider>();
                 builder.RegisterType<Handler>().As<IHandler>();
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
