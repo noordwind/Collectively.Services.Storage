@@ -6,6 +6,7 @@ using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Services.Storage.Models.Users;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
+using System;
 
 namespace Collectively.Services.Storage.Repositories
 {
@@ -47,5 +48,8 @@ namespace Collectively.Services.Storage.Repositories
 
         public async Task AddManyAsync(IEnumerable<User> users)
             => await _database.Users().InsertManyAsync(users);
+
+        public async Task DeleteAsync(string userId)
+            => await _database.Users().DeleteOneAsync(x => x.UserId == userId);
     }
 }

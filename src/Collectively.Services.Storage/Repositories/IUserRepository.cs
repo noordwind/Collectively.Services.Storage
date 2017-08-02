@@ -16,5 +16,6 @@ namespace Collectively.Services.Storage.Repositories
         Task EditAsync(User user);
         Task AddAsync(User user);
         Task AddManyAsync(IEnumerable<User> users);
+        Task DeleteAsync(string userId);
     }
 }

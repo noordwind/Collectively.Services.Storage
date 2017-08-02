@@ -43,6 +43,7 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<RemarkStateDeleted>()
                 .SubscribeToEvent<GroupCreated>()
                 .SubscribeToEvent<OrganizationCreated>()
+                .SubscribeToEvent<AccountDeleted>()
                 .Build()
                 .Run();
         }
