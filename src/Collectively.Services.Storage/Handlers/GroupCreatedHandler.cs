@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Collectively.Messages.Events;
 using Collectively.Common.Services;
@@ -5,6 +6,7 @@ using Collectively.Messages.Events.Groups;
 using Collectively.Services.Storage.Models.Groups;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
+using System.Collections.Generic;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -12,14 +14,17 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IGroupRepository _groupRepository;
+        private readonly IOrganizationRepository _organizationRepository;
         private readonly IGroupServiceClient _groupServiceClient;
 
         public GroupCreatedHandler(IHandler handler, 
             IGroupRepository groupRepository,
+            IOrganizationRepository organizationRepository,
             IGroupServiceClient groupServiceClient)
         {
             _handler = handler;
             _groupRepository = groupRepository;
+            _organizationRepository = organizationRepository;
             _groupServiceClient = groupServiceClient;
         }
 
@@ -30,6 +35,17 @@ namespace Collectively.Services.Storage.Handlers
                 {
                     var group = await _groupServiceClient.GetAsync<Group>(@event.GroupId);
                     await _groupRepository.AddAsync(group.Value);
+                    if(!group.Value.OrganizationId.HasValue)
+                    {
+                        return;
+                    }
+                    var organization = await _organizationRepository.GetAsync(group.Value.OrganizationId.Value);
+                    if(organization.Value.Groups == null)
+                    {
+                        organization.Value.Groups = new List<Guid>();
+                    }
+                    organization.Value.Groups.Add(@event.GroupId);
+                    await _organizationRepository.UpdateAsync(organization.Value);
                 })
                 .OnError((ex, logger) =>
                 {

@@ -11,9 +11,9 @@ namespace Collectively.Services.Storage.Models.Groups
         public string Codename { get; set; }
         public bool IsPublic { get; set; }
         public string State { get; set; }  
-        public SubjectDetails Details { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
-        public DateTime UpdatedAt { get; protected set; }
+        public SubjectDetails Details { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public IList<Member> Members { get; set; }
         public IList<string> Locations { get; set; }
         public IDictionary<string,string> Criteria { get; set; } 
