@@ -14,7 +14,7 @@ namespace Collectively.Services.Storage.Models.Groups
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public IList<Member> Members { get; set; }
-        public IDictionary<string,string> Criteria { get; set; } 
         public IList<Guid> Groups { get; set; }
+        public IDictionary<string, ISet<string>> Criteria { get; set; } 
     }
 }
