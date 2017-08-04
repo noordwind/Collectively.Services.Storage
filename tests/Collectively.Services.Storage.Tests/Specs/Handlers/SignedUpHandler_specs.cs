@@ -31,6 +31,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             Handler = new Handler(ExceptionHandlerMock.Object);
             UserRepositoryMock = new Mock<IUserRepository>();
             UserServiceClientMock = new Mock<IUserServiceClient>();
+            AccountStateServiceMock = new Mock<IAccountStateService>();
             SignedUpHandler = new SignedUpHandler(Handler, UserRepositoryMock.Object, 
                 UserServiceClientMock.Object, AccountStateServiceMock.Object);
             setup();
