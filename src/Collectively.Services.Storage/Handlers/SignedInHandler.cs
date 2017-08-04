@@ -11,14 +11,14 @@ using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
-    public class SignedUpHandler : IEventHandler<SignedUp>
+    public class SignedInHandler : IEventHandler<SignedIn>
     {
         private readonly IHandler _handler;
         private readonly IUserRepository _repository;
         private readonly IUserServiceClient _userServiceClient;
         private readonly IAccountStateService _accountStateService;
 
-        public SignedUpHandler(IHandler handler, 
+        public SignedInHandler(IHandler handler, 
             IUserRepository repository, IUserServiceClient userServiceClient,
             IAccountStateService accountStateService)
         {
@@ -28,17 +28,12 @@ namespace Collectively.Services.Storage.Handlers
             _accountStateService = accountStateService;
         }
 
-        public async Task HandleAsync(SignedUp @event)
+        public async Task HandleAsync(SignedIn @event)
         {
             await _handler
                 .Run(async () =>
                 {
                     var user = await _userServiceClient.GetAsync<User>(@event.UserId);
-                    if(user.Value.FavoriteRemarks == null)
-                    {
-                        user.Value.FavoriteRemarks = new HashSet<Guid>();
-                    }
-                    await _repository.AddAsync(user.Value);
                     await _accountStateService.SetAsync(user.Value.UserId, user.Value.State);
                 })
                 .OnError((ex, logger) =>

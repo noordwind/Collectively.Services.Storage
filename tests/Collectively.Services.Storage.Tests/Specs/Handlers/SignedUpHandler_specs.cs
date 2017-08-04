@@ -9,6 +9,7 @@ using Collectively.Messages.Events.Users;
 using It = Machine.Specifications.It;
 using Collectively.Services.Storage.ServiceClients;
 using Collectively.Messages.Events;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -19,6 +20,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IUserServiceClient> UserServiceClientMock;
+        protected static Mock<IAccountStateService> AccountStateServiceMock;
         protected static SignedUp Event;
         protected static User User;
         protected static Exception Exception;
@@ -30,7 +32,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             UserRepositoryMock = new Mock<IUserRepository>();
             UserServiceClientMock = new Mock<IUserServiceClient>();
             SignedUpHandler = new SignedUpHandler(Handler, UserRepositoryMock.Object, 
-                UserServiceClientMock.Object);
+                UserServiceClientMock.Object, AccountStateServiceMock.Object);
             setup();
         }
 

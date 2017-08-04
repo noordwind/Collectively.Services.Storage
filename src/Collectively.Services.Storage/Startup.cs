@@ -12,6 +12,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using NLog.Web;
+using Collectively.Services.Storage.Cache;
 
 namespace Collectively.Services.Storage
 {
@@ -19,7 +20,7 @@ namespace Collectively.Services.Storage
     {
         public string EnvironmentName {get;set;}
         public IConfiguration Configuration { get; set; }
-        public IContainer ApplicationContainer { get; set; }
+        public IServiceCollection Services { get; set; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -34,17 +35,20 @@ namespace Collectively.Services.Storage
             {
                 builder.AddLockbox();
             }
-
             Configuration = builder.Build();
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddWebEncoders();
             services.AddCors();
-            ApplicationContainer = GetServiceContainer(services);
-
-            return new AutofacServiceProvider(ApplicationContainer);
+            var redisSettings = new RedisSettings();
+            Configuration.GetSection("redis").Bind(redisSettings);
+            services.AddDistributedRedisCache(x =>
+            {
+                x.Configuration = redisSettings.ConnectionString;
+            });
+            Services = services;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -56,15 +60,7 @@ namespace Collectively.Services.Storage
                .AllowAnyMethod()
                .AllowAnyOrigin()
                .AllowCredentials());
-            app.UseOwin().UseNancy(x => x.Bootstrapper = new Bootstrapper(Configuration));
-        }
-
-        protected static IContainer GetServiceContainer(IEnumerable<ServiceDescriptor> services)
-        {
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
-
-            return builder.Build();
+            app.UseOwin().UseNancy(x => x.Bootstrapper = new Bootstrapper(Configuration, Services));
         }
     }
 }

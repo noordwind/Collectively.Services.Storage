@@ -3,8 +3,8 @@
 
     public class RedisSettings
     {
-        public string ConnectionString { get; protected set; }
-        public int Database { get; protected set; }
-        public bool Enabled { get; protected set; }
+        public string ConnectionString { get; set; }
+        public int Database { get; set; }
+        public bool Enabled { get; set; }
     }
 }

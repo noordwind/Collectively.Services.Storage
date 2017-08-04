@@ -16,6 +16,7 @@ namespace Collectively.Services.Storage
                 .UseAutofac(Bootstrapper.LifeTimeScope)
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
                 .SubscribeToEvent<SignedUp>()
+                .SubscribeToEvent<SignedIn>()
                 .SubscribeToEvent<UsernameChanged>()
                 .SubscribeToEvent<AvatarUploaded>()
                 .SubscribeToEvent<AvatarRemoved>()

@@ -9,6 +9,7 @@ using Collectively.Services.Storage.Framework.IoC;
 using Collectively.Services.Storage.Providers;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.Settings;
+using Collectively.Services.Storage.Services;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Autofac;
@@ -22,6 +23,8 @@ using Collectively.Common.Services;
 using Collectively.Common.RabbitMq;
 using Collectively.Services.Storage.Cache;
 using Collectively.Common.ServiceClients;
+using Microsoft.Extensions.DependencyInjection;
+using Autofac.Extensions.DependencyInjection;
 
 namespace Collectively.Services.Storage.Framework
 {
@@ -32,12 +35,14 @@ namespace Collectively.Services.Storage.Framework
         private static readonly string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
         private static readonly string InvalidDecimalSeparator = DecimalSeparator == "." ? "," : ".";
         private readonly IConfiguration _configuration;
+        private IServiceCollection _services;
 
         public static ILifetimeScope LifeTimeScope { get; private set; }
 
-        public Bootstrapper(IConfiguration configuration)
+        public Bootstrapper(IConfiguration configuration, IServiceCollection services)
         {
             _configuration = configuration;
+            _services = services;
         }
 
 #if DEBUG
@@ -55,6 +60,7 @@ namespace Collectively.Services.Storage.Framework
 
             container.Update(builder =>
             {
+                builder.Populate(_services);
                 builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<GeneralSettings>()).SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
@@ -84,6 +90,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterModule<ServiceClientModule>();
                 builder.RegisterModule<ServiceClientsModule>();
                 builder.RegisterModule<RedisModule>();
+                builder.RegisterType<AccountStateService>().As<IAccountStateService>();
                 SecurityContainer.Register(builder, _configuration);
                 RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
             });
