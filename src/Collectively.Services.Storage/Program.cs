@@ -45,6 +45,8 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<GroupCreated>()
                 .SubscribeToEvent<OrganizationCreated>()
                 .SubscribeToEvent<AccountDeleted>()
+                .SubscribeToEvent<AccountLocked>()
+                .SubscribeToEvent<AccountUnlocked>()
                 .Build()
                 .Run();
         }
