@@ -5,7 +5,7 @@ namespace Collectively.Services.Storage.Models.Remarks
     public class BasicRemark
     {
         public Guid Id { get; set; }
-        public Guid? GroupId { get; set; }
+        public RemarkGroup Group { get; set; }
         public RemarkUser Author { get; set; }
         public RemarkCategory Category { get; set; }
         public Location Location { get; set; }

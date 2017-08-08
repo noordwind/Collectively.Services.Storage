@@ -94,7 +94,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
             }
             if(query.GroupId.HasValue && query.GroupId != Guid.Empty)
             {
-                filter = filter & filterBuilder.Where(x => x.GroupId == query.GroupId);
+                filter = filter & filterBuilder.Where(x => x.Group.Id == query.GroupId);
             }
             if(query.UserFavorites.NotEmpty())
             {
