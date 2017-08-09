@@ -54,7 +54,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static void InitializeEvent()
         {
             Event = new SignedUp(Guid.NewGuid(), Resource.Create("test", "test"), 
-                User?.UserId, "collectively");
+                User?.UserId, "collectively", "user", "active");
         }
     }
 
