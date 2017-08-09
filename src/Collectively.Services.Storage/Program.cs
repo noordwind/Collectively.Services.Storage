@@ -17,6 +17,7 @@ namespace Collectively.Services.Storage
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
                 .SubscribeToEvent<SignedUp>()
                 .SubscribeToEvent<SignedIn>()
+                .SubscribeToEvent<AccountActivated>()
                 .SubscribeToEvent<UsernameChanged>()
                 .SubscribeToEvent<AvatarUploaded>()
                 .SubscribeToEvent<AvatarRemoved>()
