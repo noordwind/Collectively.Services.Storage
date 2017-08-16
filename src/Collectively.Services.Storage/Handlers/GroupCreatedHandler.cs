@@ -34,6 +34,7 @@ namespace Collectively.Services.Storage.Handlers
                 .Run(async () =>
                 {
                     var group = await _groupServiceClient.GetAsync<Group>(@event.GroupId);
+                    group.Value.MembersCount = group.Value.Members?.Count ?? 0;
                     await _groupRepository.AddAsync(group.Value);
                     if(!group.Value.OrganizationId.HasValue)
                     {
@@ -45,6 +46,7 @@ namespace Collectively.Services.Storage.Handlers
                         organization.Value.Groups = new List<Guid>();
                     }
                     organization.Value.Groups.Add(@event.GroupId);
+                    organization.Value.GroupsCount = organization.Value.Groups.Count;
                     await _organizationRepository.UpdateAsync(organization.Value);
                 })
                 .OnError((ex, logger) =>

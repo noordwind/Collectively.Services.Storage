@@ -29,6 +29,8 @@ namespace Collectively.Services.Storage.Handlers
                 .Run(async () =>
                 {
                     var organization = await _groupServiceClient.GetOrganizationAsync<Organization>(@event.OrganizationId);
+                    organization.Value.GroupsCount = organization.Value.Groups?.Count ?? 0;
+                    organization.Value.MembersCount = organization.Value.Members?.Count ?? 0;
                     await _organizationRepository.AddAsync(organization.Value);
                 })
                 .OnError((ex, logger) =>

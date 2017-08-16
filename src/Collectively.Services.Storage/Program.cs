@@ -45,6 +45,8 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<RemarkStateDeleted>()
                 .SubscribeToEvent<GroupCreated>()
                 .SubscribeToEvent<OrganizationCreated>()
+                .SubscribeToEvent<MemberAddedToGroup>()
+                .SubscribeToEvent<MemberAddedToOrganization>()
                 .SubscribeToEvent<AccountDeleted>()
                 .SubscribeToEvent<AccountLocked>()
                 .SubscribeToEvent<AccountUnlocked>()
