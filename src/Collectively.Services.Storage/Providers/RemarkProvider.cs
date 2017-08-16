@@ -13,26 +13,43 @@ namespace Collectively.Services.Storage.Providers
         private readonly IProviderClient _provider;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkCategoryRepository _categoryRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly ITagRepository _tagRepository;
         private readonly IRemarkServiceClient _serviceClient;
 
         public RemarkProvider(IProviderClient provider,
             IRemarkRepository remarkRepository,
             IRemarkCategoryRepository categoryRepository,
+            IGroupRepository groupRepository,
             ITagRepository tagRepository,
             IRemarkServiceClient serviceClient)
         {
             _provider = provider;
             _remarkRepository = remarkRepository;
             _categoryRepository = categoryRepository;
+            _groupRepository = groupRepository;
             _tagRepository = tagRepository;
             _serviceClient = serviceClient;
         }
 
         public async Task<Maybe<Remark>> GetAsync(Guid id)
-            => await _provider.GetAsync(
+        { 
+            var remark = await _provider.GetAsync(
                 async () => await _remarkRepository.GetByIdAsync(id),
                 async () => await _serviceClient.GetAsync<Remark>(id));
+            if(remark.HasNoValue)
+            {
+                return null;
+            }
+            if(remark.Value.Group == null)
+            {
+                return remark;
+            }
+            var group = await _groupRepository.GetAsync(remark.Value.Group.Id);
+            remark.Value.GroupCriteria = group.Value.Criteria;
+
+            return remark;
+        }
 
         public async Task<Maybe<PagedResult<Remark>>> BrowseAsync(BrowseRemarks query)
             => await _provider.GetCollectionAsync(async () => await _remarkRepository.BrowseAsync(query));
