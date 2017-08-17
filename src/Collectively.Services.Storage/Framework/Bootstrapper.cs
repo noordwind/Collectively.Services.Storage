@@ -25,6 +25,8 @@ using Collectively.Services.Storage.Cache;
 using Collectively.Common.ServiceClients;
 using Microsoft.Extensions.DependencyInjection;
 using Autofac.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization;
+using Collectively.Services.Storage.Models.Remarks;
 
 namespace Collectively.Services.Storage.Framework
 {
@@ -113,6 +115,12 @@ namespace Collectively.Services.Storage.Framework
             var databaseSettings = container.Resolve<MongoDbSettings>();
             var databaseInitializer = container.Resolve<IDatabaseInitializer>();
             databaseInitializer.InitializeAsync();
+            BsonClassMap.RegisterClassMap<RemarkGroup>(x => 
+            {
+                x.AutoMap();
+                x.UnmapMember(m => m.Criteria);
+                x.UnmapMember(m => m.Members);
+            });
             var databaseSeeder = container.Resolve<IDatabaseSeeder>();
             databaseSeeder.SeedAsync();
 

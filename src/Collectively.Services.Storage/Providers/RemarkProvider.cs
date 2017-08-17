@@ -5,6 +5,7 @@ using Collectively.Services.Storage.ServiceClients;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
+using System.Linq;
 
 namespace Collectively.Services.Storage.Providers
 {
@@ -46,7 +47,8 @@ namespace Collectively.Services.Storage.Providers
                 return remark;
             }
             var group = await _groupRepository.GetAsync(remark.Value.Group.Id);
-            remark.Value.GroupCriteria = group.Value.Criteria;
+            remark.Value.Group.Criteria = group.Value.Criteria;
+            remark.Value.Group.Members = group.Value.Members.ToDictionary(x => x.UserId, x => x.Role);
 
             return remark;
         }

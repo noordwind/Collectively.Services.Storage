@@ -11,6 +11,5 @@ namespace Collectively.Services.Storage.Models.Remarks
         public IList<Comment> Comments { get; set; }
         public ISet<string> UserFavorites { get; set; }
         public ISet<Participant> Participants { get; set; }
-        public IDictionary<string,ISet<string>> GroupCriteria { get; set; }
     }
 }
