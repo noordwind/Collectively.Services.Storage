@@ -37,6 +37,7 @@ namespace Collectively.Services.Storage.Handlers
 
                         return;
                     }
+                    await _stateService.SetAsync(@event.UserId, "deleted");
                     await _userRepository.DeleteAsync(@event.UserId);
                 })
                 .OnError((ex, logger) =>

@@ -14,5 +14,8 @@ namespace Collectively.Services.Storage.Services
 
         public async Task SetAsync(string userId, string state)
         => await _cache.SetStringAsync($"users:{userId}:state", state);
+
+        public async Task DeleteAsync(string userId)
+        => await _cache.RemoveAsync($"users:{userId}:state");
     }
 }
