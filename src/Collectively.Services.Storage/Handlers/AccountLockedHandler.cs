@@ -23,7 +23,7 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () => 
                 {
-                    var user = await _userRepository.GetByIdAsync(@event.UserId);
+                    var user = await _userRepository.GetByIdAsync(@event.LockUserId);
                     user.Value.State = "locked";
                     await _userRepository.EditAsync(user.Value);
                 })
