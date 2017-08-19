@@ -73,5 +73,5 @@ For the local testing purposes the *.local* or *.docker* configuration files are
 **Solution structure**
 ----------------
 - **Collectively.Services.Storage** - core and executable project via *dotnet run* command.
-- **Collectively.Services.Storage.Tests** - unit & integration tests executable via *dotnet test* command.
-- **Collectively.Services.Storage.Tests.EndToEnd** - End-to-End tests executable via *dotnet test* command.
+- **Collectively.Services.Storage.Tests** - unit & integration tests executable via *dotnet test --no-restore* command.
+- **Collectively.Services.Storage.Tests.EndToEnd** - End-to-End tests executable via *dotnet test --no-restore* command.
