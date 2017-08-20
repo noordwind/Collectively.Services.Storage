@@ -24,7 +24,6 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
     <PackageReference Include="Lockbox.Client" Version="1.0.0" />
     <PackageReference Include="Exceptionless" Version="4.0.1955" />
-    <PackageReference Include="jose-jwt" Version="2.1.0" />
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
     <PackageReference Include="Nancy.Authentication.Stateless" Version="2.0.0-clinteastwood" />
     <PackageReference Include="Nancy.Bootstrappers.Autofac" Version="2.0.0-clinteastwood" />
@@ -43,8 +42,8 @@
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
     <PackageReference Include="Polly" Version="5.3.1" />
-    <PackageReference Include="RawRabbit" Version="1.10.3" />
-    <PackageReference Include="RawRabbit.vNext" Version="1.10.3" />
+    <PackageReference Include="RawRabbit" Version="2.0.0-beta8" />
+    <PackageReference Include="RawRabbit.Operations.Publish" Version="2.0.0-beta8" />
     <PackageReference Include="Collectively.Messages" Version="2.0.*" />
     <PackageReference Include="Collectively.Common" Version="2.0.*" />
   </ItemGroup>

@@ -1,4 +1,4 @@
 #!/bin/bash
 export ASPNETCORE_ENVIRONMENT=local
 cd src/Collectively.Services.Storage
-dotnet run --urls "http://*:10000"
+dotnet run --no-restore --urls "http://*:10000"

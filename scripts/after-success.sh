@@ -16,6 +16,8 @@ case "$TRAVIS_BRANCH" in
     ;;    
 esac
 
+cd ...
+
 echo Publishing application
 ./scripts/dotnet-publish.sh
 echo Building and pushing Docker images
