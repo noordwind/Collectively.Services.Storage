@@ -1,2 +1,2 @@
 #!/bin/bash
-dotnet publish ./src/Collectively.Services.Storage -c Release -o ./bin/Docker
+dotnet publish --no-restore ./src/Collectively.Services.Storage -c Release -o ./bin/Docker
