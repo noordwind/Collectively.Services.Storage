@@ -17,5 +17,6 @@ namespace Collectively.Services.Storage.Models.Remarks
         public bool Resolved { get; set; }
         public int CommentsCount { get; set; }
         public int ParticipantsCount { get; set; }
+        public int ReportsCount { get; set; }
     }
 }

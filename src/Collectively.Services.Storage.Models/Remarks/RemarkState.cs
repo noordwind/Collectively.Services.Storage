@@ -12,5 +12,6 @@ namespace Collectively.Services.Storage.Models.Remarks
         public File Photo { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool Removed { get; set; }
+        public int ReportsCount { get; set; }
     }
 }

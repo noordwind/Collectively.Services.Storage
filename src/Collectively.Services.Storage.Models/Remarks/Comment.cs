@@ -11,7 +11,8 @@ namespace Collectively.Services.Storage.Models.Remarks
         public int Rating { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool Removed { get; set; }
+        public int ReportsCount { get; set; }   
         public IList<CommentHistory> History { get; set; }
-        public IList<Vote> Votes { get; set; }   
+        public IList<Vote> Votes { get; set; }
     }
 }

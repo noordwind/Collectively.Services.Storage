@@ -19,6 +19,9 @@ namespace Collectively.Services.Storage.Modules
 
             Get("tags", async args => await FetchCollection<BrowseRemarkTags, Tag>
                 (async x => await remarkProvider.BrowseTagsAsync(x)).HandleAsync());
+
+            Get("reports", async args => await FetchCollection<BrowseReports, Report>
+                (async x => await remarkProvider.BrowseReportsAsync(x)).HandleAsync());
         }
     }
 }

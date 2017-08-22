@@ -16,6 +16,7 @@ namespace Collectively.Services.Storage.Providers
         private readonly IRemarkCategoryRepository _categoryRepository;
         private readonly IGroupRepository _groupRepository;
         private readonly ITagRepository _tagRepository;
+        private readonly IReportRepository _reportRepository;
         private readonly IRemarkServiceClient _serviceClient;
 
         public RemarkProvider(IProviderClient provider,
@@ -23,6 +24,7 @@ namespace Collectively.Services.Storage.Providers
             IRemarkCategoryRepository categoryRepository,
             IGroupRepository groupRepository,
             ITagRepository tagRepository,
+            IReportRepository reportRepository,
             IRemarkServiceClient serviceClient)
         {
             _provider = provider;
@@ -30,6 +32,7 @@ namespace Collectively.Services.Storage.Providers
             _categoryRepository = categoryRepository;
             _groupRepository = groupRepository;
             _tagRepository = tagRepository;
+            _reportRepository = reportRepository;
             _serviceClient = serviceClient;
         }
 
@@ -65,5 +68,8 @@ namespace Collectively.Services.Storage.Providers
             => await _provider.GetCollectionAsync(
                 async () => await _tagRepository.BrowseAsync(query),
                 async () => await _serviceClient.BrowseTagsAsync<Tag>(query));
+
+        public async Task<Maybe<PagedResult<Report>>> BrowseReportsAsync(BrowseReports query)
+            => await _provider.GetCollectionAsync(async () => await _reportRepository.BrowseAsync(query));
     }
 }

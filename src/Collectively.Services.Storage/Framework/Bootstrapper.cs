@@ -72,6 +72,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<OperationRepository>().As<IOperationRepository>();
                 builder.RegisterType<RemarkRepository>().As<IRemarkRepository>();
                 builder.RegisterType<RemarkCategoryRepository>().As<IRemarkCategoryRepository>();
+                builder.RegisterType<ReportRepository>().As<IReportRepository>();
                 builder.RegisterType<TagRepository>().As<ITagRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
                 builder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>();
