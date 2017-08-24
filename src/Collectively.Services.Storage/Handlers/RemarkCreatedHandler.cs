@@ -29,6 +29,7 @@ namespace Collectively.Services.Storage.Handlers
                 .Run(async () =>
                 {
                     var remark = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
+                    remark.Value.Status = null;
                     await _remarkRepository.AddAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>

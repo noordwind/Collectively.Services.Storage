@@ -89,6 +89,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<Handler>().As<IHandler>();
                 builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
                 builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
+                builder.RegisterModule<CommandHandlersModule>();
                 builder.RegisterModule<EventHandlersModule>();
                 builder.RegisterModule<ServiceClientModule>();
                 builder.RegisterModule<ServiceClientsModule>();

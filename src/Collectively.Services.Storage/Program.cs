@@ -4,6 +4,7 @@ using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Framework;
 using Collectively.Messages.Events.Users;
 using Collectively.Messages.Events.Groups;
+using Collectively.Messages.Commands.Remarks;
 
 namespace Collectively.Services.Storage
 {
@@ -15,6 +16,7 @@ namespace Collectively.Services.Storage
                 .Create<Startup>(args: args)
                 .UseAutofac(Bootstrapper.LifeTimeScope)
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
+                .SubscribeToCommand<AddPhotosToRemark>()
                 .SubscribeToEvent<SignedUp>()
                 .SubscribeToEvent<SignedIn>()
                 .SubscribeToEvent<AccountActivated>()
@@ -28,6 +30,7 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<RemarkRenewed>()
                 .SubscribeToEvent<RemarkCanceled>()
                 .SubscribeToEvent<PhotosToRemarkAdded>()
+                .SubscribeToEvent<AddPhotosToRemarkRejected>()
                 .SubscribeToEvent<PhotosFromRemarkRemoved>()
                 .SubscribeToEvent<RemarkVoteSubmitted>()
                 .SubscribeToEvent<RemarkVoteDeleted>()   

@@ -23,8 +23,7 @@ namespace Collectively.Services.Storage.Handlers
         }
 
         public async Task HandleAsync(PhotosToRemarkAdded @event)
-        {
-            await _handler
+            => await _handler
                 .Run(async () =>
                 {
                     var remark = await _remarkRepository.GetByIdAsync(@event.RemarkId);
@@ -34,6 +33,7 @@ namespace Collectively.Services.Storage.Handlers
                     }
 
                     var remarkDto = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
+                    remark.Value.Status = null;
                     remark.Value.Photos.Clear();
                     foreach(var photo in remarkDto.Value.Photos)
                     {
@@ -46,6 +46,5 @@ namespace Collectively.Services.Storage.Handlers
                     logger.Error(ex, $"Error occured while handling {@event.GetType().Name} event");
                 })
                 .ExecuteAsync();
-        }
     }
 }
