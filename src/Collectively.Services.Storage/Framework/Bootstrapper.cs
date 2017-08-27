@@ -95,6 +95,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterModule<ServiceClientsModule>();
                 builder.RegisterModule<RedisModule>();
                 builder.RegisterType<AccountStateService>().As<IAccountStateService>();
+                builder.RegisterType<OperationService>().As<IOperationService>();
                 SecurityContainer.Register(builder, _configuration);
                 RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
             });

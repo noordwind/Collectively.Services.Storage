@@ -4,19 +4,19 @@ using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Operations;
 using Collectively.Services.Storage.Models.Operations;
-using Collectively.Services.Storage.Repositories;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
     public class OperationCreatedHandler : IEventHandler<OperationCreated>
     {
         private readonly IHandler _handler;
-        private readonly IOperationRepository _operationRepository;
+        private readonly IOperationService _operationService;
 
-        public OperationCreatedHandler(IHandler handler, IOperationRepository operationRepository)
+        public OperationCreatedHandler(IHandler handler, IOperationService operationService)
         {
             _handler = handler;
-            _operationRepository = operationRepository;
+            _operationService = operationService;
         }
 
         public async Task HandleAsync(OperationCreated @event)
@@ -35,7 +35,7 @@ namespace Collectively.Services.Storage.Handlers
                         State = @event.State,
                         CreatedAt = @event.CreatedAt
                     };
-                    await _operationRepository.AddAsync(operation);
+                    await _operationService.SetAsync(operation);
                 })
                 .OnError((ex, logger) =>
                 {
