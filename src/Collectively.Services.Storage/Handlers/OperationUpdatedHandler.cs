@@ -3,18 +3,19 @@ using Collectively.Messages.Events;
 using Collectively.Common.Services;
 using Collectively.Messages.Events.Operations;
 using Collectively.Services.Storage.Repositories;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
     public class OperationUpdatedHandler : IEventHandler<OperationUpdated>
     {
         private readonly IHandler _handler;
-        private readonly IOperationRepository _operationRepository;
+        private readonly IOperationService _operationService;
 
-        public OperationUpdatedHandler(IHandler handler, IOperationRepository operationRepository)
+        public OperationUpdatedHandler(IHandler handler, IOperationService operationService)
         {
             _handler = handler;
-            _operationRepository = operationRepository;
+            _operationService = operationService;
         }
 
         public async Task HandleAsync(OperationUpdated @event)
@@ -22,7 +23,7 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var operation = await _operationRepository.GetAsync(@event.RequestId);
+                    var operation = await _operationService.GetAsync(@event.RequestId);
                     if (operation.HasNoValue)
                         return;
 
@@ -30,7 +31,7 @@ namespace Collectively.Services.Storage.Handlers
                     operation.Value.Code = @event.Code;
                     operation.Value.Message = @event.Message;
                     operation.Value.UpdatedAt = @event.UpdatedAt;
-                    await _operationRepository.UpdateAsync(operation.Value);
+                    await _operationService.SetAsync(operation.Value);
                 })
                 .OnError((ex, logger) =>
                 {
