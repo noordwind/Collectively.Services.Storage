@@ -66,6 +66,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<GeneralSettings>()).SingleInstance();
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>()).SingleInstance();
+                builder.RegisterInstance(_configuration.GetSettings<RedisSettings>()).SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<DatabaseSeeder>().As<IDatabaseSeeder>().InstancePerLifetimeScope();

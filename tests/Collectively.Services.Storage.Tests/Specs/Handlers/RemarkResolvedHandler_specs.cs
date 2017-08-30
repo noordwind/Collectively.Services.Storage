@@ -12,6 +12,7 @@ using It = Machine.Specifications.It;
 using RemarkCategory = Collectively.Services.Storage.Models.Remarks.RemarkCategory;
 using Collectively.Services.Storage.ServiceClients;
 using Collectively.Messages.Events;
+using Collectively.Common.Caching;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -22,6 +23,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IRemarkServiceClient> RemarkServiceClientMock;
+        protected static Mock<ICache> CacheMock;
         protected static RemarkResolved Event;
         protected static Guid RemarkId = Guid.NewGuid();
         protected static string UserId = "UserId";
@@ -40,10 +42,11 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             RemarkServiceClientMock = new Mock<IRemarkServiceClient>();
-
+            CacheMock = new Mock<ICache>();
             RemarkResolvedHandler = new RemarkResolvedHandler(Handler,
                 RemarkRepositoryMock.Object,
-                RemarkServiceClientMock.Object);
+                RemarkServiceClientMock.Object,
+                CacheMock.Object);
 
             User = new User
             {

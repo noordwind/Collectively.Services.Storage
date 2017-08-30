@@ -117,7 +117,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
         private static IFindFluent<Remark,Remark>  SortRemarks(BrowseRemarks query, 
             IFindFluent<Remark,Remark> findResult)
         {
-            if(query.OrderBy.Empty())
+            if(query.OrderBy.Empty() && !query.Latest)
             {
                 return findResult;
             }
@@ -125,7 +125,11 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 query.SortOrder = "ascending";
             }
-
+            if(query.Latest)
+            {
+                query.OrderBy = "createdat";
+                query.SortOrder = "descending";
+            }
             query.OrderBy = query.OrderBy.ToLowerInvariant();
             query.SortOrder = query.SortOrder.ToLowerInvariant();
 
