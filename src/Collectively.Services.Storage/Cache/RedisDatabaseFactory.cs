@@ -1,13 +1,13 @@
 ﻿using System;
 using Collectively.Common.Types;
-using NLog;
+using Serilog;
 using StackExchange.Redis;
 
 namespace Collectively.Services.Storage.Cache
 {
     public class RedisDatabaseFactory : IRedisDatabaseFactory
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = Log.Logger;
         private readonly RedisSettings _redisSettings;
         private ConnectionMultiplexer _connectionMultiplexer;
 
@@ -21,20 +21,18 @@ namespace Collectively.Services.Storage.Cache
         {
             if (!_redisSettings.Enabled)
             {
-                Logger.Info("Connection to Redis server has been skipped (disabled).");
+                Logger.Information("Connection to Redis server has been skipped (disabled).");
 
                 return;
             }
-
             try
             {
                 _connectionMultiplexer = ConnectionMultiplexer.Connect(_redisSettings.ConnectionString);
-                Logger.Info("Connection to Redis server has been established.");
+                Logger.Information("Connection to Redis server has been established.");
             }
             catch (Exception ex)
             {
-                Logger.Error("Could not connect to Redis server.");
-                Logger.Error(ex);
+                Logger.Error(ex, "Could not connect to Redis server.");
             }
         }
 

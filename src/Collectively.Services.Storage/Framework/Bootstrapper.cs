@@ -15,7 +15,7 @@ using Nancy.Bootstrapper;
 using Nancy.Bootstrappers.Autofac;
 using Nancy.Configuration;
 using Newtonsoft.Json;
-using NLog;
+using Serilog;
 using RawRabbit.Configuration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Collectively.Common.Extensions;
@@ -32,7 +32,7 @@ namespace Collectively.Services.Storage.Framework
 {
     public class Bootstrapper : AutofacNancyBootstrapper
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = Log.Logger;
         private static IExceptionHandler _exceptionHandler;
         private static readonly string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
         private static readonly string InvalidDecimalSeparator = DecimalSeparator == "." ? "," : ".";
@@ -57,7 +57,7 @@ namespace Collectively.Services.Storage.Framework
 
         protected override void ConfigureApplicationContainer(ILifetimeScope container)
         {
-            Logger.Info("Collectively.Services.Storage Configuring application container");
+            Logger.Information("Collectively.Services.Storage Configuring application container");
             base.ConfigureApplicationContainer(container);
 
             container.Update(builder =>
@@ -142,7 +142,7 @@ namespace Collectively.Services.Storage.Framework
             };
             pipelines.SetupTokenAuthentication(container);
             _exceptionHandler = container.Resolve<IExceptionHandler>();
-            Logger.Info("Collectively.Services.Storage API has started.");
+            Logger.Information("Collectively.Services.Storage API has started.");
         }
 
         private void FixNumberFormat(NancyContext ctx)

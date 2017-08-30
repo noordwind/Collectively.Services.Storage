@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using Collectively.Common.ServiceClients;
 using Collectively.Common.Types;
-using NLog;
+using Serilog;
 
 namespace Collectively.Services.Storage.ServiceClients
 {
     public class OperationServiceClient : IOperationServiceClient
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = Log.Logger;
         private readonly IServiceClient _serviceClient;
         private readonly string _name;
 

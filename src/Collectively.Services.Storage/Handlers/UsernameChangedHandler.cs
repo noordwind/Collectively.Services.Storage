@@ -4,13 +4,13 @@ using Collectively.Common.Domain;
 using Collectively.Common.Services;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Messages.Events.Users;
-using NLog;
+using Serilog;
 
 namespace Collectively.Services.Storage.Handlers
 {
     public class UsernameChangedHandler : IEventHandler<UsernameChanged>
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = Log.Logger;
 
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;

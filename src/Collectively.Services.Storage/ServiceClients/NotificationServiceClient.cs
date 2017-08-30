@@ -3,7 +3,7 @@ using Collectively.Common.ServiceClients;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Notifications;
 using Collectively.Services.Storage.ServiceClients.Queries;
-using NLog;
+using Serilog;
 
 namespace Collectively.Services.Storage.ServiceClients
 {
@@ -11,7 +11,7 @@ namespace Collectively.Services.Storage.ServiceClients
     {
         private readonly IServiceClient _serviceClient;
         private readonly string _name;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); 
+        private static readonly ILogger Logger = Log.Logger; 
 
         public NotificationServiceClient(IServiceClient serviceClient, string name)
         {

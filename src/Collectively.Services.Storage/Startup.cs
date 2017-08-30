@@ -6,13 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nancy.Owin;
-using NLog.Extensions.Logging;
 using Lockbox.Client.Extensions;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using NLog.Web;
 using Collectively.Services.Storage.Cache;
+using Collectively.Common.Logging;
 
 namespace Collectively.Services.Storage
 {
@@ -40,6 +39,7 @@ namespace Collectively.Services.Storage
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSerilog(Configuration);
             services.AddWebEncoders();
             services.AddCors();
             var redisSettings = new RedisSettings();
@@ -53,9 +53,7 @@ namespace Collectively.Services.Storage
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddNLog();
-            app.AddNLogWeb();
-            env.ConfigureNLog("nlog.config");
+            app.UseSerilog(loggerFactory);
             app.UseCors(builder => builder.AllowAnyHeader()
                .AllowAnyMethod()
                .AllowAnyOrigin()
