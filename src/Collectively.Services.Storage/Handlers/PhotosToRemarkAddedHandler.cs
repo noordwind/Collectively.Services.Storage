@@ -5,6 +5,7 @@ using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
+using Collectively.Common.Caching;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -13,13 +14,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
+        private readonly ICache _cache;
 
-        public PhotosToRemarkAddedHandler(IHandler handler, IRemarkRepository remarkRepository,
-            IRemarkServiceClient remarkServiceClient)
+        public PhotosToRemarkAddedHandler(IHandler handler, 
+            IRemarkRepository remarkRepository,
+            IRemarkServiceClient remarkServiceClient,
+            ICache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
             _remarkServiceClient = remarkServiceClient;
+            _cache = cache;
         }
 
         public async Task HandleAsync(PhotosToRemarkAdded @event)
@@ -40,6 +45,7 @@ namespace Collectively.Services.Storage.Handlers
                         remark.Value.Photos.Add(photo);
                     }
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {

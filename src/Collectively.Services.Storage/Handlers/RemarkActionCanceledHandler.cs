@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Collectively.Common.Caching;
 using Collectively.Common.Services;
 using Collectively.Messages.Events;
 using Collectively.Messages.Events.Remarks;
@@ -11,11 +12,15 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly ICache _cache;
 
-        public RemarkActionCanceledHandler(IHandler handler, IRemarkRepository remarkRepository)
+        public RemarkActionCanceledHandler(IHandler handler, 
+            IRemarkRepository remarkRepository,
+            ICache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
+            _cache = cache;
         }
 
         public async Task HandleAsync(RemarkActionCanceled @event)
@@ -37,6 +42,7 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.Participants.Remove(participant);
                     remark.Value.ParticipantsCount--;
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
                 })
                 .ExecuteAsync();
         }

@@ -6,6 +6,7 @@ using Collectively.Common.Domain;
 using Collectively.Common.Services;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Messages.Events.Remarks;
+using Collectively.Common.Caching;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -14,13 +15,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly ICache _cache;
 
-        public FavoriteRemarkDeletedHandler(IHandler handler, IUserRepository userRepository,
-            IRemarkRepository remarkRepository)
+        public FavoriteRemarkDeletedHandler(IHandler handler, 
+            IUserRepository userRepository,
+            IRemarkRepository remarkRepository,
+            ICache cache)
         {
             _handler = handler;
             _userRepository = userRepository;
             _remarkRepository = remarkRepository;
+            _cache = cache;
         }
 
         public async Task HandleAsync(FavoriteRemarkDeleted @event)
@@ -44,6 +49,7 @@ namespace Collectively.Services.Storage.Handlers
                     }
                     remark.Value.UserFavorites.Remove(@event.UserId);
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {

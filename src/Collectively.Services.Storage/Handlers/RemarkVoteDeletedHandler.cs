@@ -4,6 +4,7 @@ using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Repositories;
 using System.Linq;
+using Collectively.Common.Caching;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -11,11 +12,15 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly ICache _cache;
 
-        public RemarkVoteDeletedHandler(IHandler handler, IRemarkRepository remarkRepository)
+        public RemarkVoteDeletedHandler(IHandler handler, 
+            IRemarkRepository remarkRepository,
+            ICache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
+            _cache = cache;
         }
 
         public async Task HandleAsync(RemarkVoteDeleted @event)
@@ -42,6 +47,7 @@ namespace Collectively.Services.Storage.Handlers
                     }
                     remark.Value.Votes.Remove(vote);
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
                 })
                 .ExecuteAsync();
         }

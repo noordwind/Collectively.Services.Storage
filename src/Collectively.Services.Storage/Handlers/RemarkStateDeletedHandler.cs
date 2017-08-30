@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Collectively.Common.Caching;
 using Collectively.Common.Services;
 using Collectively.Messages.Events;
 using Collectively.Messages.Events.Remarks;
@@ -15,14 +16,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
+        private readonly ICache _cache;
 
         public RemarkStateDeletedHandler(IHandler handler,
             IRemarkRepository remarkRepository,
-            IRemarkServiceClient remarkServiceClient)
+            IRemarkServiceClient remarkServiceClient,
+            ICache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
             _remarkServiceClient = remarkServiceClient;
+            _cache = cache;
         }
 
         public async Task HandleAsync(RemarkStateDeleted @event)
@@ -37,8 +41,8 @@ namespace Collectively.Services.Storage.Handlers
                     var remarkDto = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
                     remark.Value.State = remarkDto.Value.State;
                     remark.Value.States = remarkDto.Value.States;
-
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {

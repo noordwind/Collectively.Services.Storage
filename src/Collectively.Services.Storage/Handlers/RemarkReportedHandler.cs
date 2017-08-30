@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Collectively.Messages.Events.Remarks;
 using System.Linq;
 using Collectively.Services.Storage.Models.Remarks;
+using Collectively.Common.Caching;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -17,14 +18,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IReportRepository _reportRepository;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly ICache _cache;
 
         public RemarkReportedHandler(IHandler handler, 
             IReportRepository reportRepository,
-            IRemarkRepository remarkRepository)
+            IRemarkRepository remarkRepository,
+            ICache cache)
         {
             _handler = handler;
             _reportRepository = reportRepository;
             _remarkRepository = remarkRepository;
+            _cache = cache;
         }
 
         public async Task HandleAsync(RemarkReported @event)
@@ -52,6 +56,7 @@ namespace Collectively.Services.Storage.Handlers
                         case "remark": remark.Value.ReportsCount++; break;
                     }
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {
