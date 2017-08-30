@@ -10,8 +10,8 @@ using Lockbox.Client.Extensions;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using Collectively.Services.Storage.Cache;
 using Collectively.Common.Logging;
+using Collectively.Common.Caching;
 
 namespace Collectively.Services.Storage
 {

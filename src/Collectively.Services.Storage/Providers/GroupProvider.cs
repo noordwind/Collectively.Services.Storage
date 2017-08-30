@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Groups;
 using Collectively.Services.Storage.Repositories;
-using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
 using Collectively.Services.Storage.ServiceClients.Queries;
 

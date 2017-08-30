@@ -21,7 +21,7 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Collectively.Common.Extensions;
 using Collectively.Common.Services;
 using Collectively.Common.RabbitMq;
-using Collectively.Services.Storage.Cache;
+using Collectively.Common.Caching;
 using Collectively.Common.ServiceClients;
 using Microsoft.Extensions.DependencyInjection;
 using Autofac.Extensions.DependencyInjection;
