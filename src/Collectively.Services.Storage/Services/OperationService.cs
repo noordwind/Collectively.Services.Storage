@@ -21,7 +21,7 @@ namespace Collectively.Services.Storage.Services
 
         public async Task SetAsync(Operation operation)
         => await _cache.AddAsync(GetCacheKey(operation.RequestId), 
-            JsonConvert.SerializeObject(operation), TimeSpan.FromMinutes(1));
+            operation, TimeSpan.FromMinutes(1));
 
         private static string GetCacheKey(Guid requestId)
         => $"operations:{requestId}";
