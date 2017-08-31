@@ -42,9 +42,10 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.Photos = remarkDto.Value.Photos;
                     remark.Value.Resolved = false;
                     await _remarkRepository.UpdateAsync(remark.Value);
-                    await _cache.GeoAddAsync("remarks", remark.Value.Location.Latitude, 
-                        remark.Value.Location.Longitude, remark.Value.Id.ToString());
+                    await _cache.GeoAddAsync("remarks", remark.Value.Location.Longitude, 
+                        remark.Value.Location.Latitude, remark.Value.Id.ToString());
                     await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
+                    await _cache.AddToSortedSetAsync("remarks-latest", remark.Value.Id.ToString(), 0, limit: 100);
                 })
                 .OnError((ex, logger) =>
                 {

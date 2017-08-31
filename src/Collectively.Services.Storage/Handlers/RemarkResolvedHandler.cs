@@ -44,6 +44,7 @@ namespace Collectively.Services.Storage.Handlers
                     await _remarkRepository.UpdateAsync(remark.Value);
                     await _cache.GeoRemoveAsync("remarks", remark.Value.Id.ToString());
                     await _cache.DeleteAsync($"remarks:{remark.Value.Id}");
+                    await _cache.RemoveFromSortedSetAsync("remarks-latest", remark.Value.Id.ToString());
                 })
                 .OnError((ex, logger) =>
                 {
