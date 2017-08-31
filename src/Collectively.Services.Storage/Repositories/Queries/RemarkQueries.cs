@@ -14,7 +14,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
 {
     public static class RemarkQueries
     {
-        private static readonly int NegativeVotesThreshold = -2;
+        private static readonly int NegativeVotesThreshold = -5;
 
         public static IMongoCollection<Remark> Remarks(this IMongoDatabase database)
             => database.GetCollection<Remark>();
@@ -30,35 +30,30 @@ namespace Collectively.Services.Storage.Repositories.Queries
         public static async Task<PagedResult<Remark>> QueryAsync(this IMongoCollection<Remark> remarks,
             BrowseRemarks query)
         {
-            if (!IsLocationProvided(query) && query.AuthorId.Empty() && !query.Latest)
+            if (!query.IsLocationProvided && query.AuthorId.Empty())
             {
-                return PagedResult<Remark>.Empty;
+                query.Latest = true;
             }
             if (query.Page <= 0)
             {
                 query.Page = 1;
             }
-            if (query.Results <= 0)
+            if (query.Results <= 0 || query.Results > 100)
             {
                 query.Results = 10;
             }
 
             var filterBuilder = new FilterDefinitionBuilder<Remark>();
             var filter = FilterDefinition<Remark>.Empty;
-            if (IsLocationProvided(query))
+            if (query.IsLocationProvided)
             {
                 var maxDistance = query.Radius > 0 ? (double?) query.Radius/1000/6378.1 : null;
                 filter = filterBuilder.NearSphere(x => x.Location,
                         query.Longitude, query.Latitude, maxDistance);
             }
-            if (query.Latest)
-            {
-                filter = filterBuilder.Where(x => x.Id != Guid.Empty);
-            }           
             if (query.AuthorId.NotEmpty())
             {
                 filter = filter & filterBuilder.Where(x => x.Author.UserId == query.AuthorId);
-                
                 if (query.OnlyLiked)
                 {
                     filter = filter & filterBuilder.Where(x => x.Votes.Any(v => v.UserId == query.AuthorId && v.Positive));
@@ -70,7 +65,8 @@ namespace Collectively.Services.Storage.Repositories.Queries
             }
             if (query.ResolverId.NotEmpty())
             {
-                filter = filter & filterBuilder.Where(x => x.State.State == "resolved" && x.State.User.UserId == query.ResolverId);
+                filter = filter & filterBuilder.Where(x => x.State.State == "resolved" 
+                    && x.State.User.UserId == query.ResolverId);
             }
             if (!query.Description.Empty())
             {
@@ -153,9 +149,5 @@ namespace Collectively.Services.Storage.Repositories.Queries
 
             return findResult;
         }      
-
-        private static bool IsLocationProvided(BrowseRemarks query)
-            => (Math.Abs(query.Latitude) <= 0.0000000001 
-                || Math.Abs(query.Longitude) <= 0.0000000001) == false;
     }
 }

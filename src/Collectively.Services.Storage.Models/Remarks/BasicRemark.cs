@@ -19,5 +19,6 @@ namespace Collectively.Services.Storage.Models.Remarks
         public int ParticipantsCount { get; set; }
         public int ReportsCount { get; set; }
         public string Status { get; set; }
+        public double? Distance { get; set; }
     }
 }

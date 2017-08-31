@@ -6,6 +6,7 @@ using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
+using Collectively.Common.Locations;
 
 namespace Collectively.Services.Storage.Repositories
 {
@@ -25,6 +26,16 @@ namespace Collectively.Services.Storage.Repositories
         {
             var results = await _database.Remarks()
                 .QueryAsync(query);
+            if (!query.IsLocationProvided)
+            {
+                return results;
+            }
+            var center = new Coordinates(query.Latitude, query.Longitude);
+            foreach (var remark in results.Items)
+            {
+                var coordinates = new Coordinates(remark.Location.Latitude, remark.Location.Longitude);
+                remark.Distance = center.DistanceTo(coordinates, UnitOfLength.Meters);
+            }
 
             return results;
         }

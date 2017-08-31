@@ -125,6 +125,12 @@ namespace Collectively.Services.Storage.Framework
                 x.UnmapMember(m => m.Criteria);
                 x.UnmapMember(m => m.Members);
             });
+            BsonClassMap.RegisterClassMap<BasicRemark>(x => 
+            {
+                x.AutoMap();
+                x.UnmapMember(m => m.Distance);
+                x.UnmapMember(m => m.SmallPhotoUrl);
+            });
             var databaseSeeder = container.Resolve<IDatabaseSeeder>();
             databaseSeeder.SeedAsync();
 
