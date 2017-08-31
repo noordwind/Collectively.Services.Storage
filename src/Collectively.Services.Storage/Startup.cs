@@ -42,12 +42,6 @@ namespace Collectively.Services.Storage
             services.AddSerilog(Configuration);
             services.AddWebEncoders();
             services.AddCors();
-            var redisSettings = new RedisSettings();
-            Configuration.GetSection("redis").Bind(redisSettings);
-            services.AddDistributedRedisCache(x =>
-            {
-                x.Configuration = redisSettings.ConnectionString;
-            });
             Services = services;
         }
 
