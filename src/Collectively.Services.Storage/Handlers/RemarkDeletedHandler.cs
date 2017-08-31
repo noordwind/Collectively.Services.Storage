@@ -4,6 +4,7 @@ using Collectively.Common.Services;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Common.Caching;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -11,11 +12,11 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _repository;
-        private readonly ICache _cache;
+        private readonly IRemarkCache _cache;
 
         public RemarkDeletedHandler(IHandler handler, 
             IRemarkRepository repository,
-            ICache cache)
+            IRemarkCache cache)
         {
             _handler = handler;
             _repository = repository;
@@ -32,9 +33,7 @@ namespace Collectively.Services.Storage.Handlers
                         return;
 
                     await _repository.DeleteAsync(remark.Value);
-                    await _cache.GeoRemoveAsync("remarks", remark.Value.Id.ToString());
-                    await _cache.DeleteAsync($"remarks:{remark.Value.Id}");
-                    await _cache.RemoveFromSortedSetAsync("remarks-latest", remark.Value.Id.ToString());
+                    await _cache.DeleteAsync(@event.RemarkId, deleteGeo: true, deleteLatest: true);
                 })
                 .OnError((ex, logger) =>
                 {

@@ -7,6 +7,7 @@ using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
+using Collectively.Services.Storage.Services;
 using Microsoft.Azure.Documents.SystemFunctions;
 
 namespace Collectively.Services.Storage.Handlers
@@ -16,12 +17,12 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
-        private readonly ICache _cache;
+        private readonly IRemarkCache _cache;
 
         public RemarkStateDeletedHandler(IHandler handler,
             IRemarkRepository remarkRepository,
             IRemarkServiceClient remarkServiceClient,
-            ICache cache)
+            IRemarkCache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
@@ -42,7 +43,7 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.State = remarkDto.Value.State;
                     remark.Value.States = remarkDto.Value.States;
                     await _remarkRepository.UpdateAsync(remark.Value);
-                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
+                    await _cache.AddAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {

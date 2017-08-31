@@ -7,6 +7,7 @@ using Collectively.Messages.Events;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -14,11 +15,11 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _repository;
-        private readonly ICache _cache;
+        private readonly IRemarkCache _cache;
 
         public CommentDeletedFromRemarkHandler(IHandler handler, 
             IRemarkRepository repository,
-            ICache cache)
+            IRemarkCache cache)
         {
             _handler = handler;
             _repository = repository;
@@ -45,7 +46,7 @@ namespace Collectively.Services.Storage.Handlers
                     comment.Text = string.Empty;
                     comment.Removed = true;
                     await _repository.UpdateAsync(remark.Value);
-                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
+                    await _cache.AddAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {

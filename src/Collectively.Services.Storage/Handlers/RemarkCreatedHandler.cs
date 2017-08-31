@@ -6,6 +6,7 @@ using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
 using Collectively.Common.Caching;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -14,12 +15,12 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
-        private readonly ICache _cache;
+        private readonly IRemarkCache _cache;
 
         public RemarkCreatedHandler(IHandler handler, 
             IRemarkRepository remarkRepository,
             IRemarkServiceClient remarkServiceClient,
-            ICache cache)
+            IRemarkCache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
@@ -35,10 +36,7 @@ namespace Collectively.Services.Storage.Handlers
                     var remark = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
                     remark.Value.Status = null;
                     await _remarkRepository.AddAsync(remark.Value);
-                    await _cache.GeoAddAsync("remarks", remark.Value.Location.Longitude, 
-                        remark.Value.Location.Latitude, remark.Value.Id.ToString());
-                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
-                    await _cache.AddToSortedSetAsync("remarks-latest", remark.Value.Id.ToString(), 0, limit: 100);
+                    await _cache.AddAsync(remark.Value, addGeo: true, addLatest: true);
                 })
                 .OnError((ex, logger) =>
                 {

@@ -5,6 +5,7 @@ using Collectively.Common.Services;
 using Collectively.Messages.Events;
 using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Repositories;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -12,11 +13,11 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
-        private readonly ICache _cache;
+        private readonly IRemarkCache _cache;
 
         public RemarkActionCanceledHandler(IHandler handler, 
             IRemarkRepository remarkRepository,
-            ICache cache)
+            IRemarkCache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
@@ -42,7 +43,7 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.Participants.Remove(participant);
                     remark.Value.ParticipantsCount--;
                     await _remarkRepository.UpdateAsync(remark.Value);
-                    await _cache.AddAsync($"remarks:{remark.Value.Id}", remark.Value);
+                    await _cache.AddAsync(remark.Value);
                 })
                 .ExecuteAsync();
         }
