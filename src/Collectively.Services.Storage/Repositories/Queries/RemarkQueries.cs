@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Collectively.Common.Extensions;
 using Collectively.Common.Mongo;
+using Collectively.Services.Storage.Framework;
 using Collectively.Services.Storage.ServiceClients.Queries;
 using Collectively.Common.Types;
 using Collectively.Services.Storage.Models.Remarks;
@@ -30,7 +31,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
         public static async Task<PagedResult<Remark>> QueryAsync(this IMongoCollection<Remark> remarks,
             BrowseRemarks query)
         {
-            if (!query.IsLocationProvided && query.AuthorId.Empty())
+            if (!query.IsLocationProvided() && query.AuthorId.Empty())
             {
                 query.Latest = true;
             }
@@ -45,7 +46,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
 
             var filterBuilder = new FilterDefinitionBuilder<Remark>();
             var filter = FilterDefinition<Remark>.Empty;
-            if (query.IsLocationProvided)
+            if (query.IsLocationProvided())
             {
                 var maxDistance = query.Radius > 0 ? (double?) query.Radius/1000/6378.1 : null;
                 filter = filterBuilder.NearSphere(x => x.Location,

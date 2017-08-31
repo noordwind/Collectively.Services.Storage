@@ -7,6 +7,7 @@ using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories.Queries;
 using MongoDB.Driver;
 using Collectively.Common.Locations;
+using Collectively.Services.Storage.Framework;
 
 namespace Collectively.Services.Storage.Repositories
 {
@@ -26,7 +27,7 @@ namespace Collectively.Services.Storage.Repositories
         {
             var results = await _database.Remarks()
                 .QueryAsync(query);
-            if (!query.IsLocationProvided)
+            if (!query.IsLocationProvided())
             {
                 return results;
             }
