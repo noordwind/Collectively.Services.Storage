@@ -39,7 +39,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 query.Page = 1;
             }
-            if (query.Results <= 0 || query.Results > 100)
+            if (query.Results <= 0)
             {
                 query.Results = 10;
             }
