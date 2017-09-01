@@ -43,7 +43,7 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.Photos = remarkDto.Value.Photos;
                     remark.Value.Resolved = true;
                     await _remarkRepository.UpdateAsync(remark.Value);
-                    await _cache.DeleteAsync(@event.RemarkId);
+                    await _cache.AddAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
                 {
