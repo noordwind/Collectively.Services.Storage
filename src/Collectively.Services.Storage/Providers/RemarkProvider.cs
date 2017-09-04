@@ -60,10 +60,16 @@ namespace Collectively.Services.Storage.Providers
             => await _provider.GetCollectionAsync(async () => await _remarkRepository.BrowseAsync(query));
 
         public async Task<Maybe<PagedResult<RemarkCategory>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
-            => await _provider.GetCollectionAsync(
-                async () => await _categoryRepository.BrowseAsync(query),
-                async () => await _serviceClient.BrowseCategoriesAsync<RemarkCategory>(query));
-
+        {
+            var categories = await _provider.GetCollectionAsync(
+                            async () => await _categoryRepository.BrowseAsync(query),
+                            async () => await _serviceClient.BrowseCategoriesAsync<RemarkCategory>(query));
+            if (categories.HasNoValue)
+            {
+                return null;
+            }
+            return PagedResult<RemarkCategory>.From(categories.Value, categories.Value.Items.Reverse());
+        }
         public async Task<Maybe<PagedResult<Tag>>> BrowseTagsAsync(BrowseRemarkTags query)
             => await _provider.GetCollectionAsync(
                 async () => await _tagRepository.BrowseAsync(query),
