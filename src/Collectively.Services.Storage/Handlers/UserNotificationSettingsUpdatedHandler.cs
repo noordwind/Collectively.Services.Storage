@@ -38,7 +38,15 @@ namespace Collectively.Services.Storage.Handlers
                     {
                         UserId = @event.UserId
                     });
-                await _repository.AddAsync(settings.Value);
+                var existingSettings = await _repository.GetAsync(@event.UserId);
+                if (existingSettings.HasValue) 
+                {
+                    await _repository.EditAsync(settings.Value);
+                }
+                else 
+                {
+                    await _repository.AddAsync(settings.Value);
+                }
                 await _cache.AddAsync(settings.Value);
             })
             .OnError((ex, logger) =>
