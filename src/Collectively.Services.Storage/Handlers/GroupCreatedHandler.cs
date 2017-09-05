@@ -7,6 +7,7 @@ using Collectively.Services.Storage.Models.Groups;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
 using System.Collections.Generic;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -16,16 +17,22 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IGroupRepository _groupRepository;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IGroupServiceClient _groupServiceClient;
+        private readonly IGroupCache _groupCache;
+        private readonly IOrganizationCache _organizationCache;
 
         public GroupCreatedHandler(IHandler handler, 
             IGroupRepository groupRepository,
             IOrganizationRepository organizationRepository,
-            IGroupServiceClient groupServiceClient)
+            IGroupServiceClient groupServiceClient,
+            IGroupCache groupCache,
+            IOrganizationCache organizationCache)
         {
             _handler = handler;
             _groupRepository = groupRepository;
             _organizationRepository = organizationRepository;
             _groupServiceClient = groupServiceClient;
+            _groupCache = groupCache;
+            _organizationCache = organizationCache;
         }
 
         public async Task HandleAsync(GroupCreated @event)
@@ -36,6 +43,7 @@ namespace Collectively.Services.Storage.Handlers
                     var group = await _groupServiceClient.GetAsync<Group>(@event.GroupId);
                     group.Value.MembersCount = group.Value.Members?.Count ?? 0;
                     await _groupRepository.AddAsync(group.Value);
+                    await _groupCache.AddAsync(group.Value);
                     if(!group.Value.OrganizationId.HasValue)
                     {
                         return;
@@ -48,6 +56,7 @@ namespace Collectively.Services.Storage.Handlers
                     organization.Value.Groups.Add(@event.GroupId);
                     organization.Value.GroupsCount = organization.Value.Groups.Count;
                     await _organizationRepository.UpdateAsync(organization.Value);
+                    await _organizationCache.AddAsync(organization.Value);
                 })
                 .OnError((ex, logger) =>
                 {

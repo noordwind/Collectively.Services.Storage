@@ -11,12 +11,12 @@ namespace Collectively.Services.Storage.Handlers
     public class OperationCreatedHandler : IEventHandler<OperationCreated>
     {
         private readonly IHandler _handler;
-        private readonly IOperationService _operationService;
+        private readonly IOperationCache _cache;
 
-        public OperationCreatedHandler(IHandler handler, IOperationService operationService)
+        public OperationCreatedHandler(IHandler handler, IOperationCache cache)
         {
             _handler = handler;
-            _operationService = operationService;
+            _cache = cache;
         }
 
         public async Task HandleAsync(OperationCreated @event)
@@ -35,7 +35,7 @@ namespace Collectively.Services.Storage.Handlers
                         State = @event.State,
                         CreatedAt = @event.CreatedAt
                     };
-                    await _operationService.SetAsync(operation);
+                    await _cache.AddAsync(operation);
                 })
                 .OnError((ex, logger) =>
                 {

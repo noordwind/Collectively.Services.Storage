@@ -78,6 +78,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
                 builder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>().InstancePerLifetimeScope();
                 builder.RegisterType<GroupRepository>().As<IGroupRepository>().InstancePerLifetimeScope();
+                builder.RegisterType<UserNotificationSettingsRepository>().As<IUserNotificationSettingsRepository>().InstancePerLifetimeScope();
                 builder.RegisterType<OrganizationRepository>().As<IOrganizationRepository>().InstancePerLifetimeScope();
                 builder.RegisterType<ProviderClient>().As<IProviderClient>().InstancePerLifetimeScope();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>().InstancePerLifetimeScope();
@@ -96,8 +97,12 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterModule<ServiceClientsModule>();
                 builder.RegisterModule<RedisModule>();
                 builder.RegisterType<AccountStateService>().As<IAccountStateService>().InstancePerLifetimeScope();
-                builder.RegisterType<OperationService>().As<IOperationService>().InstancePerLifetimeScope();
+                builder.RegisterType<OperationCache>().As<IOperationCache>().InstancePerLifetimeScope();
                 builder.RegisterType<RemarkCache>().As<IRemarkCache>().InstancePerLifetimeScope();
+                builder.RegisterType<GroupCache>().As<IGroupCache>().InstancePerLifetimeScope();
+                builder.RegisterType<OrganizationCache>().As<IOrganizationCache>().InstancePerLifetimeScope();
+                builder.RegisterType<UserCache>().As<IUserCache>().InstancePerLifetimeScope();
+                builder.RegisterType<UserNotificationSettingsCache>().As<IUserNotificationSettingsCache>().InstancePerLifetimeScope();
                 SecurityContainer.Register(builder, _configuration);
                 RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
             });

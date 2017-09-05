@@ -5,9 +5,9 @@ using Collectively.Services.Storage.Models.Operations;
 
 namespace Collectively.Services.Storage.Services
 {
-    public interface IOperationService
+    public interface IOperationCache
     {
         Task<Maybe<Operation>> GetAsync(Guid requestId);
-        Task SetAsync(Operation operation);     
+        Task AddAsync(Operation operation);     
     }
 }

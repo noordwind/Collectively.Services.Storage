@@ -13,14 +13,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
         private readonly IAccountStateService _stateService;
+        private readonly IUserCache _cache;
 
         public AccountDeletedHandler(IHandler handler, 
             IUserRepository userRepository,
-            IAccountStateService stateService)
+            IAccountStateService stateService,
+            IUserCache cache)
         {
             _handler = handler;
             _userRepository = userRepository;
             _stateService = stateService;
+            _cache = cache;
         }
 
         public async Task HandleAsync(AccountDeleted @event)
@@ -37,6 +40,7 @@ namespace Collectively.Services.Storage.Handlers
 
                         return;
                     }
+                    await _cache.DeleteAsync(@event.UserId);
                     await _stateService.SetAsync(@event.UserId, "deleted");
                     await _userRepository.DeleteAsync(@event.UserId);
                 })

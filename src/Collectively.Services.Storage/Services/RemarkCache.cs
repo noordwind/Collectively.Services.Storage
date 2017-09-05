@@ -30,29 +30,38 @@ namespace Collectively.Services.Storage.Services
                 remark.Group.Criteria = group.Value.Criteria;
                 remark.Group.Members = group.Value.Members.ToDictionary(x => x.UserId, x => x.Role);                
             }
-            await _cache.AddAsync($"remarks:{remark.Id}", remark);
+            await _cache.AddAsync(GetDetailsCacheKey(remark.Id), remark);
             if (addGeo)
             {
-                await _cache.GeoAddAsync("remarks", remark.Location.Longitude, remark.Location.Latitude, 
+                await _cache.GeoAddAsync(GetGeoCacheKey(), remark.Location.Longitude, remark.Location.Latitude, 
                     remark.Id.ToString());
             }
             if (addLatest)
             {
-                await _cache.AddToSortedSetAsync("remarks-latest", remark.Id.ToString(), 0, limit: 100);
+                await _cache.AddToSortedSetAsync(GetLatestRemarksCacheKey(), remark.Id.ToString(), 0, limit: 100);
             }
         }
 
         public async Task DeleteAsync(Guid remarkId, bool deleteGeo = false, bool deleteLatest = false)
         {
-            await _cache.DeleteAsync($"remarks:{remarkId}");
+            await _cache.DeleteAsync(GetDetailsCacheKey(remarkId));
             if (deleteGeo)
             {
-                await _cache.GeoRemoveAsync("remarks", remarkId.ToString());
+                await _cache.GeoRemoveAsync(GetGeoCacheKey(), remarkId.ToString());
             }
             if (deleteLatest)
             {
-                await _cache.RemoveFromSortedSetAsync("remarks-latest", remarkId.ToString());
+                await _cache.RemoveFromSortedSetAsync(GetLatestRemarksCacheKey(), remarkId.ToString());
             }
         }
+
+        private static string GetDetailsCacheKey(Guid remarkId)
+        => $"remarks:{remarkId}";
+
+        private static string GetGeoCacheKey()
+        => "remarks";
+
+        private static string GetLatestRemarksCacheKey()
+        => "remarks-latest";
     }
 }

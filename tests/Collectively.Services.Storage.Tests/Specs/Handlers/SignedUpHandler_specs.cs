@@ -21,6 +21,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IUserServiceClient> UserServiceClientMock;
         protected static Mock<IAccountStateService> AccountStateServiceMock;
+        protected static Mock<IUserCache> UserCacheMock;
         protected static SignedUp Event;
         protected static User User;
         protected static Exception Exception;
@@ -32,8 +33,10 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             UserRepositoryMock = new Mock<IUserRepository>();
             UserServiceClientMock = new Mock<IUserServiceClient>();
             AccountStateServiceMock = new Mock<IAccountStateService>();
+            UserCacheMock = new Mock<IUserCache>();
             SignedUpHandler = new SignedUpHandler(Handler, UserRepositoryMock.Object, 
-                UserServiceClientMock.Object, AccountStateServiceMock.Object);
+                UserServiceClientMock.Object, AccountStateServiceMock.Object,
+                UserCacheMock.Object);
             setup();
         }
 

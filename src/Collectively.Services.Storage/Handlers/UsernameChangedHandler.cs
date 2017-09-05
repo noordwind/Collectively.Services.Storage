@@ -5,6 +5,7 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Messages.Events.Users;
 using Serilog;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -15,14 +16,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly IUserCache _cache;
 
         public UsernameChangedHandler(IHandler handler, 
             IUserRepository userRepository, 
-            IRemarkRepository remarkRepository)
+            IRemarkRepository remarkRepository,
+            IUserCache cache)
         {
             _handler = handler;
             _userRepository = userRepository;
             _remarkRepository = remarkRepository;
+            _cache = cache;
         }
 
         public async Task HandleAsync(UsernameChanged @event)
@@ -42,6 +46,7 @@ namespace Collectively.Services.Storage.Handlers
                     user.Value.Name = @event.NewName;
                     user.Value.State = @event.State;
                     await _userRepository.EditAsync(user.Value);
+                    await _cache.AddAsync(user.Value);
 
                     Logger.Debug($"Update user's remarks with new userName, userId:{@event.UserId}, newName:{@event.NewName}");
                     await _remarkRepository.UpdateUserNamesAsync(@event.UserId, @event.NewName);

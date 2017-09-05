@@ -10,12 +10,12 @@ namespace Collectively.Services.Storage.Handlers
     public class OperationUpdatedHandler : IEventHandler<OperationUpdated>
     {
         private readonly IHandler _handler;
-        private readonly IOperationService _operationService;
+        private readonly IOperationCache _cache;
 
-        public OperationUpdatedHandler(IHandler handler, IOperationService operationService)
+        public OperationUpdatedHandler(IHandler handler, IOperationCache cache)
         {
             _handler = handler;
-            _operationService = operationService;
+            _cache = cache;
         }
 
         public async Task HandleAsync(OperationUpdated @event)
@@ -23,7 +23,7 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var operation = await _operationService.GetAsync(@event.RequestId);
+                    var operation = await _cache.GetAsync(@event.RequestId);
                     if (operation.HasNoValue)
                         return;
 
@@ -31,7 +31,7 @@ namespace Collectively.Services.Storage.Handlers
                     operation.Value.Code = @event.Code;
                     operation.Value.Message = @event.Message;
                     operation.Value.UpdatedAt = @event.UpdatedAt;
-                    await _operationService.SetAsync(operation.Value);
+                    await _cache.AddAsync(operation.Value);
                 })
                 .OnError((ex, logger) =>
                 {

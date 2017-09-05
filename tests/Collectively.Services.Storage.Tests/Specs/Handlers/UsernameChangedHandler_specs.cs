@@ -7,6 +7,7 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Models.Users;
 using Collectively.Messages.Events.Users;
 using It = Machine.Specifications.It;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -17,6 +18,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
+        protected static Mock<IUserCache> UserCacheMock;
         protected static UsernameChanged Event;
         protected static User User;
         protected static Exception Exception;
@@ -27,8 +29,10 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             Handler = new Handler(ExceptionHandlerMock.Object);
             UserRepositoryMock = new Mock<IUserRepository>();
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
+            UserCacheMock = new Mock<IUserCache>();
             UsernameChangedHandler = new UsernameChangedHandler(Handler,
-                UserRepositoryMock.Object, RemarkRepositoryMock.Object);
+                UserRepositoryMock.Object, RemarkRepositoryMock.Object,
+                UserCacheMock.Object);
             setup();
         }
 

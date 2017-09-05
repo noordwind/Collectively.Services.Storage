@@ -5,6 +5,7 @@ using Collectively.Services.Storage.Framework;
 using Collectively.Messages.Events.Users;
 using Collectively.Messages.Events.Groups;
 using Collectively.Messages.Commands.Remarks;
+using Collectively.Messages.Events.Notifications;
 
 namespace Collectively.Services.Storage
 {
@@ -54,6 +55,7 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<AccountDeleted>()
                 .SubscribeToEvent<AccountLocked>()
                 .SubscribeToEvent<AccountUnlocked>()
+                .SubscribeToEvent<UserNotificationSettingsUpdated>()
                 .Build()
                 .Run();
         }

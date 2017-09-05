@@ -6,6 +6,7 @@ using Collectively.Messages.Events.Groups;
 using Collectively.Services.Storage.Models.Groups;
 using Collectively.Services.Storage.Repositories;
 using System.Collections.Generic;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -14,14 +15,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IGroupCache _cache;
 
         public MemberAddedToGroupHandler(IHandler handler, 
             IGroupRepository groupRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IGroupCache cache)
         {
             _handler = handler;
             _groupRepository = groupRepository;
             _userRepository = userRepository;
+            _cache = cache;
         }
 
         public async Task HandleAsync(MemberAddedToGroup @event)
@@ -40,6 +44,7 @@ namespace Collectively.Services.Storage.Handlers
                     });
                     group.Value.MembersCount++;
                     await _groupRepository.UpdateAsync(group.Value);
+                    await _cache.AddAsync(group.Value);
                 })
                 .OnError((ex, logger) =>
                 {

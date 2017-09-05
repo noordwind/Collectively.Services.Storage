@@ -5,6 +5,7 @@ using Collectively.Messages.Events.Groups;
 using Collectively.Services.Storage.Models.Groups;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -13,14 +14,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IGroupServiceClient _groupServiceClient;
+        private readonly IOrganizationCache _cache;
 
         public OrganizationCreatedHandler(IHandler handler, 
             IOrganizationRepository organizationRepository,
-            IGroupServiceClient groupServiceClient)
+            IGroupServiceClient groupServiceClient,
+            IOrganizationCache cache)
         {
             _handler = handler;
             _organizationRepository = organizationRepository;
             _groupServiceClient = groupServiceClient;
+            _cache = cache;
         }
 
         public async Task HandleAsync(OrganizationCreated @event)
@@ -32,6 +36,7 @@ namespace Collectively.Services.Storage.Handlers
                     organization.Value.GroupsCount = organization.Value.Groups?.Count ?? 0;
                     organization.Value.MembersCount = organization.Value.Members?.Count ?? 0;
                     await _organizationRepository.AddAsync(organization.Value);
+                    await _cache.AddAsync(organization.Value);
                 })
                 .OnError((ex, logger) =>
                 {

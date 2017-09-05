@@ -13,14 +13,17 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IUserRepository _userRepository;
         private readonly IAccountStateService _stateService;
+        private readonly IUserCache _cache;
 
         public AccountUnlockedHandler(IHandler handler, 
             IUserRepository userRepository,
-            IAccountStateService stateService)
+            IAccountStateService stateService,
+            IUserCache cache)
         {
             _handler = handler;
             _userRepository = userRepository;
             _stateService = stateService;
+            _cache = cache;
         }
 
         public async Task HandleAsync(AccountUnlocked @event)
@@ -31,7 +34,8 @@ namespace Collectively.Services.Storage.Handlers
                     var user = await _userRepository.GetByIdAsync(@event.UnlockUserId);
                     user.Value.State = "active";
                     await _userRepository.EditAsync(user.Value);
-                    await _stateService.SetAsync(@event.UnlockUserId, user.Value.State);
+                    await _stateService.SetAsync(user.Value.UserId, user.Value.State);
+                    await _cache.AddAsync(user.Value);
                 })
                 .OnError((ex, logger) =>
                 {

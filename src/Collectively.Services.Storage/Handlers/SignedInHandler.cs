@@ -17,15 +17,19 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IUserRepository _repository;
         private readonly IUserServiceClient _userServiceClient;
         private readonly IAccountStateService _accountStateService;
+        private readonly IUserCache _cache;
 
         public SignedInHandler(IHandler handler, 
-            IUserRepository repository, IUserServiceClient userServiceClient,
-            IAccountStateService accountStateService)
+            IUserRepository repository, 
+            IUserServiceClient userServiceClient,
+            IAccountStateService accountStateService,
+            IUserCache cache)
         {
             _handler = handler;
             _repository = repository;
             _userServiceClient = userServiceClient;
             _accountStateService = accountStateService;
+            _cache = cache;
         }
 
         public async Task HandleAsync(SignedIn @event)
@@ -35,6 +39,7 @@ namespace Collectively.Services.Storage.Handlers
                 {
                     var user = await _userServiceClient.GetAsync<User>(@event.UserId);
                     await _accountStateService.SetAsync(user.Value.UserId, user.Value.State);
+                    await _cache.AddAsync(user.Value);
                 })
                 .OnError((ex, logger) =>
                 {

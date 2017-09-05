@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 
 namespace Collectively.Services.Storage.Services
 {
-    public class OperationService : IOperationService
+    public class OperationCache : IOperationCache
     {
         private readonly ICache _cache;
 
-        public OperationService(ICache cache)
+        public OperationCache(ICache cache)
         {
             _cache = cache;
         }
@@ -19,7 +19,7 @@ namespace Collectively.Services.Storage.Services
         public async Task<Maybe<Operation>> GetAsync(Guid requestId)
         => await _cache.GetAsync<Operation>(GetCacheKey(requestId));
 
-        public async Task SetAsync(Operation operation)
+        public async Task AddAsync(Operation operation)
         => await _cache.AddAsync(GetCacheKey(operation.RequestId), 
             operation, TimeSpan.FromMinutes(1));
 

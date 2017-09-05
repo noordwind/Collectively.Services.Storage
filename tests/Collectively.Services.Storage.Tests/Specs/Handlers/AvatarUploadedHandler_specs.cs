@@ -7,6 +7,7 @@ using Collectively.Common.Services;
 using Collectively.Services.Storage.Models.Users;
 using Collectively.Messages.Events.Users;
 using It = Machine.Specifications.It;
+using Collectively.Services.Storage.Services;
 
 namespace Collectively.Services.Storage.Tests.Specs.Handlers
 {
@@ -16,6 +17,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static AvatarUploadedHandler AvatarUploadedHandler;
         protected static Mock<IUserRepository> UserRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
+        protected static Mock<IUserCache> UserCacheMock;
         protected static AvatarUploaded Event;
         protected static User User;
         protected static Exception Exception;
@@ -25,7 +27,9 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             ExceptionHandlerMock = new Mock<IExceptionHandler>();
             Handler = new Handler(ExceptionHandlerMock.Object);
             UserRepositoryMock = new Mock<IUserRepository>();
-            AvatarUploadedHandler = new AvatarUploadedHandler(Handler, UserRepositoryMock.Object);
+            UserCacheMock = new Mock<IUserCache>();
+            AvatarUploadedHandler = new AvatarUploadedHandler(Handler, 
+                UserRepositoryMock.Object, UserCacheMock.Object);
             setup();
         }
 
