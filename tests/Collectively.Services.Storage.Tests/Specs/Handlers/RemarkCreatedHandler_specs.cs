@@ -23,6 +23,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IRemarkServiceClient> RemarkServiceClientMock;
         protected static Mock<IRemarkCache> RemarkCacheMock;
+        protected static Mock<IUserCache> UserCacheMock;
         protected static RemarkCreated Event;
         protected static Guid RemarkId = Guid.NewGuid();
         protected static User User;
@@ -36,6 +37,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
             RemarkServiceClientMock = new Mock<IRemarkServiceClient>();
             RemarkCacheMock = new Mock<IRemarkCache>();
+            UserCacheMock = new Mock<IUserCache>();
             Remark = new Remark();
             RemarkServiceClientMock
                 .Setup(x => x.GetAsync<Remark>(RemarkId))
@@ -43,7 +45,8 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             RemarkCreatedHandler = new RemarkCreatedHandler(Handler, 
                 RemarkRepositoryMock.Object, 
                 RemarkServiceClientMock.Object,
-                RemarkCacheMock.Object);
+                RemarkCacheMock.Object,
+                UserCacheMock.Object);
             setup();
         }
 

@@ -12,15 +12,18 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _repository;
-        private readonly IRemarkCache _cache;
+        private readonly IRemarkCache _remarkCache;
+        private readonly IUserCache _userCache;
 
         public RemarkDeletedHandler(IHandler handler, 
             IRemarkRepository repository,
-            IRemarkCache cache)
+            IRemarkCache remarkCache,
+            IUserCache userCache)
         {
             _handler = handler;
             _repository = repository;
-            _cache = cache;
+            _remarkCache = remarkCache;
+            _userCache = userCache;
         }
 
         public async Task HandleAsync(RemarkDeleted @event)
@@ -33,7 +36,8 @@ namespace Collectively.Services.Storage.Handlers
                         return;
 
                     await _repository.DeleteAsync(remark.Value);
-                    await _cache.DeleteAsync(@event.RemarkId, deleteGeo: true, deleteLatest: true);
+                    await _remarkCache.DeleteAsync(@event.RemarkId, deleteGeo: true, deleteLatest: true);
+                    await _userCache.DeleteRemarkAsync(remark.Value.Author.UserId, @event.RemarkId);
                 })
                 .OnError((ex, logger) =>
                 {

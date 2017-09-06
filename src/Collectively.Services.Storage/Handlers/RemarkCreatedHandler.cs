@@ -15,17 +15,20 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
-        private readonly IRemarkCache _cache;
+        private readonly IRemarkCache _remarkCache;
+        private readonly IUserCache _userCache;
 
         public RemarkCreatedHandler(IHandler handler, 
             IRemarkRepository remarkRepository,
             IRemarkServiceClient remarkServiceClient,
-            IRemarkCache cache)
+            IRemarkCache remarkCache,
+            IUserCache userCache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
             _remarkServiceClient = remarkServiceClient;
-            _cache = cache;
+            _remarkCache = remarkCache;
+            _userCache = userCache;
         }
 
         public async Task HandleAsync(RemarkCreated @event)
@@ -36,7 +39,8 @@ namespace Collectively.Services.Storage.Handlers
                     var remark = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
                     remark.Value.Status = null;
                     await _remarkRepository.AddAsync(remark.Value);
-                    await _cache.AddAsync(remark.Value, addGeo: true, addLatest: true);
+                    await _remarkCache.AddAsync(remark.Value, addGeo: true, addLatest: true);
+                    await _userCache.AddRemarkAsync(remark.Value.Author.UserId, @event.RemarkId);
                 })
                 .OnError((ex, logger) =>
                 {

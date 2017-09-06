@@ -20,7 +20,16 @@ namespace Collectively.Services.Storage.Services
         public async Task DeleteAsync(string userId)
         => await _cache.DeleteAsync(GetCacheKey(userId));
 
+        public async Task AddRemarkAsync(string userId, Guid remarkId)
+        => await _cache.AddToSetAsync(GetCacheKey(userId), remarkId.ToString());
+
+        public async Task DeleteRemarkAsync(string userId, Guid remarkId)
+        => await _cache.RemoveFromSetAsync(GetCacheKey(userId), remarkId.ToString());
+
         private static string GetCacheKey(string userId)
-        => $"users:{userId}";        
+        => $"users:{userId}";
+
+        private static string GetRemarksCacheKey(string userId)
+        => $"users:{userId}:remarks";
     }
 }
