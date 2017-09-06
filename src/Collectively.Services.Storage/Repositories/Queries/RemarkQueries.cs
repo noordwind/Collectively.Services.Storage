@@ -31,7 +31,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
         public static async Task<PagedResult<Remark>> QueryAsync(this IMongoCollection<Remark> remarks,
             BrowseRemarks query)
         {
-            if (!query.IsLocationProvided() && query.AuthorId.Empty())
+            if (!query.IsLocationProvided() && query.AuthorId.Empty() && query.ResolverId.Empty())
             {
                 query.Latest = true;
             }
@@ -46,7 +46,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
 
             var filterBuilder = new FilterDefinitionBuilder<Remark>();
             var filter = FilterDefinition<Remark>.Empty;
-            if (query.IsLocationProvided())
+            if (query.IsLocationProvided() && !query.SkipLocation)
             {
                 var maxDistance = query.Radius > 0 ? (double?) query.Radius/1000/6378.1 : null;
                 filter = filterBuilder.NearSphere(x => x.Location,
@@ -97,17 +97,16 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 filter = filterBuilder.Where(x => x.UserFavorites.Contains(query.UserFavorites));
             }
-
+            
+            var totalCount = await remarks.CountAsync(_ => true);
             var filteredRemarks = remarks.Find(filter);
-            var totalCount = await filteredRemarks.CountAsync();
             var totalPages = (int) totalCount / query.Results + 1;
             var findResult = filteredRemarks
                 .Skip(query.Results * (query.Page - 1))
                 .Limit(query.Results);
-
             findResult = SortRemarks(query, findResult);
-
             var result = await findResult.ToListAsync();
+
             return PagedResult<Remark>.Create(result, query.Page, query.Results, totalPages, totalCount);
         }
 
