@@ -10,7 +10,7 @@ namespace Collectively.Services.Storage.Framework.IoC
         protected override void Load(ContainerBuilder builder)
         {
             var coreAssembly = typeof(Startup).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(coreAssembly).AsClosedTypesOf(typeof(IEventHandler<>));
+            builder.RegisterAssemblyTypes(coreAssembly).AsClosedTypesOf(typeof(IEventHandler<>)).InstancePerLifetimeScope();
         }
     }
 }
