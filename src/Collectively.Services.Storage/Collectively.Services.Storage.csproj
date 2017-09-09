@@ -22,7 +22,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
-    <PackageReference Include="Lockbox.Client" Version="1.0.0" />
+    <PackageReference Include="Lockbox.Client" Version="2.0.1" />
     <PackageReference Include="Exceptionless" Version="4.0.1955" />
     <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
     <PackageReference Include="Nancy.Authentication.Stateless" Version="2.0.0-clinteastwood" />
