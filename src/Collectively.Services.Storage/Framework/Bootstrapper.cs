@@ -3,7 +3,7 @@ using System.Globalization;
 using Autofac;
 using Collectively.Common.Exceptionless;
 using Collectively.Common.Mongo;
-using Collectively.Common.Nancy;
+using Collectively.Common.NancyFx;
 using Collectively.Common.Security;
 using Collectively.Services.Storage.Framework.IoC;
 using Collectively.Services.Storage.Providers;

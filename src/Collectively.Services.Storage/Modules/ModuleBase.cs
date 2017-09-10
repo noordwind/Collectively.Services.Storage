@@ -1,4 +1,4 @@
-﻿using Collectively.Common.Nancy;
+﻿using Collectively.Common.NancyFx;
 using Nancy.Security;
 
 namespace Collectively.Services.Storage.Modules
