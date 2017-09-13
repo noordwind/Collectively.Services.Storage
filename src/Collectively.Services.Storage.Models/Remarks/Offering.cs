@@ -1,3 +1,7 @@
+using System;
+
+using System;
+
 namespace Collectively.Services.Storage.Models.Remarks
 {
     public class Offering
