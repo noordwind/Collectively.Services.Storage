@@ -52,7 +52,9 @@ namespace Collectively.Services.Storage.Handlers
         private void Vote(Remark remark, string userId, bool positive)
         {
             if (remark.Votes == null)
+            {
                 remark.Votes = new List<Vote>();
+            }
 
             var vote = remark.Votes.SingleOrDefault(x => x.UserId == userId);
             if (vote != null)
@@ -60,20 +62,24 @@ namespace Collectively.Services.Storage.Handlers
                 if (vote.Positive)
                 {
                     remark.Rating--;
+                    remark.PositiveVotesCount--;
                 }
                 else
                 {
                     remark.Rating++;
+                    remark.NegativeVotesCount++;
                 }
                 remark.Votes.Remove(vote);
             }
             if (positive)
             {
                 remark.Rating++;
+                remark.PositiveVotesCount++;
             }
             else
             {
                 remark.Rating--;
+                remark.NegativeVotesCount++;
             }
         }
     }

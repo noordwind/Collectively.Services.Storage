@@ -41,10 +41,12 @@ namespace Collectively.Services.Storage.Handlers
                     if (vote.Positive)
                     {
                         remark.Value.Rating--;
+                        remark.Value.PositiveVotesCount--;
                     }
                     else
                     {
                         remark.Value.Rating++;
+                        remark.Value.NegativeVotesCount--;
                     }
                     remark.Value.Votes.Remove(vote);
                     await _remarkRepository.UpdateAsync(remark.Value);
