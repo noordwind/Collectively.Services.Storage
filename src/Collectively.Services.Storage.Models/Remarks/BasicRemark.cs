@@ -11,6 +11,7 @@ namespace Collectively.Services.Storage.Models.Remarks
         public Location Location { get; set; }
         public RemarkState State { get; set; }
         public string SmallPhotoUrl { get; set; }
+        public BasicRemarkPhoto Photo { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public int Rating { get; set; }
