@@ -21,10 +21,10 @@ namespace Collectively.Services.Storage.Services
         => await _cache.DeleteAsync(GetCacheKey(userId));
 
         public async Task AddRemarkAsync(string userId, Guid remarkId)
-        => await _cache.AddToSetAsync(GetCacheKey(userId), remarkId.ToString());
+        => await _cache.AddToSetAsync(GetRemarksCacheKey(userId), remarkId.ToString());
 
         public async Task DeleteRemarkAsync(string userId, Guid remarkId)
-        => await _cache.RemoveFromSetAsync(GetCacheKey(userId), remarkId.ToString());
+        => await _cache.RemoveFromSetAsync(GetRemarksCacheKey(userId), remarkId.ToString());
 
         private static string GetCacheKey(string userId)
         => $"users:{userId}";
