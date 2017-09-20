@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Collectively.Common.Caching;
@@ -40,6 +41,7 @@ namespace Collectively.Services.Storage.Handlers
                     {
                         return;
                     }
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     remark.Value.Participants.Remove(participant);
                     remark.Value.ParticipantsCount--;
                     await _remarkRepository.UpdateAsync(remark.Value);

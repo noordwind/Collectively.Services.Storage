@@ -38,6 +38,7 @@ namespace Collectively.Services.Storage.Handlers
                         return;
 
                     var remarkDto = await _remarkServiceClient.GetAsync<Remark>(@event.RemarkId);
+                    remark.Value.UpdatedAt = remarkDto.Value.UpdatedAt;
                     remark.Value.State = remarkDto.Value.State;
                     remark.Value.States = remarkDto.Value.States;
                     remark.Value.Photos = remarkDto.Value.Photos;

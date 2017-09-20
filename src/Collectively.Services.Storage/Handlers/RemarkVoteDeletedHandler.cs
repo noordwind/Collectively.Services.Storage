@@ -6,6 +6,7 @@ using Collectively.Services.Storage.Repositories;
 using System.Linq;
 using Collectively.Common.Caching;
 using Collectively.Services.Storage.Services;
+using System;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -48,6 +49,7 @@ namespace Collectively.Services.Storage.Handlers
                         remark.Value.Rating++;
                         remark.Value.NegativeVotesCount--;
                     }
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     remark.Value.Votes.Remove(vote);
                     await _remarkRepository.UpdateAsync(remark.Value);
                     await _cache.AddAsync(remark.Value);

@@ -7,6 +7,7 @@ using Collectively.Services.Storage.ServiceClients;
 using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Common.Caching;
 using Collectively.Services.Storage.Services;
+using System;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -43,6 +44,7 @@ namespace Collectively.Services.Storage.Handlers
                     {
                         remark.Value.Photos.Add(photo);
                     }
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     await _remarkRepository.UpdateAsync(remark.Value);
                     await _cache.AddAsync(remark.Value);
                 })

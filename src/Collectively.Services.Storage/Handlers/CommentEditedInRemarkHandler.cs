@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Collectively.Common.Caching;
@@ -47,6 +48,7 @@ namespace Collectively.Services.Storage.Handlers
                         Text = comment.Text,
                         CreatedAt = @event.CreatedAt
                     });
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     await _repository.UpdateAsync(remark.Value);
                     await _cache.AddAsync(remark.Value);
                 })

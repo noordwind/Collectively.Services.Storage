@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,6 +46,7 @@ namespace Collectively.Services.Storage.Handlers
                     comment.History.Clear();
                     comment.Text = string.Empty;
                     comment.Removed = true;
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     await _repository.UpdateAsync(remark.Value);
                     await _cache.AddAsync(remark.Value);
                 })

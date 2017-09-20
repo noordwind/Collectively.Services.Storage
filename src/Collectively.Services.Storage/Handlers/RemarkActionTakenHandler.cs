@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Collectively.Common.Caching;
@@ -50,6 +51,7 @@ namespace Collectively.Services.Storage.Handlers
                     {
                         remark.Value.Participants = new HashSet<Participant>();
                     }
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     remark.Value.Participants.Add(participant);
                     remark.Value.ParticipantsCount++;
                     await _remarkRepository.UpdateAsync(remark.Value);

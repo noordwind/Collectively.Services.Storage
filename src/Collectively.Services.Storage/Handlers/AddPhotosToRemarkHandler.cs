@@ -30,6 +30,7 @@ namespace Collectively.Services.Storage.Handlers
                 {
                     var remark = await _remarkRepository.GetByIdAsync(@event.RemarkId);
                     remark.Value.Status = "processing_photos";
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     await _remarkRepository.UpdateAsync(remark.Value);
                     await _cache.AddAsync(remark.Value);
                 })

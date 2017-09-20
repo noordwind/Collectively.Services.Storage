@@ -41,6 +41,7 @@ namespace Collectively.Services.Storage.Handlers
                 remark.Value.States = remarkDto.Value.States;
                 remark.Value.Photos = remarkDto.Value.Photos;
                 remark.Value.Resolved = false;
+                remark.Value.UpdatedAt = remarkDto.Value.UpdatedAt;
                 await _remarkRepository.UpdateAsync(remark.Value);
                 await _cache.DeleteAsync(@event.RemarkId, deleteGeo: true, deleteLatest: true);
             })

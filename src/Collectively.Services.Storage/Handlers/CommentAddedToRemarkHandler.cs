@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Collectively.Common.Caching;
@@ -35,6 +36,7 @@ namespace Collectively.Services.Storage.Handlers
                     {
                         return;
                     }
+                    remark.Value.UpdatedAt = DateTime.UtcNow;
                     if(remark.Value.Comments == null)
                     {
                         remark.Value.Comments = new List<Comment>();
