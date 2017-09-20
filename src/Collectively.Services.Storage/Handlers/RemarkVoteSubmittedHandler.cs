@@ -67,7 +67,7 @@ namespace Collectively.Services.Storage.Handlers
                 else
                 {
                     remark.Rating++;
-                    remark.NegativeVotesCount++;
+                    remark.NegativeVotesCount--;
                 }
                 remark.Votes.Remove(vote);
             }
