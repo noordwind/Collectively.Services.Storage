@@ -131,6 +131,8 @@ namespace Collectively.Services.Storage.Framework
                 x.AutoMap();
                 x.UnmapMember(m => m.Criteria);
                 x.UnmapMember(m => m.Members);
+                x.UnmapMember(m => m.MemberCriteria);
+                x.UnmapMember(m => m.MemberRole);
             });
             BsonClassMap.RegisterClassMap<BasicRemark>(x => 
             {

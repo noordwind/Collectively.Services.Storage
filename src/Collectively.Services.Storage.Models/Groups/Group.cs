@@ -8,8 +8,6 @@ namespace Collectively.Services.Storage.Models.Groups
         public SubjectDetails Details { get; set; }
         public DateTime UpdatedAt { get; set; }
         public IList<Member> Members { get; set; }
-        public IDictionary<string, ISet<string>> Criteria { get; set; }
-        public string MemberRole { get; set; }
-        public IList<string> MemberCriteria { get; set; }         
+        public IDictionary<string, ISet<string>> Criteria { get; set; }         
     }
 }
