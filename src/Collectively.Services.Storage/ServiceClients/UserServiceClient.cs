@@ -46,6 +46,12 @@ namespace Collectively.Services.Storage.ServiceClients
         public async Task<Maybe<dynamic>> GetAsync(string userId)
             => await GetAsync<dynamic>(userId);
 
+        public async Task<Maybe<string>> GetStateAsync(string userId)
+        {
+            Logger.Debug($"Requesting GetStateAsync, userId:{userId}");
+            return await _serviceClient.GetAsync<string>(_name, $"users/{userId}/state");
+        }
+
         public async Task<Maybe<T>> GetByNameAsync<T>(string name) where T : class
         {
             Logger.Debug($"Requesting GetByNameAsync, name:{name}");

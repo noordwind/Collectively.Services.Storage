@@ -35,6 +35,16 @@ namespace Collectively.Services.Storage.Repositories.Queries
             return await users.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
         }
 
+        public static async Task<string> GetStateAsync(this IMongoCollection<User> users, string id)
+        {
+            if (id.Empty())
+                return null;
+
+            return await users.AsQueryable().Where(x => x.UserId == id)
+                .Select(x => x.State)
+                .FirstOrDefaultAsync();
+        }
+
         public static IMongoQueryable<User> Query(this IMongoCollection<User> users,
             BrowseUsers query)
         {

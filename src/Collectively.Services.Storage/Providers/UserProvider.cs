@@ -40,6 +40,11 @@ namespace Collectively.Services.Storage.Providers
                 async () => await _userRepository.GetByIdAsync(userId),
                 async () => await _userServiceClient.GetAsync<User>(userId));
 
+        public async Task<Maybe<string>> GetStateAsync(string userId)
+            => await _providerClient.GetAsync(
+                async () => await _userRepository.GetStateAsync(userId),
+                async () => await _userServiceClient.GetStateAsync(userId));
+
         public async Task<Maybe<User>> GetByNameAsync(string name)
             => await _providerClient.GetAsync(
                 async () => await _userRepository.GetByNameAsync(name),

@@ -40,6 +40,9 @@ namespace Collectively.Services.Storage.Repositories
         public async Task<Maybe<User>> GetByNameAsync(string name)
             => await _database.Users().GetByNameAsync(name);
 
+        public async Task<Maybe<string>> GetStateAsync(string id)
+            => await _database.Users().GetStateAsync(id);
+
         public async Task EditAsync(User user)
             => await _database.Users().ReplaceOneAsync(x => x.UserId == user.UserId, user);
 
