@@ -30,6 +30,7 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<RemarkProcessed>()
                 .SubscribeToEvent<RemarkRenewed>()
                 .SubscribeToEvent<RemarkCanceled>()
+                .SubscribeToEvent<RemarkEdited>()
                 .SubscribeToEvent<PhotosToRemarkAdded>()
                 .SubscribeToEvent<AddPhotosToRemarkRejected>()
                 .SubscribeToEvent<PhotosFromRemarkRemoved>()
