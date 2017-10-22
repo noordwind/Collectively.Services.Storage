@@ -43,7 +43,10 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 query.Results = 10;
             }
-
+            if (query.Results > 1000)
+            {
+                query.Results = 1000;
+            }
             var filterBuilder = new FilterDefinitionBuilder<Remark>();
             var filter = FilterDefinition<Remark>.Empty;
             if (query.IsLocationProvided() && !query.SkipLocation)
