@@ -96,6 +96,10 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 filter = filter & filterBuilder.Where(x => x.Group.Id == query.GroupId);
             }
+            if(query.AvailableGroupId.HasValue && query.AvailableGroupId != Guid.Empty)
+            {
+                filter = filter & filterBuilder.Where(x => x.AvailableGroups.Contains(query.AvailableGroupId.Value));
+            }
             if(query.UserFavorites.NotEmpty())
             {
                 filter = filterBuilder.Where(x => x.UserFavorites.Contains(query.UserFavorites));

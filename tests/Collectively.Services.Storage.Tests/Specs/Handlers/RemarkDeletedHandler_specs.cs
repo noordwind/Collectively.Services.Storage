@@ -19,6 +19,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static IHandler Handler;
         protected static RemarkDeletedHandler RemarkDeletedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
+        protected static Mock<IGroupRemarkRepository> GroupRemarkRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IRemarkCache> RemarkCacheMock;
         protected static Mock<IUserCache> UserCacheMock;
@@ -30,6 +31,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             ExceptionHandlerMock = new Mock<IExceptionHandler>();
             Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
+            GroupRemarkRepositoryMock = new Mock<IGroupRemarkRepository>();
             RemarkCacheMock = new Mock<IRemarkCache>();
             UserCacheMock = new Mock<IUserCache>();
             Remark = new Remark
@@ -40,6 +42,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             Event = new RemarkDeleted(Guid.NewGuid(), Resource.Create("test", "test"), "userId", Remark.Id);
             RemarkDeletedHandler = new RemarkDeletedHandler(Handler, 
                 RemarkRepositoryMock.Object, 
+                GroupRemarkRepositoryMock.Object,
                 RemarkCacheMock.Object,
                 UserCacheMock.Object);
         }

@@ -20,6 +20,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
         protected static IHandler Handler;
         protected static RemarkCreatedHandler RemarkCreatedHandler;
         protected static Mock<IRemarkRepository> RemarkRepositoryMock;
+        protected static Mock<IGroupRemarkRepository> GroupRemarkRepositoryMock;
         protected static Mock<IExceptionHandler> ExceptionHandlerMock;
         protected static Mock<IRemarkServiceClient> RemarkServiceClientMock;
         protected static Mock<IRemarkCache> RemarkCacheMock;
@@ -35,6 +36,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
             ExceptionHandlerMock = new Mock<IExceptionHandler>();
             Handler = new Handler(ExceptionHandlerMock.Object);
             RemarkRepositoryMock = new Mock<IRemarkRepository>();
+            GroupRemarkRepositoryMock = new Mock<IGroupRemarkRepository>();
             RemarkServiceClientMock = new Mock<IRemarkServiceClient>();
             RemarkCacheMock = new Mock<IRemarkCache>();
             UserCacheMock = new Mock<IUserCache>();
@@ -44,6 +46,7 @@ namespace Collectively.Services.Storage.Tests.Specs.Handlers
                 .ReturnsAsync(Remark);
             RemarkCreatedHandler = new RemarkCreatedHandler(Handler, 
                 RemarkRepositoryMock.Object, 
+                GroupRemarkRepositoryMock.Object,
                 RemarkServiceClientMock.Object,
                 RemarkCacheMock.Object,
                 UserCacheMock.Object);

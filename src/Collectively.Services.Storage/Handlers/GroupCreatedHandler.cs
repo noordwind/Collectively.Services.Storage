@@ -15,6 +15,7 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IGroupRepository _groupRepository;
+        private readonly IGroupRemarkRepository _groupRemarkRepository;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IGroupServiceClient _groupServiceClient;
         private readonly IGroupCache _groupCache;
@@ -22,6 +23,7 @@ namespace Collectively.Services.Storage.Handlers
 
         public GroupCreatedHandler(IHandler handler, 
             IGroupRepository groupRepository,
+            IGroupRemarkRepository groupRemarkRepository,
             IOrganizationRepository organizationRepository,
             IGroupServiceClient groupServiceClient,
             IGroupCache groupCache,
@@ -29,6 +31,7 @@ namespace Collectively.Services.Storage.Handlers
         {
             _handler = handler;
             _groupRepository = groupRepository;
+            _groupRemarkRepository = groupRemarkRepository;
             _organizationRepository = organizationRepository;
             _groupServiceClient = groupServiceClient;
             _groupCache = groupCache;
@@ -43,6 +46,11 @@ namespace Collectively.Services.Storage.Handlers
                     var group = await _groupServiceClient.GetAsync<Group>(@event.GroupId);
                     group.Value.MembersCount = group.Value.Members?.Count ?? 0;
                     await _groupRepository.AddAsync(group.Value);
+                    await _groupRemarkRepository.AddAsync(new GroupRemark
+                    {
+                        GroupId = group.Value.Id,
+                        Remarks = new HashSet<GroupRemarkState>()
+                    });
                     await _groupCache.AddAsync(group.Value);
                     if(!group.Value.OrganizationId.HasValue)
                     {
