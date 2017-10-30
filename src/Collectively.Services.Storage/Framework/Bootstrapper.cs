@@ -70,6 +70,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterModule<MongoDbModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<DatabaseSeeder>().As<IDatabaseSeeder>().InstancePerLifetimeScope();
+                builder.RegisterType<GroupRemarkRepository>().As<IGroupRemarkRepository>().InstancePerLifetimeScope();
                 builder.RegisterType<OperationRepository>().As<IOperationRepository>().InstancePerLifetimeScope();
                 builder.RegisterType<RemarkRepository>().As<IRemarkRepository>().InstancePerLifetimeScope();
                 builder.RegisterType<RemarkCategoryRepository>().As<IRemarkCategoryRepository>().InstancePerLifetimeScope();
