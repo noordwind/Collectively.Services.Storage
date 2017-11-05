@@ -24,6 +24,7 @@ namespace Collectively.Services.Storage.Models.Remarks
         public int NegativeVotesCount { get; set; }
         public int ReportsCount { get; set; }
         public string Status { get; set; }
+        public string Assignee { get; set; }
         public double? Distance { get; set; }
         public Offering Offering { get; set; }
     }

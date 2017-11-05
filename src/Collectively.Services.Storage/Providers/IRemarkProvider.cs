@@ -11,7 +11,7 @@ namespace Collectively.Services.Storage.Providers
         Task<Maybe<Remark>> GetAsync(Guid id);
         Task<Maybe<PagedResult<Remark>>> BrowseAsync(BrowseRemarks query);
         Task<Maybe<PagedResult<RemarkCategory>>> BrowseCategoriesAsync(BrowseRemarkCategories query);
-        Task<Maybe<PagedResult<Tag>>> BrowseTagsAsync(BrowseRemarkTags query);
+        Task<Maybe<PagedResult<Tag>>> BrowseTagsAsync(BrowseTags query);
         Task<Maybe<PagedResult<Report>>> BrowseReportsAsync(BrowseReports query);
     }
 }

@@ -98,6 +98,7 @@ namespace Collectively.Services.Storage.Framework
                 builder.RegisterModule<ServiceClientsModule>();
                 builder.RegisterModule<RedisModule>();
                 builder.RegisterType<AccountStateService>().As<IAccountStateService>().InstancePerLifetimeScope();
+                builder.RegisterType<TagService>().As<ITagService>().InstancePerLifetimeScope();
                 builder.RegisterType<OperationCache>().As<IOperationCache>().InstancePerLifetimeScope();
                 builder.RegisterType<RemarkCache>().As<IRemarkCache>().InstancePerLifetimeScope();
                 builder.RegisterType<GroupCache>().As<IGroupCache>().InstancePerLifetimeScope();

@@ -31,6 +31,9 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<RemarkRenewed>()
                 .SubscribeToEvent<RemarkCanceled>()
                 .SubscribeToEvent<RemarkEdited>()
+                .SubscribeToEvent<RemarkAssignedToGroup>()
+                .SubscribeToEvent<RemarkAssignmentDenied>()
+                .SubscribeToEvent<RemarkAssignmentRemoved>()
                 .SubscribeToEvent<PhotosToRemarkAdded>()
                 .SubscribeToEvent<AddPhotosToRemarkRejected>()
                 .SubscribeToEvent<PhotosFromRemarkRemoved>()
@@ -57,6 +60,7 @@ namespace Collectively.Services.Storage
                 .SubscribeToEvent<AccountLocked>()
                 .SubscribeToEvent<AccountUnlocked>()
                 .SubscribeToEvent<UserNotificationSettingsUpdated>()
+                .SubscribeToEvent<TagsCreated>()
                 .Build()
                 .Run();
         }

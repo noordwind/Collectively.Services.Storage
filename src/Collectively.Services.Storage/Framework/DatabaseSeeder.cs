@@ -41,7 +41,7 @@ namespace Collectively.Services.Storage.Framework
             if (await _database.Tags().AsQueryable().AnyAsync() == false)
             {
                 var tags = await _remarkServiceClient
-                    .BrowseTagsAsync<Models.Remarks.Tag>(new BrowseRemarkTags
+                    .BrowseTagsAsync<Models.Remarks.Tag>(new BrowseTags
                     {
                         Results = int.MaxValue
                     });

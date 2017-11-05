@@ -9,6 +9,6 @@ namespace Collectively.Services.Storage.Models.Groups
         public DateTime UpdatedAt { get; set; }
         public IList<Member> Members { get; set; }
         public IDictionary<string, ISet<string>> Criteria { get; set; }
-        public ISet<string> Tags { get; set; }         
+        public ISet<GroupTag> Tags { get; set; }         
     }
 }

@@ -70,7 +70,7 @@ namespace Collectively.Services.Storage.Providers
             }
             return PagedResult<RemarkCategory>.From(categories.Value, categories.Value.Items.Reverse());
         }
-        public async Task<Maybe<PagedResult<Tag>>> BrowseTagsAsync(BrowseRemarkTags query)
+        public async Task<Maybe<PagedResult<Tag>>> BrowseTagsAsync(BrowseTags query)
             => await _provider.GetCollectionAsync(
                 async () => await _tagRepository.BrowseAsync(query),
                 async () => await _serviceClient.BrowseTagsAsync<Tag>(query));

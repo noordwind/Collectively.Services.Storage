@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 
 namespace Collectively.Services.Storage.Models.Remarks
 {
-    public class Tag
+    public class TranslatedTag
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<TranslatedTag> Translations { get; set; }  
+        public string Culture { get; set; }  
     }
 }

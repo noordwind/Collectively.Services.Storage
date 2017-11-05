@@ -23,7 +23,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
         }
 
         public static IMongoQueryable<Tag> Query(this IMongoCollection<Tag> tags,
-            BrowseRemarkTags query)
+            BrowseTags query)
         {
             var values = tags.AsQueryable();
 

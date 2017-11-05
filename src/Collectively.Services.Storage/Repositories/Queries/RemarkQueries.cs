@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -82,7 +83,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
             }
             if (query.Tags?.Any() == true)
             {
-                filter = filter & filterBuilder.Where(x => x.Tags.Any(y => query.Tags.Contains(y)));
+                filter = filter & filterBuilder.Where(x => x.Tags.Any(y => query.Tags.Contains(y.Name)));
             }
             if (query.States?.Any() == true)
             {

@@ -9,7 +9,7 @@ namespace Collectively.Services.Storage.Repositories
     public interface ITagRepository
     {
         Task<Maybe<Tag>> GetAsync(string name);
-        Task<Maybe<PagedResult<Tag>>> BrowseAsync(BrowseRemarkTags query);
+        Task<Maybe<PagedResult<Tag>>> BrowseAsync(BrowseTags query);
         Task AddManyAsync(IEnumerable<Tag> tags);         
     }
 }

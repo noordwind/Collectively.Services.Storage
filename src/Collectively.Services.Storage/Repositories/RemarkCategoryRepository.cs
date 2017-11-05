@@ -25,7 +25,7 @@ namespace Collectively.Services.Storage.Repositories
         public async Task<Maybe<PagedResult<RemarkCategory>>> BrowseAsync(BrowseRemarkCategories query)
             => await _database.RemarkCategories()
                 .Query(query)
-                .PaginateAsync();
+                .PaginateAsync(query);
 
         public async Task AddManyAsync(IEnumerable<RemarkCategory> categories)
             => await _database.RemarkCategories().InsertManyAsync(categories);

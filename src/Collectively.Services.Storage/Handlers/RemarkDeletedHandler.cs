@@ -5,6 +5,7 @@ using Collectively.Messages.Events.Remarks;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Common.Caching;
 using Collectively.Services.Storage.Services;
+using System.Linq;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -30,16 +31,22 @@ namespace Collectively.Services.Storage.Handlers
         }
 
         public async Task HandleAsync(RemarkDeleted @event)
-        {
-            await _handler
+            => await _handler
                 .Run(async () =>
                 {
                     var remark = await _repository.GetByIdAsync(@event.RemarkId);
                     if (remark.HasNoValue)
+                    {
                         return;
+                    }
 
                     await _repository.DeleteAsync(remark.Value);
-                    await _groupRemarkRepository.DeleteRemarksAsync(remark.Value.Id, remark.Value.AvailableGroups);
+                    var groupRemarks = await _groupRemarkRepository.GetAllAsync(@event.RemarkId);
+                    foreach (var groupRemark in groupRemarks)
+                    {
+                        groupRemark.Remarks.Remove(groupRemark.Remarks.SingleOrDefault(x => x.Id == @event.RemarkId));
+                    }
+                    await _groupRemarkRepository.UpdateManyAsync(groupRemarks);
                     await _remarkCache.DeleteAsync(@event.RemarkId, deleteGeo: true, deleteLatest: true);
                     await _userCache.DeleteRemarkAsync(remark.Value.Author.UserId, @event.RemarkId);
                 })
@@ -48,6 +55,5 @@ namespace Collectively.Services.Storage.Handlers
                     logger.Error(ex, $"Error occured while handling {@event.GetType().Name} event");
                 })
                 .ExecuteAsync();
-        }
     }
 }

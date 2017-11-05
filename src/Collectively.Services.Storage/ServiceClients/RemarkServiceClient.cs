@@ -40,7 +40,7 @@ namespace Collectively.Services.Storage.ServiceClients
         public async Task<Maybe<PagedResult<dynamic>>> BrowseCategoriesAsync(BrowseRemarkCategories query)
             => await BrowseCategoriesAsync<dynamic>(query);
 
-        public async Task<Maybe<PagedResult<T>>> BrowseTagsAsync<T>(BrowseRemarkTags query)
+        public async Task<Maybe<PagedResult<T>>> BrowseTagsAsync<T>(BrowseTags query)
             where T : class 
         {
             Logger.Debug("Requesting BrowseTagsAsync");
@@ -48,7 +48,7 @@ namespace Collectively.Services.Storage.ServiceClients
                 .GetCollectionAsync<T>(_name, "remarks/tags");
         }
 
-        public async Task<Maybe<PagedResult<dynamic>>> BrowseTagsAsync(BrowseRemarkTags query)
+        public async Task<Maybe<PagedResult<dynamic>>> BrowseTagsAsync(BrowseTags query)
             => await BrowseTagsAsync<dynamic>(query);
     }
 }

@@ -22,10 +22,10 @@ namespace Collectively.Services.Storage.Repositories
         public async Task<Maybe<Tag>> GetAsync(string name)
             => await _database.Tags().GetAsync(name);
 
-        public async Task<Maybe<PagedResult<Tag>>> BrowseAsync(BrowseRemarkTags query)
+        public async Task<Maybe<PagedResult<Tag>>> BrowseAsync(BrowseTags query)
             => await _database.Tags()
                 .Query(query)
-                .PaginateAsync();
+                .PaginateAsync(query);
 
         public async Task AddManyAsync(IEnumerable<Tag> tags)
             => await _database.Tags().InsertManyAsync(tags);        

@@ -21,6 +21,9 @@ namespace Collectively.Services.Storage.Repositories
         public async Task<Maybe<GroupRemark>> GetAsync(Guid groupId)
             => await _database.GroupRemarks().GetAsync(groupId);
 
+        public async Task<IEnumerable<GroupRemark>> GetAllAsync(Guid remarkId)
+            => await _database.GroupRemarks().GetAllAsync(remarkId);
+
         public async Task AddAsync(GroupRemark groupRemark)
             => await _database.GroupRemarks().InsertOneAsync(groupRemark);
 
@@ -36,10 +39,22 @@ namespace Collectively.Services.Storage.Repositories
             await _database.GroupRemarks().UpdateManyAsync(filter, update);
         }
 
-        public async Task DeleteRemarksAsync(Guid remarkId, IEnumerable<Guid> groupIds)
+        public async Task UpdateAsync(GroupRemark groupRemark)
+            => await _database.GroupRemarks().ReplaceOneAsync(x => x.Id == groupRemark.Id, groupRemark);
+
+        public async Task UpdateManyAsync(IEnumerable<GroupRemark> groupRemarks)
         {
-            //TODO
-            await Task.CompletedTask;
+            if (!groupRemarks.Any())
+            {
+                return;
+            }
+            var operations = groupRemarks.SelectMany(x => new WriteModel<GroupRemark>[]
+            {
+                new UpdateManyModel<GroupRemark>(
+                    Builders<GroupRemark>.Filter.Eq(r => r.Id, x.Id),
+                    Builders<GroupRemark>.Update.Set(r => r.Remarks, x.Remarks))
+            }).ToArray();
+            await _database.GroupRemarks().BulkWriteAsync(operations);           
         }
     }
 }

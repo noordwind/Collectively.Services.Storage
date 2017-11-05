@@ -12,7 +12,7 @@ namespace Collectively.Services.Storage.ServiceClients
         Task<Maybe<dynamic>> GetAsync(Guid id);
         Task<Maybe<PagedResult<T>>> BrowseCategoriesAsync<T>(BrowseRemarkCategories query) where T : class;
         Task<Maybe<PagedResult<dynamic>>> BrowseCategoriesAsync(BrowseRemarkCategories query);
-        Task<Maybe<PagedResult<T>>> BrowseTagsAsync<T>(BrowseRemarkTags query) where T : class;
-        Task<Maybe<PagedResult<dynamic>>> BrowseTagsAsync(BrowseRemarkTags query);
+        Task<Maybe<PagedResult<T>>> BrowseTagsAsync<T>(BrowseTags query) where T : class;
+        Task<Maybe<PagedResult<dynamic>>> BrowseTagsAsync(BrowseTags query);
     }
 }
