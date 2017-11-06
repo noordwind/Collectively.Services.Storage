@@ -6,6 +6,7 @@ namespace Collectively.Services.Storage.Models.Groups
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public Guid DefaultId { get; set; }
         public string Default { get; set; } 
     }
 }

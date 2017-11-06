@@ -32,8 +32,8 @@ namespace Collectively.Services.Storage.Handlers
                     Id = t.Id,
                     Name = t.Name,
                     Culture = t.Culture
-                })
-            });
+                }).ToList()
+            }).ToList();
 
             await _handler
                 .Run(async () => await _tagService.AddOrUpdateAsync(tags))
