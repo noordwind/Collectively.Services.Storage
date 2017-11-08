@@ -38,10 +38,9 @@ namespace Collectively.Services.Storage.Handlers
                 .Run(async () =>
                 {
                     var user = await _userServiceClient.GetAsync<User>(@event.UserId);
-                    if(user.Value.FavoriteRemarks == null)
-                    {
-                        user.Value.FavoriteRemarks = new HashSet<Guid>();
-                    }
+                    user.Value.FavoriteRemarks = new HashSet<Guid>();
+                    user.Value.Groups = new HashSet<UserGroup>();
+                    user.Value.Organizations = new HashSet<UserOrganization>();
                     await _repository.AddAsync(user.Value);
                     await _accountStateService.SetAsync(user.Value.UserId, user.Value.State);
                     await _cache.AddAsync(user.Value);

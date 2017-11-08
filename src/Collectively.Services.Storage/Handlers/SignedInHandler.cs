@@ -37,8 +37,11 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () =>
                 {
-                    var user = await _userServiceClient.GetAsync<User>(@event.UserId);
-                    await _accountStateService.SetAsync(user.Value.UserId, user.Value.State);
+                    var userDto = await _userServiceClient.GetAsync<User>(@event.UserId);
+                    var user = await _repository.GetByIdAsync(@event.UserId);
+                    user.Value.State = userDto.Value.State;
+                    await _repository.EditAsync(user.Value);
+                    await _accountStateService.SetAsync(userDto.Value.UserId, userDto.Value.State);
                     await _cache.AddAsync(user.Value);
                 })
                 .OnError((ex, logger) =>
