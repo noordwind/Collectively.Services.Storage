@@ -7,6 +7,8 @@ using Collectively.Services.Storage.Models.Groups;
 using Collectively.Services.Storage.Repositories;
 using System.Collections.Generic;
 using Collectively.Services.Storage.Services;
+using Collectively.Services.Storage.Models.Users;
+using System.Linq;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -15,17 +17,20 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IOrganizationCache _cache;
+        private readonly IOrganizationCache _organizationCache;
+        private readonly IUserCache _userCache;
 
         public MemberAddedToOrganizationHandler(IHandler handler, 
             IOrganizationRepository organizationRepository,
             IUserRepository userRepository,
-            IOrganizationCache cache)
+            IOrganizationCache organizationCache,
+            IUserCache userCache)
         {
             _handler = handler;
             _organizationRepository = organizationRepository;
             _userRepository = userRepository;
-            _cache = cache;
+            _organizationCache = organizationCache;
+            _userCache = userCache;
         }
 
         public async Task HandleAsync(MemberAddedToOrganization @event)
@@ -44,7 +49,21 @@ namespace Collectively.Services.Storage.Handlers
                     });
                     organization.Value.MembersCount++;
                     await _organizationRepository.UpdateAsync(organization.Value);
-                    await _cache.AddAsync(organization.Value);
+                    await _organizationCache.AddAsync(organization.Value);
+                    var member = organization.Value.Members.First(x => x.UserId == @event.MemberId);
+                    if (user.Value.Organizations == null)
+                    {
+                        user.Value.Organizations = new HashSet<UserOrganization>();
+                    }
+                    user.Value.Organizations.Add(new UserOrganization
+                    {
+                        Id = organization.Value.Id,
+                        Name = organization.Value.Name,
+                        Role = member.Role,
+                        IsActive = member.IsActive
+                    });
+                    await _userRepository.EditAsync(user.Value);
+                    await _userCache.AddAsync(user.Value);
                 })
                 .OnError((ex, logger) =>
                 {

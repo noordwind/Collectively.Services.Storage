@@ -11,5 +11,7 @@ namespace Collectively.Services.Storage.Models.Users
         public string ExternalUserId { get; set; }
         public string Culture { get; set; }
         public ISet<Guid> FavoriteRemarks { get; set; }
+        public ISet<UserGroup> Groups { get; set; }
+        public ISet<UserOrganization> Organizations { get; set; }
     }
 }

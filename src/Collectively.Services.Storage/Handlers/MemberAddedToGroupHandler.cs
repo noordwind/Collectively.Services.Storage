@@ -7,6 +7,8 @@ using Collectively.Services.Storage.Models.Groups;
 using Collectively.Services.Storage.Repositories;
 using System.Collections.Generic;
 using Collectively.Services.Storage.Services;
+using Collectively.Services.Storage.Models.Users;
+using System.Linq;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -15,17 +17,20 @@ namespace Collectively.Services.Storage.Handlers
         private readonly IHandler _handler;
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IGroupCache _cache;
+        private readonly IGroupCache _groupCache;
+        private readonly IUserCache _userCache;
 
         public MemberAddedToGroupHandler(IHandler handler, 
             IGroupRepository groupRepository,
             IUserRepository userRepository,
-            IGroupCache cache)
+            IGroupCache groupCache,
+            IUserCache userCache)
         {
             _handler = handler;
             _groupRepository = groupRepository;
             _userRepository = userRepository;
-            _cache = cache;
+            _groupCache = groupCache;
+            _userCache = userCache;
         }
 
         public async Task HandleAsync(MemberAddedToGroup @event)
@@ -44,7 +49,21 @@ namespace Collectively.Services.Storage.Handlers
                     });
                     group.Value.MembersCount++;
                     await _groupRepository.UpdateAsync(group.Value);
-                    await _cache.AddAsync(group.Value);
+                    await _groupCache.AddAsync(group.Value);
+                    var member = group.Value.Members.First(x => x.UserId == @event.MemberId);
+                    if (user.Value.Groups == null)
+                    {
+                        user.Value.Groups = new HashSet<UserGroup>();
+                    }
+                    user.Value.Groups.Add(new UserGroup
+                    {
+                        Id = group.Value.Id,
+                        Name = group.Value.Name,
+                        Role = member.Role,
+                        IsActive = member.IsActive
+                    });
+                    await _userRepository.EditAsync(user.Value);
+                    await _userCache.AddAsync(user.Value);
                 })
                 .OnError((ex, logger) =>
                 {
