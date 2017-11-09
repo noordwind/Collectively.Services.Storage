@@ -47,10 +47,7 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.Photos = remarkDto.Value.Photos;
                     remark.Value.Resolved = true;
                     await _remarkRepository.UpdateAsync(remark.Value);
-                    if (remarkDto.Value.Group != null)
-                    {
-                        await _groupRemarkRepository.DeleteAllForRemarkAsync(@event.RemarkId);
-                    }
+                    await _groupRemarkRepository.DeleteAllForRemarkAsync(@event.RemarkId);
                     await _cache.AddAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>
