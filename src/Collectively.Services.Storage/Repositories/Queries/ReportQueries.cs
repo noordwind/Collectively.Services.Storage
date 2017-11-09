@@ -18,7 +18,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
             BrowseReports query)
         {
             var values = reports.AsQueryable();
-            if(query.Type.NotEmpty())
+            if (query.Type.NotEmpty())
             {
                 values = values.Where(x => x.Type == query.Type);
             }

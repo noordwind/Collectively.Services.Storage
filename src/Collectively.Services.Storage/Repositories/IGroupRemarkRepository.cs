@@ -8,11 +8,11 @@ namespace Collectively.Services.Storage.Repositories
 {
     public interface IGroupRemarkRepository
     {
-        Task<Maybe<GroupRemark>> GetAsync(Guid groupId);
-        Task<IEnumerable<GroupRemark>> GetAllAsync(Guid remarkId);
+        Task<Maybe<GroupRemark>> GetAsync(Guid groupId, Guid remarkId);
+        Task<IEnumerable<GroupRemark>> GetAllForGroupAsync(Guid groupId);
         Task AddAsync(GroupRemark groupRemark);
         Task AddRemarksAsync(Guid remarkId, IEnumerable<Guid> groupIds);
-        Task UpdateAsync(GroupRemark groupRemark);
-        Task UpdateManyAsync(IEnumerable<GroupRemark> groupRemarks);
+        Task DeleteAsync(Guid groupId, Guid remarkId);
+        Task DeleteAllForRemarkAsync(Guid remarkId);
     }
 }

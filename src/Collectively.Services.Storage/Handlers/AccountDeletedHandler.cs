@@ -31,7 +31,7 @@ namespace Collectively.Services.Storage.Handlers
             await _handler
                 .Run(async () => 
                 {
-                    if(@event.Soft)
+                    if (@event.Soft)
                     {
                         var user = await _userRepository.GetByIdAsync(@event.UserId);
                         user.Value.State = "deleted";

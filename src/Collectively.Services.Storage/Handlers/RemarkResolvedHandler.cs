@@ -14,16 +14,19 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly IGroupRemarkRepository _groupRemarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
         private readonly IRemarkCache _cache;
 
         public RemarkResolvedHandler(IHandler handler, 
             IRemarkRepository remarkRepository,
+            IGroupRemarkRepository groupRemarkRepository,
             IRemarkServiceClient remarkServiceClient,
             IRemarkCache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
+            _groupRemarkRepository = groupRemarkRepository;
             _remarkServiceClient = remarkServiceClient;
             _cache = cache;
         }
@@ -44,6 +47,10 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.Photos = remarkDto.Value.Photos;
                     remark.Value.Resolved = true;
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    if (remarkDto.Value.Group != null)
+                    {
+                        await _groupRemarkRepository.DeleteAllForRemarkAsync(@event.RemarkId);
+                    }
                     await _cache.AddAsync(remark.Value);
                 })
                 .OnError((ex, logger) =>

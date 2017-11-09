@@ -16,28 +16,16 @@ namespace Collectively.Services.Remarks.Repositories.Queries
             => database.GetCollection<GroupRemark>();
 
         public static async Task<GroupRemark> GetAsync(this IMongoCollection<GroupRemark> groupRemarks, 
-            Guid groupId)
-        {
-            if (groupId.IsEmpty())
-            {
-                return null;
-            }
-
-            return await groupRemarks.AsQueryable().FirstOrDefaultAsync(x => x.GroupId == groupId);
-        }
-
-        public static async Task<IEnumerable<GroupRemark>> GetAllAsync(this IMongoCollection<GroupRemark> groupRemarks, 
-            Guid remarkId)
-        {
-            if (remarkId.IsEmpty())
-            {
-                return Enumerable.Empty<GroupRemark>();
-            }
-
-            return await groupRemarks
+            Guid groupId, Guid remarkId)
+            => await groupRemarks
                 .AsQueryable()
-                .Where(x => x.Remarks.Any(r => r.Id == remarkId))
+                .FirstOrDefaultAsync(x => x.GroupId == groupId && x.RemarkId == remarkId);
+
+        public static async Task<IEnumerable<GroupRemark>> GetAllForGroupAsync(this IMongoCollection<GroupRemark> groupRemarks, 
+            Guid groupId)
+            => await groupRemarks
+                .AsQueryable()
+                .Where(x => x.GroupId == groupId)
                 .ToListAsync();
-        }
     }
 }

@@ -7,6 +7,7 @@ using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.ServiceClients;
 using Collectively.Common.Caching;
 using Collectively.Services.Storage.Services;
+using System.Linq;
 
 namespace Collectively.Services.Storage.Handlers
 {
@@ -14,16 +15,19 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IRemarkRepository _remarkRepository;
+        private readonly IGroupRemarkRepository _groupRemarkRepository;
         private readonly IRemarkServiceClient _remarkServiceClient;
         private readonly IRemarkCache _cache;
 
         public RemarkRenewedHandler(IHandler handler, 
             IRemarkRepository remarkRepository,
+            IGroupRemarkRepository groupRemarkRepository,
             IRemarkServiceClient remarkServiceClient,
             IRemarkCache cache)
         {
             _handler = handler;
             _remarkRepository = remarkRepository;
+            _groupRemarkRepository = groupRemarkRepository;
             _remarkServiceClient = remarkServiceClient;
             _cache = cache;
         }
@@ -44,6 +48,10 @@ namespace Collectively.Services.Storage.Handlers
                     remark.Value.Photos = remarkDto.Value.Photos;
                     remark.Value.Resolved = false;
                     await _remarkRepository.UpdateAsync(remark.Value);
+                    if (remark.Value.AvailableGroups?.Any() == true)
+                    {
+                        await _groupRemarkRepository.AddRemarksAsync(remark.Value.Id, remark.Value.AvailableGroups);
+                    }
                     await _cache.AddAsync(remark.Value, addGeo: true);
                 })
                 .OnError((ex, logger) =>

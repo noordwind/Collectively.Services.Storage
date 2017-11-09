@@ -48,7 +48,7 @@ namespace Collectively.Services.Storage.Handlers
                     };
                     await _reportRepository.AddAsync(report);
                     var remark = await _remarkRepository.GetByIdAsync(@event.RemarkId);
-                    switch(@event.Type)
+                    switch (@event.Type)
                     {
                         case "activity": remark.Value.States
                             .Single(x => x.Id == @event.ResourceId.Value).ReportsCount++; break;

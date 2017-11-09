@@ -41,12 +41,7 @@ namespace Collectively.Services.Storage.Handlers
                     }
 
                     await _repository.DeleteAsync(remark.Value);
-                    var groupRemarks = await _groupRemarkRepository.GetAllAsync(@event.RemarkId);
-                    foreach (var groupRemark in groupRemarks)
-                    {
-                        groupRemark.Remarks.Remove(groupRemark.Remarks.SingleOrDefault(x => x.Id == @event.RemarkId));
-                    }
-                    await _groupRemarkRepository.UpdateManyAsync(groupRemarks);
+                    await _groupRemarkRepository.DeleteAllForRemarkAsync(@event.RemarkId);
                     await _remarkCache.DeleteAsync(@event.RemarkId, deleteGeo: true, deleteLatest: true);
                     await _userCache.DeleteRemarkAsync(remark.Value.Author.UserId, @event.RemarkId);
                 })

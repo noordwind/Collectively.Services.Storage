@@ -93,15 +93,16 @@ namespace Collectively.Services.Storage.Repositories.Queries
             {
                 filter = filter & filterBuilder.Where(x => x.Rating > NegativeVotesThreshold);
             }
-            if(query.GroupId.HasValue && query.GroupId != Guid.Empty)
+            if (query.GroupId.HasValue && query.GroupId != Guid.Empty)
             {
                 filter = filter & filterBuilder.Where(x => x.Group.Id == query.GroupId);
             }
-            if(query.AvailableGroupId.HasValue && query.AvailableGroupId != Guid.Empty)
+            if (query.AvailableGroupId.HasValue && query.AvailableGroupId != Guid.Empty)
             {
-                filter = filter & filterBuilder.Where(x => x.AvailableGroups.Contains(query.AvailableGroupId.Value));
+                filter = filter & filterBuilder.Where(x => x.Assignee == null && 
+                    x.AvailableGroups.Contains(query.AvailableGroupId.Value));
             }
-            if(query.UserFavorites.NotEmpty())
+            if (query.UserFavorites.NotEmpty())
             {
                 filter = filterBuilder.Where(x => x.UserFavorites.Contains(query.UserFavorites));
             }
@@ -121,15 +122,15 @@ namespace Collectively.Services.Storage.Repositories.Queries
         private static IFindFluent<Remark,Remark>  SortRemarks(BrowseRemarks query, 
             IFindFluent<Remark,Remark> findResult)
         {
-            if(query.OrderBy.Empty() && !query.Latest)
+            if (query.OrderBy.Empty() && !query.Latest)
             {
                 return findResult;
             }
-            if(query.SortOrder.Empty())
+            if (query.SortOrder.Empty())
             {
                 query.SortOrder = "ascending";
             }
-            if(query.Latest)
+            if (query.Latest)
             {
                 query.OrderBy = "createdat";
                 query.SortOrder = "descending";
@@ -137,7 +138,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
             query.OrderBy = query.OrderBy.ToLowerInvariant();
             query.SortOrder = query.SortOrder.ToLowerInvariant();
 
-            switch(query.OrderBy)
+            switch (query.OrderBy)
             {
                 case "userid": return SortRemarks(query, findResult, x => x.Author.UserId);
                 case "createdat": return SortRemarks(query, findResult, x => x.CreatedAt);
@@ -149,7 +150,7 @@ namespace Collectively.Services.Storage.Repositories.Queries
         private static IFindFluent<Remark,Remark>  SortRemarks(BrowseRemarks query,
             IFindFluent<Remark,Remark> findResult, Expression<Func<Remark, object>> sortBy)
         {
-            switch(query.SortOrder)
+            switch (query.SortOrder)
             {
                 case "ascending": return findResult.SortBy(sortBy);
                 case "descending": return findResult.SortByDescending(sortBy);

@@ -7,6 +7,6 @@ namespace Collectively.Services.Storage.Models.Groups
     {
         public Guid Id { get; set; }
         public Guid GroupId { get; set; }
-        public ISet<GroupRemarkState> Remarks { get; set; }
+        public Guid RemarkId { get; set; }
     }
 }

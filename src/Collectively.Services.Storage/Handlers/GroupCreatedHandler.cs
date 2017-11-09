@@ -17,7 +17,6 @@ namespace Collectively.Services.Storage.Handlers
     {
         private readonly IHandler _handler;
         private readonly IGroupRepository _groupRepository;
-        private readonly IGroupRemarkRepository _groupRemarkRepository;
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IUserRepository _userRepository;
         private readonly IGroupServiceClient _groupServiceClient;
@@ -27,7 +26,6 @@ namespace Collectively.Services.Storage.Handlers
 
         public GroupCreatedHandler(IHandler handler, 
             IGroupRepository groupRepository,
-            IGroupRemarkRepository groupRemarkRepository,
             IOrganizationRepository organizationRepository,
             IUserRepository userRepository,
             IGroupServiceClient groupServiceClient,
@@ -37,7 +35,6 @@ namespace Collectively.Services.Storage.Handlers
         {
             _handler = handler;
             _groupRepository = groupRepository;
-            _groupRemarkRepository = groupRemarkRepository;
             _organizationRepository = organizationRepository;
             _userRepository = userRepository;
             _groupServiceClient = groupServiceClient;
@@ -54,11 +51,6 @@ namespace Collectively.Services.Storage.Handlers
                     var group = await _groupServiceClient.GetAsync<Group>(@event.GroupId);
                     group.Value.MembersCount = group.Value.Members.Count;
                     await _groupRepository.AddAsync(group.Value);
-                    await _groupRemarkRepository.AddAsync(new GroupRemark
-                    {
-                        GroupId = group.Value.Id,
-                        Remarks = new HashSet<GroupRemarkState>()
-                    });
                     await _groupCache.AddAsync(group.Value);
                     var owner = group.Value.Members.First(x => x.Role == "owner");
                     var user = await _userRepository.GetByIdAsync(owner.UserId);
@@ -75,12 +67,12 @@ namespace Collectively.Services.Storage.Handlers
                     });
                     await _userRepository.EditAsync(user.Value);
                     await _userCache.AddAsync(user.Value);
-                    if(!group.Value.OrganizationId.HasValue)
+                    if (!group.Value.OrganizationId.HasValue)
                     {
                         return;
                     }
                     var organization = await _organizationRepository.GetAsync(group.Value.OrganizationId.Value);
-                    if(organization.Value.Groups == null)
+                    if (organization.Value.Groups == null)
                     {
                         organization.Value.Groups = new List<Guid>();
                     }

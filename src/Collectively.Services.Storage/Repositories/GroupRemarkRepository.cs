@@ -18,43 +18,30 @@ namespace Collectively.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<GroupRemark>> GetAsync(Guid groupId)
-            => await _database.GroupRemarks().GetAsync(groupId);
+        public async Task<Maybe<GroupRemark>> GetAsync(Guid groupId, Guid remarkId)
+            => await _database.GroupRemarks().GetAsync(groupId, remarkId);
 
-        public async Task<IEnumerable<GroupRemark>> GetAllAsync(Guid remarkId)
-            => await _database.GroupRemarks().GetAllAsync(remarkId);
+        public async Task<IEnumerable<GroupRemark>> GetAllForGroupAsync(Guid groupId)
+            => await _database.GroupRemarks().GetAllForGroupAsync(groupId);
 
         public async Task AddAsync(GroupRemark groupRemark)
             => await _database.GroupRemarks().InsertOneAsync(groupRemark);
 
         public async Task AddRemarksAsync(Guid remarkId, IEnumerable<Guid> groupIds)
         {
-            var groupRemarkState = new GroupRemarkState
+            var groupRemarks = groupIds.Select(x => new GroupRemark 
             {
-                Id = remarkId
-            };
-            var filter = Builders<GroupRemark>.Filter.Where(x => groupIds.Contains(x.GroupId));
-            var update = Builders<GroupRemark>.Update.AddToSet(x => x.Remarks, groupRemarkState);
-            update.AddToSet(x => x.Remarks, groupRemarkState);
-            await _database.GroupRemarks().UpdateManyAsync(filter, update);
+                Id = Guid.NewGuid(),
+                RemarkId = remarkId,
+                GroupId = x
+            });
+            await _database.GroupRemarks().InsertManyAsync(groupRemarks);
         }
 
-        public async Task UpdateAsync(GroupRemark groupRemark)
-            => await _database.GroupRemarks().ReplaceOneAsync(x => x.Id == groupRemark.Id, groupRemark);
+        public async Task DeleteAsync(Guid groupId, Guid remarkId)
+            => await _database.GroupRemarks().DeleteOneAsync(x => x.GroupId == groupId && x.RemarkId == remarkId);
 
-        public async Task UpdateManyAsync(IEnumerable<GroupRemark> groupRemarks)
-        {
-            if (!groupRemarks.Any())
-            {
-                return;
-            }
-            var operations = groupRemarks.SelectMany(x => new WriteModel<GroupRemark>[]
-            {
-                new UpdateManyModel<GroupRemark>(
-                    Builders<GroupRemark>.Filter.Eq(r => r.Id, x.Id),
-                    Builders<GroupRemark>.Update.Set(r => r.Remarks, x.Remarks))
-            }).ToArray();
-            await _database.GroupRemarks().BulkWriteAsync(operations);           
-        }
+        public async Task DeleteAllForRemarkAsync(Guid remarkId)
+            => await _database.GroupRemarks().DeleteManyAsync(x => x.RemarkId == remarkId);
     }
 }

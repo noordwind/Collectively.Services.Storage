@@ -38,7 +38,7 @@ namespace Collectively.Services.Storage.Handlers
                     }
 
                     var comment = remark.Value.Comments.SingleOrDefault(x => x.Id == @event.CommentId);
-                    if(comment == null)
+                    if (comment == null)
                     {
                         return;
                     }

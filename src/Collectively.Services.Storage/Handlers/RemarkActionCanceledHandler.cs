@@ -37,7 +37,7 @@ namespace Collectively.Services.Storage.Handlers
                     }
 
                     var participant = remark.Value.Participants.SingleOrDefault(x => x.User.UserId == @event.UserId);
-                    if(participant == null)
+                    if (participant == null)
                     {
                         return;
                     }

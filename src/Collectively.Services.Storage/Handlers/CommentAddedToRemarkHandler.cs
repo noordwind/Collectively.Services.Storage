@@ -37,7 +37,7 @@ namespace Collectively.Services.Storage.Handlers
                         return;
                     }
                     remark.Value.UpdatedAt = DateTime.UtcNow;
-                    if(remark.Value.Comments == null)
+                    if (remark.Value.Comments == null)
                     {
                         remark.Value.Comments = new List<Comment>();
                     }

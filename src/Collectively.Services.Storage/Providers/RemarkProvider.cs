@@ -41,11 +41,11 @@ namespace Collectively.Services.Storage.Providers
             var remark = await _provider.GetAsync(
                 async () => await _remarkRepository.GetByIdAsync(id),
                 async () => await _serviceClient.GetAsync<Remark>(id));
-            if(remark.HasNoValue)
+            if (remark.HasNoValue)
             {
                 return null;
             }
-            if(remark.Value.Group == null)
+            if (remark.Value.Group == null)
             {
                 return remark;
             }
