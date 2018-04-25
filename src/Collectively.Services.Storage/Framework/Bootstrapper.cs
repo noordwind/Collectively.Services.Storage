@@ -142,6 +142,7 @@ namespace Collectively.Services.Storage.Framework
                 x.UnmapMember(m => m.Distance);
                 x.UnmapMember(m => m.SmallPhotoUrl);
                 x.UnmapMember(m => m.Photo);
+                x.UnmapMember(m => m.SelectedTag);
             });
             var databaseSeeder = container.Resolve<IDatabaseSeeder>();
             databaseSeeder.SeedAsync();

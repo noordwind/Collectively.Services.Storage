@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Collectively.Services.Storage.Models.Remarks
 {
@@ -27,5 +28,7 @@ namespace Collectively.Services.Storage.Models.Remarks
         public string Assignee { get; set; }
         public double? Distance { get; set; }
         public Offering Offering { get; set; }
+        public ISet<RemarkTag> Tags { get; set; }
+        public string SelectedTag { get; set; }
     }
 }

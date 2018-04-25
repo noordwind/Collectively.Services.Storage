@@ -45,6 +45,10 @@ namespace Collectively.Services.Storage.Providers
             {
                 return null;
             }
+            if (remark.Value.Tags?.Any() == true)
+            {
+                remark.Value.SelectedTag = remark.Value.Tags.First().Name;
+            }
             if (remark.Value.Group == null)
             {
                 return remark;

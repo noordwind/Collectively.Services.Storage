@@ -115,6 +115,13 @@ namespace Collectively.Services.Storage.Repositories.Queries
                 .Limit(query.Results);
             findResult = SortRemarks(query, findResult);
             var result = await findResult.ToListAsync();
+            result.ForEach(r => 
+            {
+                if (r.Tags?.Any() == true)
+                {
+                    r.SelectedTag = r.Tags.First().Name;
+                }
+            });
 
             return PagedResult<Remark>.Create(result, query.Page, query.Results, totalPages, totalCount);
         }

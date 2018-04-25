@@ -7,7 +7,6 @@ namespace Collectively.Services.Storage.Models.Remarks
     {
         public IList<File> Photos { get; set; }
         public IList<RemarkState> States { get; set; }
-        public ISet<RemarkTag> Tags { get; set; }
         public IList<Vote> Votes { get; set; }
         public IList<Comment> Comments { get; set; }
         public ISet<string> UserFavorites { get; set; }
