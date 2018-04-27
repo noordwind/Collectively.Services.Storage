@@ -20,7 +20,6 @@
     <PackageReference Include="Machine.Specifications.Should" Version="0.11.0" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.*" />
     <PackageReference Include="Moq" Version="4.*" />
-    <PackageReference Include="Collectively.Common" Version="2.0.*" />
   </ItemGroup>
 
 </Project>

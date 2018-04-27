@@ -8,7 +8,6 @@ using Collectively.Services.Storage.Models.Remarks;
 using Collectively.Services.Storage.Repositories;
 using Collectively.Services.Storage.ServiceClients;
 using Collectively.Services.Storage.Services;
-using Microsoft.Azure.Documents.SystemFunctions;
 
 namespace Collectively.Services.Storage.Handlers
 {

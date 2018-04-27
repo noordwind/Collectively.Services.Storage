@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <AssemblyTitle>Collectively.Services.Storage</AssemblyTitle>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -8,41 +7,17 @@
     <PackageId>Collectively.Services.Storage</PackageId>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Update="nlog.config">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="../Collectively.Services.Storage.Models/Collectively.Services.Storage.Models.csproj" />
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="..\..\..\Collectively.Common\src\Collectively.Common\Collectively.Common.csproj" />
+    <ProjectReference Include="..\..\..\Collectively.Messages\src\Collectively.Messages\Collectively.Messages.csproj" />
+    <ProjectReference Include="..\Collectively.Services.Storage.Models\Collectively.Services.Storage.Models.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.1" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
-    <PackageReference Include="Lockbox.Client" Version="2.0.1" />
-    <PackageReference Include="Exceptionless" Version="4.0.1955" />
-    <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Nancy.Authentication.Stateless" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Nancy.Bootstrappers.Autofac" Version="2.0.0-clinteastwood" />
-    <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
-    <PackageReference Include="Polly" Version="5.3.1" />
-    <PackageReference Include="RawRabbit" Version="2.0.0-beta8" />
-    <PackageReference Include="RawRabbit.Operations.Publish" Version="2.0.0-beta8" />
-    <PackageReference Include="Collectively.Messages" Version="2.0.*" />
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Collectively.Common" Version="2.0.*" />
+    <PackageReference Include="Collectively.Messages" Version="2.0.*" />
+    <PackageReference Include="Collectively.Services.Storage.Models" Version="2.0.*" />
   </ItemGroup>
-
 </Project>
